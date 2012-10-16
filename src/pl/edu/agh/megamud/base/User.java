@@ -3,7 +3,7 @@ package pl.edu.agh.megamud.base;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-import pl.edu.agh.megamud.Interpreter;
+import pl.edu.agh.megamud.CommandsCollection;
 import pl.edu.agh.megamud.module.CommandExit;
 import pl.edu.agh.megamud.module.CommandGoto;
 import pl.edu.agh.megamud.module.CommandLook;
@@ -15,7 +15,7 @@ public class User implements InteractiveObject{
 	public PrintWriter out ;
 
 	public Creature player;
-	private Interpreter interpreter = new Interpreter();
+	private CommandsCollection interpreter = new CommandsCollection();
 	
 	Command [] commandsToInstall = {
 			new CommandExit(),
@@ -39,12 +39,12 @@ public class User implements InteractiveObject{
 		this.exitServer = exitServer;
 	}
 	@Override
-	public Interpreter getInterpreter() {
+	public CommandsCollection getInterpreter() {
 		return interpreter;
 	}
 
 	@Override
-	public void setInterpreter(Interpreter interpreter) {
+	public void setInterpreter(CommandsCollection interpreter) {
 		this.interpreter = interpreter;		
 	}
 }

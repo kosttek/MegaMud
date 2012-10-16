@@ -1,8 +1,8 @@
 package pl.edu.agh.megamud.base;
 
-import pl.edu.agh.megamud.Interpreter;
+import pl.edu.agh.megamud.CommandsCollection;
 
 public interface InteractiveObject {
-	public Interpreter getInterpreter();
-	public void setInterpreter(Interpreter interpreter);
+	public CommandsCollection getInterpreter();
+	public void setInterpreter(CommandsCollection interpreter);
 }

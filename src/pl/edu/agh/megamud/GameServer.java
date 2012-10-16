@@ -7,9 +7,7 @@ import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.User;
 import pl.edu.agh.megamud.mockdata.MockLocations1;
-import pl.edu.agh.megamud.module.BaseCommands;
-import pl.edu.agh.megamud.module.MoveModule;
-import pl.edu.agh.megamud.module.interfaces.Interprete;
+
 
 public class GameServer {
 	private static GameServer gameServer;
@@ -17,7 +15,7 @@ public class GameServer {
 	//maybe could be something else like map <id, Location>
 	ArrayList<Location> allLocations = new ArrayList<Location>();
 	ArrayList<User> allUsersLoged = new ArrayList<User>();
-	ArrayList<Interprete> interpreters = new ArrayList<Interprete>();
+
 	
 	private GameServer(){
 		init();
@@ -31,8 +29,6 @@ public class GameServer {
 	}  
 	
 	private void init(){
-		interpreters.add(new BaseCommands());
-		interpreters.add(new MoveModule());
 		allLocations.addAll(MockLocations1.createLocations());
 	}
 	
@@ -62,8 +58,8 @@ public class GameServer {
 		List<Command> commands = new ArrayList<Command>();
 		//GET ALL KNOWN INTERPETERS TO USER ON THAT MOMENT
 		List<Command> tempCommands;
-		Interpreter [] listInter = {user.getInterpreter(),user.player.getInterpreter(),user.player.currentLocation.getInterpreter()};
-		for(Interpreter inter : listInter){
+		CommandsCollection [] listInter = {user.getInterpreter(),user.player.getInterpreter(),user.player.currentLocation.getInterpreter()};
+		for(CommandsCollection inter : listInter){
 			tempCommands = inter.getCommands(firstWord);
 			if(tempCommands!=null)
 				commands.addAll(tempCommands);

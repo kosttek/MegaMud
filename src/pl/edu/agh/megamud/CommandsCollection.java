@@ -10,7 +10,7 @@ import pl.edu.agh.megamud.base.InteractiveObject;
 import pl.edu.agh.megamud.utils.StringCommandTuple;
 
 
-public class Interpreter {
+public class CommandsCollection {
 	private Map <String , List<Command>> map = new HashMap<String, List<Command>>();
 	
 	public List<Command> getCommands(String firstWord){

@@ -1,7 +1,9 @@
 package pl.edu.agh.megamud;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.User;
 import pl.edu.agh.megamud.mockdata.MockLocations1;
@@ -50,9 +52,26 @@ public class GameServer {
 			allLocations.get(0).putCreature(user.player);
 	}
 	
-	public void interpreteCommand(User user, String command){
-		for(Interprete signleIterpreter : interpreters){
-			signleIterpreter.interprete(user, command);
+	public void interpreteCommand(User user, String commandString){
+//		for(Interprete signleIterpreter : interpreters){
+//			signleIterpreter.interprete(user, command);
+//		}
+		String [] args = commandString.trim().split(" ");
+		String firstWord = args[0];
+		
+		List<Command> commands = new ArrayList<Command>();
+		//GET ALL KNOWN INTERPETERS TO USER ON THAT MOMENT
+		List<Command> tempCommands;
+		Interpreter [] listInter = {user.getInterpreter(),user.player.getInterpreter(),user.player.currentLocation.getInterpreter()};
+		for(Interpreter inter : listInter){
+			tempCommands = inter.getCommands(firstWord);
+			if(tempCommands!=null)
+				commands.addAll(tempCommands);
+		}
+
+		for(Command command : commands){
+			if(command.interprete(user, commandString)) //INTERPRETE ONLY FOR FIRST FOUND COMMAND
+				break;
 		}
 	}
 }

@@ -1,1 +1,0 @@
-jar -cvfm TelnetServer.jar manifest.txt pl/edu/agh/megamud/* 

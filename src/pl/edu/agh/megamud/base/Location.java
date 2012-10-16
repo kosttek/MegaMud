@@ -3,8 +3,11 @@ package pl.edu.agh.megamud.base;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Location {
+import pl.edu.agh.megamud.Interpreter;
+
+public class Location implements InteractiveObject {
 	//TODO do zmiany na getery setery
+	Interpreter interpreter = new Interpreter();
 	public HashMap<String,Location> locations = new HashMap<String,Location>();
 	public ArrayList<Creature> creatures = new ArrayList<Creature>();
 	private String description;
@@ -37,5 +40,15 @@ public class Location {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public Interpreter getInterpreter() {
+		return interpreter;
+	}
+
+	@Override
+	public void setInterpreter(Interpreter interpreter) {
+		this.interpreter = interpreter;		
 	}
 }

@@ -30,8 +30,7 @@ public class Session implements Runnable {
 
 			String line = user.in.nextLine();
 			GameServer.getInstance().interpreteCommand(user, line);
-//			user.out.println("Echo: " + line);
-			
+
 
 		}
 		

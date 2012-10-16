@@ -11,24 +11,14 @@ public class BaseCommands implements Interprete {
 
 	@Override
 	public void interprete(User user, String command) {
-		commandExit(user, command);
-		commandLook(user, command);
+
+
 		commandSay(user, command);
 	}
 
-	private void commandExit(User user, String command) {
-		if (command.trim().equalsIgnoreCase("exit")) {
-			user.player.currentLocation.creatures.remove(user.player);
-			user.setExitServer(true);
-		}
-	}
+
 	
-	private void commandLook(User user, String command) {
-		if (command.trim().equalsIgnoreCase("look")) {
-			String desc = prepareDescription(user.player.currentLocation);
-			user.out.println(desc);
-		}
-	}
+
 	
 	private void commandSay(User user, String command) {
 		String [] args = command.trim().split(" ");
@@ -43,16 +33,7 @@ public class BaseCommands implements Interprete {
 		}
 	}
 	
-	private String prepareDescription(Location location){
-		String desc = location.getDescription()+"\n";
-		for(Creature creature :location.creatures)
-			desc+= creature.name+", ";
-		desc+="\n";
-		for(String locationPointer :location.locations.keySet())
-			desc+= locationPointer+", ";
-		
-		return desc;
-	}
+
 	
 	
 

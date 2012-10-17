@@ -3,10 +3,14 @@ package pl.edu.agh.megamud;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.edu.agh.megamud.base.Behaviour;
 import pl.edu.agh.megamud.base.Command;
+import pl.edu.agh.megamud.base.Creature;
+import pl.edu.agh.megamud.base.CyclicBehaviour;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.User;
 import pl.edu.agh.megamud.mockdata.MockLocations1;
+import pl.edu.agh.megamud.mockdata.SayinNutsBehaviour;
 
 
 public class GameServer {
@@ -36,6 +40,7 @@ public class GameServer {
 		allUsersLoged.add(user);
 		mockPlayerSetName(user);
 		mockPlayerSetLocation(user);
+		mockSetCreature();
 	}
 	
 	void mockPlayerSetName(User user){
@@ -46,6 +51,19 @@ public class GameServer {
 	void mockPlayerSetLocation(User user){
 		if (user.player!=null)
 			allLocations.get(0).putCreature(user.player);
+	}
+	
+	void mockSetCreature(){
+		Creature creature = new Creature();
+		creature.name = "stwor";
+		allLocations.get(0).putCreature(creature);
+		
+		//Instalowanie samego behaviouru, byc moze bedzeie sie dalo to jakos uproscic
+		CyclicBehaviour beh = new SayinNutsBehaviour();
+		beh.setCyclicDelay(3000L);
+		beh.setOwner(creature);
+		creature.getBehaviourList().add(beh);
+		beh.init(3000L);
 	}
 	
 	public void interpreteCommand(User user, String commandString){

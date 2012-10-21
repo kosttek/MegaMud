@@ -7,5 +7,4 @@ public class NPCController extends Controller {
 	public NPCController(){
 		super();
 	}
-
 }

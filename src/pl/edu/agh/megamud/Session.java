@@ -7,8 +7,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-import pl.edu.agh.megamud.base.Creature;
-import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.PlayerController;
 
 /**

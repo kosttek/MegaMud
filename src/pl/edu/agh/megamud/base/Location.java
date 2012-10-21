@@ -48,13 +48,12 @@ public class Location extends CommandCollector {
 	 * Executed after a creature entered the room. Notifies other creatures and sends the "look" command result.
 	 */
 	public void putCreature(Creature creature){
+		creature.controller.write(prepareLook());
 		creatures.add(creature);
 		
 		for(Creature c:creatures)
 			if(c!=creature)
-				c.controller.write(c.getName()+" przybyl");
-			else
-				c.controller.write(prepareLook());
+				c.controller.onEnter(creature);
 	}
 	
 	/*
@@ -64,7 +63,7 @@ public class Location extends CommandCollector {
 		creatures.remove(creature);
 		for(Creature c:creatures)
 			if(c!=creature)
-				c.controller.write(c.getName()+" odszedl w strone: "+usedExit);
+				c.controller.onLeave(creature,usedExit);
 	}
 	
 	/*
@@ -83,14 +82,13 @@ public class Location extends CommandCollector {
 	 * Result for command "look". Contains location description, all exists and other creatures.
 	 */
 	public final String prepareLook(){
-		String desc = getDescription()+"\n";
+		String desc = "You are in "+getDescription()+".\n";
 		desc+="Possible exits: ";
 		for(String locationPointer : exits.keySet())
 			desc+= locationPointer+", ";
 		desc+="\n";
 		for(Creature creature : creatures)
 			desc+="Here is "+ creature.name+".\n";
-		desc+="\n";
 		
 		return desc;
 	}

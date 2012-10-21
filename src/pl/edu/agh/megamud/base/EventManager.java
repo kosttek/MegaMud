@@ -1,14 +1,12 @@
 /**
 marcinko
 */
-package pl.edu.agh.megamud;
+package pl.edu.agh.megamud.base;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import pl.edu.agh.megamud.base.Behaviour;
 
 public class EventManager extends Thread {
 	private static EventManager instance;
@@ -26,7 +24,9 @@ public class EventManager extends Thread {
 	
 	public void put(Long delay, Behaviour behaviour){
 		Long timeStamp = createTimeStamp(delay);
-		map.put(timeStamp,behaviour);
+		synchronized(map){
+			map.put(timeStamp,behaviour);
+		}
 		notifyWhenTimeIsBefore(timeStamp);
 	}
 	
@@ -53,14 +53,19 @@ public class EventManager extends Thread {
 	}
 	
 	private Long getClosestBehaviourTime(){
-		SortedSet<Long> keys = new TreeSet<Long>(map.keySet());
-		return keys.first();
+		synchronized(map){
+			SortedSet<Long> keys = new TreeSet<Long>(map.keySet());
+			return keys.first();
+		}
 	}
 	
 	@Override
 	public void run() {
 		while(true){
-			Long closestBehaviourTime = getClosestBehaviourTime();
+			Long closestBehaviourTime;
+			synchronized(map){
+				closestBehaviourTime = getClosestBehaviourTime();
+			}
 			if(closestBehaviourTime == null){
 				synchronized(this){
 					try {
@@ -70,9 +75,11 @@ public class EventManager extends Thread {
 					}
 				}
 			}else if(closestBehaviourTime <= System.currentTimeMillis()){
-				Behaviour behaviour = map.get(closestBehaviourTime);
-				behaviour.makeAction();
-				map.remove(closestBehaviourTime);
+				synchronized(map){
+					Behaviour behaviour = map.get(closestBehaviourTime);
+					behaviour.makeAction();
+					map.remove(closestBehaviourTime);
+				}
 			}else{
 				synchronized(this){
 					try {

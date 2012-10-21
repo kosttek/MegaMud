@@ -3,19 +3,28 @@ marcinko
 */
 package pl.edu.agh.megamud.base;
 
-import pl.edu.agh.megamud.EventManager;
 
 /**
  * Abstraction of a "action" that a creature can do.
  **/
 public abstract class Behaviour {
-	protected Agent owner;
+	protected Creature owner;
+	protected long delay;
 	
-	public Behaviour(Agent o){
+	public long getDelay() {
+		return delay;
+	}
+
+	public void setDelay(long delay) {
+		this.delay = delay;
+	}
+
+	public Behaviour(Creature o,long delay){
 		this.owner=o;
+		this.delay=delay;
 	}
 	
-	public Agent getOwner(){
+	public Creature getOwner(){
 		return owner;
 	}
 	/**
@@ -23,14 +32,15 @@ public abstract class Behaviour {
 	 */
 	protected abstract void action();
 	
-	public void init(Long delay){
-		put(delay);
+	public final Behaviour init(){
+		put();
+		return this;
 	}
 	public void makeAction(){
 		action();
 	}
-	public void put(Long delay){
-		EventManager.getInstance().put(delay, this);
+	public final void put(){
+		EventManager.getInstance().put(new Long(delay), this);
 	}
 }
 

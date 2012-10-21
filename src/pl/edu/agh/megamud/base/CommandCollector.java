@@ -21,6 +21,7 @@ public abstract class CommandCollector {
 		knownCommands.put("exit",new CommandExit());
 		knownCommands.put("goto",new CommandGoto());
 		knownCommands.put("help",new CommandHelp());
+		knownCommands.put("info",new CommandInfo());
 		knownCommands.put("login",new CommandLogin());
 		knownCommands.put("look",new CommandLook());
 		knownCommands.put("say",new CommandSay());
@@ -33,7 +34,6 @@ public abstract class CommandCollector {
 	}
 	
 	protected final void removeCommand(String cmd){
-		System.out.println("KILL "+cmd);
 		map.remove(cmd);
 	}
 	
@@ -41,8 +41,6 @@ public abstract class CommandCollector {
 		Command cmd=knownCommands.get(name);
 		if(cmd!=null){
 			map.put(name, cmd);
-			
-			System.out.println("INSTALL "+name);
 		}
 	}
 	

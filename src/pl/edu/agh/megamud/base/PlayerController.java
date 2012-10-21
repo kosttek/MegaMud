@@ -33,24 +33,7 @@ public class PlayerController extends Controller {
 	}
 	
 	public void write(String txt){
-		session.write(txt);
-	}
-	
-	/*
-	 * Method to "interprete" a line from session. Tries to run a command (if there is one).
-	 */
-	public boolean interpreteCommand(String commandString){
-		String cmd=commandString.trim();
-		String[] arr=cmd.split(" ");
-		String firstWord = arr[0];
-		
-		String args2=arr.length>1 ? cmd.substring(firstWord.length()+1) : "";
-		
-		Command cmd2=findCommand(firstWord);
-		if(cmd2!=null && cmd2.interprete(this, args2))
-			return true;
-		write("Unknown command, type help for known commands.");
-		return false;
+		session.write(txt+"\n");
 	}
 	
 	/*
@@ -59,10 +42,14 @@ public class PlayerController extends Controller {
 	 */
 	public void setCreature(Creature creature){
 		super.setCreature(creature);
-		if(creature==null)
+		
+		if(creature==null){
 			addCommand("login");
-		else
+			removeCommand("info");
+		}else{
 			removeCommand("login");
+			addCommand("info");
+		}
 	}
 	
 	/*
@@ -81,10 +68,10 @@ public class PlayerController extends Controller {
 		write(""+otherCreature.getName()+" has left towards "+usedExit);
 	}
 	public void onSay(Creature otherCreature,String message){
-		write(otherCreature+" said: "+message);
+		write(otherCreature.getName()+" said: "+message);
 	}
 	public void onConnect(){
-		write("Greetings!\nType login admin admin to log in!");
+		write("Greetings! Type login admin admin to log in!");
 	}
 	public void onDisconnect(){
 		write("Bye!");

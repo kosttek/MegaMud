@@ -4,13 +4,15 @@ marcinko
 package pl.edu.agh.megamud.base;
 
 public class CyclicBehaviour extends Behaviour {
-	private boolean done;
+	private boolean done=false;
 	private long cyclicDelay;
 	@Override
 	public void makeAction(){
-		action();
-		if(!isDone())
+		System.out.println(this+" "+done);
+		if(!isDone()){
+			action();
 			put(getCyclicDelay());
+		}
 	}
 	public long getCyclicDelay() {
 		return cyclicDelay;
@@ -22,6 +24,7 @@ public class CyclicBehaviour extends Behaviour {
 		return done;
 	}
 	public void setDone(boolean done) {
+		System.out.println(done);
 		this.done = done;
 	}
 }

@@ -43,12 +43,12 @@ public class Location implements InteractiveObject {
 	}
 
 	@Override
-	public CommandsCollection getInterpreter() {
+	public CommandsCollection getCommandCollection() {
 		return interpreter;
 	}
 
 	@Override
-	public void setInterpreter(CommandsCollection interpreter) {
+	public void getCommandCollection(CommandsCollection interpreter) {
 		this.interpreter = interpreter;		
 	}
 }

@@ -3,12 +3,12 @@ package pl.edu.agh.megamud;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.edu.agh.megamud.base.Behaviour;
 import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.CyclicBehaviour;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.User;
+import pl.edu.agh.megamud.mockdata.CommandKick;
 import pl.edu.agh.megamud.mockdata.MockLocations1;
 import pl.edu.agh.megamud.mockdata.SayinNutsBehaviour;
 
@@ -34,13 +34,14 @@ public class GameServer {
 	
 	private void init(){
 		allLocations.addAll(MockLocations1.createLocations());
+		mockSetCreature();
 	}
 	
 	public void initUser(User user){
 		allUsersLoged.add(user);
 		mockPlayerSetName(user);
 		mockPlayerSetLocation(user);
-		mockSetCreature();
+		
 	}
 	
 	void mockPlayerSetName(User user){
@@ -60,10 +61,26 @@ public class GameServer {
 		
 		//Instalowanie samego behaviouru, byc moze bedzeie sie dalo to jakos uproscic
 		CyclicBehaviour beh = new SayinNutsBehaviour();
-		beh.setCyclicDelay(3000L);
+		beh.setCyclicDelay(6000L);
 		beh.setOwner(creature);
 		creature.getBehaviourList().add(beh);
-		beh.init(3000L);
+		beh.init(13000L);
+		
+		creature.getCommandCollection().installCommand(new CommandKick(), creature);
+	
+		
+		Creature creature2 = new Creature();
+		creature2.name = "chochlik";
+		allLocations.get(0).putCreature(creature2);
+		
+		
+		beh = new SayinNutsBehaviour();
+		beh.setCyclicDelay(10000L);
+		beh.setOwner(creature2);
+		creature2.getBehaviourList().add(beh);
+		beh.init(2000L);
+		
+		creature2.getCommandCollection().installCommand(new CommandKick(), creature2);
 	}
 	
 	public void interpreteCommand(User user, String commandString){
@@ -76,12 +93,19 @@ public class GameServer {
 		List<Command> commands = new ArrayList<Command>();
 		//GET ALL KNOWN INTERPETERS TO USER ON THAT MOMENT
 		List<Command> tempCommands;
-		CommandsCollection [] listInter = {user.getInterpreter(),user.player.getInterpreter(),user.player.currentLocation.getInterpreter()};
+		CommandsCollection [] listInter = {user.getCommandCollection(),user.player.getCommandCollection(),user.player.currentLocation.getCommandCollection()};
 		for(CommandsCollection inter : listInter){
 			tempCommands = inter.getCommands(firstWord);
 			if(tempCommands!=null)
 				commands.addAll(tempCommands);
 		}
+		
+		for (Creature creature :user.player.currentLocation.creatures){
+			tempCommands =  creature.getCommandCollection().getCommands(firstWord);
+			if(tempCommands!=null)
+				commands.addAll(tempCommands);
+		}
+		//END
 
 		for(Command command : commands){
 			if(command.interprete(user, commandString)) //INTERPRETE ONLY FOR FIRST FOUND COMMAND

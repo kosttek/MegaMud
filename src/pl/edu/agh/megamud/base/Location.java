@@ -2,53 +2,97 @@ package pl.edu.agh.megamud.base;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import pl.edu.agh.megamud.CommandsCollection;
-
-public class Location implements InteractiveObject {
-	//TODO do zmiany na getery setery
-	CommandsCollection interpreter = new CommandsCollection();
-	public HashMap<String,Location> locations = new HashMap<String,Location>();
-	public ArrayList<Creature> creatures = new ArrayList<Creature>();
+/*
+ * A location in our world.
+ */
+public class Location extends CommandCollector {
+	private HashMap<String,Location> exits = new HashMap<String,Location>();
+	private List<Creature> creatures = new ArrayList<Creature>();
 	private String description;
 	
+	public Location(String description){
+		this.description=description;
+		
+		addCommand("look");
+		addCommand("goto");
+		addCommand("say");
+	}
 	
-	public ArrayList<User> getUsersInThisLocation(){
-		ArrayList<User> users = new ArrayList<User>();
+	public final Map<String,Location> getExits(){
+		return exits;
+	}
+	
+	/*
+	 * Gets all creatures controlled by real players. 
+	 */
+	public final ArrayList<Controller> getUsers(){
+		ArrayList<Controller> users = new ArrayList<Controller>();
 		for(Creature cr : creatures){
-			if(cr.parent != null)
-				users.add(cr.parent);
+			if(cr.controller instanceof PlayerController)
+				users.add(cr.controller);
 		}
 		return users;
 	}
 	
-	public void putCreature(Creature creature){
-		creatures.add(creature);
-		creature.currentLocation = this;
+	/*
+	 * Use this for location initialisation - add an exit.
+	 */
+	public final void addExit(String name,Location loc){
+		exits.put(name, loc);
 	}
 	
-	public void changeCreatureLocation(Creature creature , String where){
-		if(!creatures.contains(creature))
-			return;
+	/*
+	 * Executed after a creature entered the room. Notifies other creatures and sends the "look" command result.
+	 */
+	public void putCreature(Creature creature){
+		creatures.add(creature);
+		
+		for(Creature c:creatures)
+			if(c!=creature)
+				c.controller.write(c.getName()+" przybyl");
+			else
+				c.controller.write(prepareLook());
+	}
+	
+	/*
+	 * Executed after a creature left this room. Notifies other creatures.
+	 */
+	public void removeCreature(Creature creature,String usedExit){
 		creatures.remove(creature);
-		Location newLoc = locations.get(where);
-		newLoc.putCreature(creature);
+		for(Creature c:creatures)
+			if(c!=creature)
+				c.controller.write(c.getName()+" odszedl w strone: "+usedExit);
+	}
+	
+	/*
+	 * Executed after a creature "says" something.
+	 */
+	public void sayCreature(Creature creature,String s){
+		for(Creature c:creatures)
+			c.controller.onSay(creature,s);
 	}
 	
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	
+	/*
+	 * Result for command "look". Contains location description, all exists and other creatures.
+	 */
+	public final String prepareLook(){
+		String desc = getDescription()+"\n";
+		desc+="Possible exits: ";
+		for(String locationPointer : exits.keySet())
+			desc+= locationPointer+", ";
+		desc+="\n";
+		for(Creature creature : creatures)
+			desc+="Here is "+ creature.name+".\n";
+		desc+="\n";
+		
+		return desc;
 	}
 
-	@Override
-	public CommandsCollection getInterpreter() {
-		return interpreter;
-	}
-
-	@Override
-	public void setInterpreter(CommandsCollection interpreter) {
-		this.interpreter = interpreter;		
-	}
 }

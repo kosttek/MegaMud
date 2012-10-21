@@ -12,7 +12,8 @@ import pl.edu.agh.megamud.base.Behaviour;
 
 public class EventManager extends Thread {
 	private static EventManager instance;
-	Map <Long,Behaviour> map = new HashMap<Long, Behaviour>();
+	private Map <Long,Behaviour> map = new HashMap<Long, Behaviour>();
+	
 	private EventManager(){
 		start();
 	}

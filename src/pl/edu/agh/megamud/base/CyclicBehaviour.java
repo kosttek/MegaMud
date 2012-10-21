@@ -3,7 +3,11 @@ marcinko
 */
 package pl.edu.agh.megamud.base;
 
-public class CyclicBehaviour extends Behaviour {
+public abstract class CyclicBehaviour extends Behaviour {
+	public CyclicBehaviour(Agent o) {
+		super(o);
+	}
+	
 	private boolean done;
 	private long cyclicDelay;
 	@Override

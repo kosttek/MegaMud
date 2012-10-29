@@ -7,53 +7,75 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-import pl.edu.agh.megamud.base.Creature;
-import pl.edu.agh.megamud.base.User;
+import pl.edu.agh.megamud.base.PlayerController;
 
+/**
+ * Client session, a running socket.
+ **/
 public class Session implements Runnable {
-	public  Socket incoming = null;
-	public User user;
+	/**
+	 * Real socket.
+	 */
+	public Socket socket;
+	/**
+	 * Game controller.
+	 */
+	public PlayerController user;
+	/*
+	 * Streams.
+	 */
+	private Scanner in;
+	private PrintWriter out;
 	
-	public Session(Socket sock) {
-		incoming = sock;
+	public Session(Socket socket) throws IOException {
+		this.socket = socket;
+		user=new PlayerController(this);
+		
+		InputStream inps = socket.getInputStream();
+		OutputStream outs = socket.getOutputStream();
+
+		in = new Scanner(inps);
+		out = new PrintWriter(outs, true);
 	}
 	
-	@Override
+	/* Running is like:
+	 * - read user's input
+	 * - process it
+	 */
+	
 	public void run() {
 		try {
-		
-		initUser();
-		user.out.println("Server running...");
-		
-		while (!user.isExitServer() && user.in.hasNextLine()) {
-
-
-			String line = user.in.nextLine();
-			GameServer.getInstance().interpreteCommand(user, line);
-
-
+			user.onConnect();
+			
+			while (!user.isReadyToDisconnect() && in.hasNextLine()) {
+				String line = in.nextLine();
+				try{
+					user.interpreteCommand(line);
+				}catch(Exception e2){
+					//TODO notify user
+					e2.printStackTrace();
+				}
+			}
+			
+			user.onDisconnect();
+		} finally{
+			try{
+				socket.close();
+			}catch(Exception e2){}
+			socket= null;
 		}
-		
-		
-			incoming.close();
-			incoming = null;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 	}
 	
-	private void initUser() throws IOException{
-		user = new User();
-		InputStream inps = incoming.getInputStream();
-		OutputStream outs = incoming.getOutputStream();
-
-		Scanner in = new Scanner(inps);
-		PrintWriter out = new PrintWriter(outs, true);
-		user.in = in;
-		user.out = out;
-		
-		GameServer.getInstance().initUser(user);
+	/*
+	 * Don't use this, use instead PlayerController.write().
+	 */
+	public void write(String txt){
+		try{
+			out.println(txt);
+		}catch(Exception e){
+			//TODO kill connection
+			e.printStackTrace();
+		}
 	}
 	
 }

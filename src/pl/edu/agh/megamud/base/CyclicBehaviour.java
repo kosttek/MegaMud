@@ -3,28 +3,22 @@ marcinko
 */
 package pl.edu.agh.megamud.base;
 
-public class CyclicBehaviour extends Behaviour {
-	private boolean done=false;
-	private long cyclicDelay;
-	@Override
+public abstract class CyclicBehaviour extends Behaviour {
+	public CyclicBehaviour(Creature o,long delay) {
+		super(o,delay);
+	}
+	
+	private boolean done;
+	
 	public void makeAction(){
-		System.out.println(this+" "+done);
-		if(!isDone()){
-			action();
-			put(getCyclicDelay());
-		}
-	}
-	public long getCyclicDelay() {
-		return cyclicDelay;
-	}
-	public void setCyclicDelay(long cyclicDelay) {
-		this.cyclicDelay = cyclicDelay;
+		action();
+		if(!isDone())
+			put();
 	}
 	public boolean isDone() {
 		return done;
 	}
 	public void setDone(boolean done) {
-		System.out.println(done);
 		this.done = done;
 	}
 }

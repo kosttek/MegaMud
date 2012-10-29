@@ -3,12 +3,15 @@ package pl.edu.agh.megamud.module;
 import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Controller;
 
-public class CommandExit implements Command {
+public class CommandHelp implements Command {
 	public String getName(){
-		return "exit";
+		return "help";
 	}
 	public boolean interprete(Controller user, String command) {
-		user.disconnect();
+		String out="Known commands:";
+		for(Command cmd : user.getAllCommands())
+			out+=" <"+cmd.getName()+">";
+		user.write(out);
 		return true;
 	}
 

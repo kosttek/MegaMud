@@ -31,11 +31,7 @@ public class TelnetServer {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-				
 			
-
-			
-
 			try {
 				s.close();
 				s = null;

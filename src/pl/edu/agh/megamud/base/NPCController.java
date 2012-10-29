@@ -1,7 +1,7 @@
 package pl.edu.agh.megamud.base;
 
 /**
- * User connected to server.
+ * A NPC inside the game.
  **/
 public class NPCController extends Controller {	
 	public NPCController(){

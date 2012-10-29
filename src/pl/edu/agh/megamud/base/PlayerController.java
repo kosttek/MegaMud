@@ -1,6 +1,5 @@
 package pl.edu.agh.megamud.base;
 
-
 import pl.edu.agh.megamud.Session;
 import pl.edu.agh.megamud.mockdata.MockCommands1;
 
@@ -72,7 +71,7 @@ public class PlayerController extends Controller {
 		write(otherCreature.getName()+" said: "+message);
 	}
 	public void onConnect(){
-		write("Greetings! Type login admin admin to log in!");
+		write("Greetings! Type \"login admin admin\" to log in!");
 	}
 	public void onDisconnect(){
 		write("Bye!");

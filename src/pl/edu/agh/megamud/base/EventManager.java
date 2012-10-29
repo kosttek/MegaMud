@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/*
+ * Class used for delayed execution of behaviours.
+ */
 public class EventManager extends Thread {
 	private static EventManager instance;
 	private Map <Long,Behaviour> map = new HashMap<Long, Behaviour>();
@@ -22,6 +25,9 @@ public class EventManager extends Thread {
 		return instance;
 	}
 	
+	/*
+	 * Store a dehaviour for an execution.
+	 */
 	public void put(Long delay, Behaviour behaviour){
 		Long timeStamp = createTimeStamp(delay);
 		synchronized(map){

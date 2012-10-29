@@ -3,13 +3,8 @@ package pl.edu.agh.megamud.base;
 import java.util.Map;
 
 /*
- * A temporary modifier to creature's attributes.
- * Works like that:
- * - creature has basic attributes/stats
- * - creature gets a modifier, in a fight or as a result of an item
- * - everytime attributes are needed (= nearly always), a modifier can modify temporary stats of a creature
- * - it can eventually self destruct (if for example it is a 30sec modifier)
- * Examples: an apple can give +5 strength for 5 minutes.
+ * This class implements a most simple Modifier that can be used. It changes a specified creature's attribute by adding/removing points. E.g. POWER +5.
+ * After a specified time, the modifier will wear off.
  */
 public class SimpleModifier implements Modifier{
 	private Creature creature;
@@ -18,14 +13,15 @@ public class SimpleModifier implements Modifier{
 	private long diff;
 	private Behaviour beh=null;
 	
+	/*
+	 * We need this to wear the modifiers effect of after some time.
+	 */
 	private class SelfDestructBehaviour extends Behaviour{
 		public SelfDestructBehaviour(Creature o, long delay) {
 			super(o, delay);
-			System.out.println("!!!!");
 		}
 
 		protected void action(){
-			System.out.println("action");
 			Creature creature=(Creature)getOwner();
 			creature.removeModifier(SimpleModifier.this);
 		}
@@ -56,6 +52,9 @@ public class SimpleModifier implements Modifier{
 		return name;
 	}
 	
+	/*
+	 * @todo What if there is no such attribute?
+	 */
 	public boolean modify(Creature c,Map<String,Long> attrs){
 		if(attrs.containsKey(stat)){
 			Long l=attrs.get(stat);

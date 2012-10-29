@@ -38,5 +38,4 @@ public class CommandLogin implements Command {
 		}
 		return true;
 	}
-
 }

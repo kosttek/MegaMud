@@ -7,7 +7,7 @@ import pl.edu.agh.megamud.GameServer;
 
 
 /**
- * Abstraction of a "controller" of a creature.
+ * Abstraction of a "controller" of a creature. Controler is a brain for a creature. Receives various events, can control creature's behaviour and initiates commands.
  **/
 public abstract class Controller extends CommandCollector{
 	/*
@@ -32,7 +32,7 @@ public abstract class Controller extends CommandCollector{
 	}
 	
 	/*
-	 * Method to "interprete" a command. Use it instead of browsing other classes' sources.
+	 * Method to run a command. Provide a command line from user.
 	 */
 	public boolean interpreteCommand(String commandString){
 		String cmd=commandString.trim();
@@ -43,7 +43,10 @@ public abstract class Controller extends CommandCollector{
 		
 		return interpreteCommand(firstWord,args2);
 	}
-	
+	/*
+	 * Method to run a command. Provide a command name and arguments. Use this even in NPC class, since due to modular nature of MegaMUD some commands may not be available to user at a specific moment, or other commands may be more appriopriate than default ones.
+	 * @return true, if any actual command was run.
+	 */
 	public boolean interpreteCommand(String cmd,String args){
 		List<Command> cmd2=findCommands(cmd);
 		if(cmd2!=null)

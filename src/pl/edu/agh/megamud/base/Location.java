@@ -8,7 +8,7 @@ import java.util.Map;
 import pl.edu.agh.megamud.mockdata.MockCommands1;
 
 /*
- * A location in our world.
+ * A location in our world. Location has its description, exits and creatures inside.
  */
 public class Location extends CommandCollector {
 	private HashMap<String,Location> exits = new HashMap<String,Location>();

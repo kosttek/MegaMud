@@ -2,7 +2,6 @@ package pl.edu.agh.megamud.mockdata;
 
 import pl.edu.agh.megamud.GameServer;
 import pl.edu.agh.megamud.base.Creature;
-import pl.edu.agh.megamud.base.EventManager;
 import pl.edu.agh.megamud.base.NPCController;
 import pl.edu.agh.megamud.base.SimpleModifier;
 

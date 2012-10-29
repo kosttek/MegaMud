@@ -1,11 +1,11 @@
 package pl.edu.agh.megamud.tests.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import junit.framework.Assert;
 
@@ -13,14 +13,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import pl.edu.agh.megamud.base.DbManager;
 import pl.edu.agh.megamud.dao.Account;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -35,11 +31,12 @@ public class AccountTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		connectionSource = new JdbcConnectionSource(databaseUrl);
-		accountDao = DaoManager.createDao(connectionSource, Account.class);
-
-		TableUtils.createTableIfNotExists(connectionSource, Account.class);
+		DbManager.setDbPath(databaseUrl);
+		connectionSource = DbManager.getConnectionSource();
+		DbManager.init();
 		TableUtils.clearTable(connectionSource, Account.class);
+
+		accountDao = Account.createDao();
 		
 		String predefinedLogin = AccountTest.predefinedLogin;
 		String password = AccountTest.predefinedPassword;
@@ -58,15 +55,11 @@ public class AccountTest {
 	@Test
 	public void should_create_new_account() {
 		try {
-			String newLogin = "newLogin";
+			String login = "newLogin";
 			String password = "_secret";
-			Account account = new Account();
-			account.setLogin(newLogin);
-			account.setPassword(password);
-
-			accountDao.create(account);
+			Account.registerNewAccount(login, password);
 	
-			Account account2 = accountDao.queryForId(newLogin);
+			Account account2 = Account.getByLogin(login);
 			Assert.assertEquals(password, account2.getPassword());
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -85,33 +78,23 @@ public class AccountTest {
 	
 	@Test
 	public void should_get_account_by_login_and_password(){
-		try {
-			PreparedQuery<Account> preparedQuery = accountDao.queryBuilder()
-					.where().eq("login", predefinedLogin)
-					.and().eq("password", predefinedPassword)
-					.prepare();
-			List<Account> accounts = accountDao.query(preparedQuery);
-			
-			assertEquals(1, accounts.size());
-		} catch (SQLException e){
-			e.printStackTrace();
-			fail("SQLException");
-		}
+		Account account = Account.getByLoginAndPassword(predefinedLogin, predefinedPassword);
+		assertFalse(account == null);
+		assertEquals(predefinedLogin, account.getLogin());
 	}
 	
 	@Test
-	public void should_return_empty_list_for_invalid_password(){
-		try {
-			PreparedQuery<Account> preparedQuery = accountDao.queryBuilder()
-					.where().eq("login", predefinedLogin)
-					.and().eq("password", "invalid_password")
-					.prepare();
-			List<Account> accounts = accountDao.query(preparedQuery);
-			
-			assertEquals(0, accounts.size());
-		} catch (SQLException e){
-			e.printStackTrace();
-			fail("SQLException");
-		}
+	public void should_return_null_for_invalid_password(){
+		assertEquals(null, Account.getByLoginAndPassword(predefinedLogin, "invalid_password"));
+	}
+	
+	@Test
+	public void should_find_existing_account(){
+		assertTrue(Account.isRegistered(predefinedLogin));
+	}
+	
+	@Test
+	public void should_not_find_not_existing_account(){
+		assertFalse(Account.isRegistered("fakeAccount"));
 	}
 }

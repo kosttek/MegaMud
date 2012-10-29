@@ -2,6 +2,7 @@ package pl.edu.agh.megamud.base;
 
 
 import pl.edu.agh.megamud.Session;
+import pl.edu.agh.megamud.mockdata.MockCommands1;
 
 /**
  * User connected to server.
@@ -24,12 +25,12 @@ public class PlayerController extends Controller {
 	public PlayerController(Session session){
 		super();
 		this.session=session;
+
+		addCommand(MockCommands1.getBasicCommand("login"));
+		addCommand(MockCommands1.getBasicCommand("exit"));
+		addCommand(MockCommands1.getBasicCommand("help"));
 		
-		addCommand("login");
-		addCommand("exit");
-		addCommand("help");
-		
-		addCommand("kill");
+		addCommand(MockCommands1.getBasicCommand("kill"));
 	}
 	
 	public void write(String txt){
@@ -44,11 +45,11 @@ public class PlayerController extends Controller {
 		super.setCreature(creature);
 		
 		if(creature==null){
-			addCommand("login");
-			removeCommand("info");
+			addCommand(MockCommands1.getBasicCommand("login"));
+			removeCommand(MockCommands1.getBasicCommand("info"));
 		}else{
-			removeCommand("login");
-			addCommand("info");
+			addCommand(MockCommands1.getBasicCommand("info"));
+			removeCommand(MockCommands1.getBasicCommand("login"));
 		}
 	}
 	

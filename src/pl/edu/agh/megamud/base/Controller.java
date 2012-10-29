@@ -1,5 +1,8 @@
 package pl.edu.agh.megamud.base;
 
+import java.util.Iterator;
+import java.util.List;
+
 import pl.edu.agh.megamud.GameServer;
 
 
@@ -42,9 +45,13 @@ public abstract class Controller extends CommandCollector{
 	}
 	
 	public boolean interpreteCommand(String cmd,String args){
-		Command cmd2=findCommand(cmd);
-		if(cmd2!=null && cmd2.interprete(this, args))
-			return true;
+		List<Command> cmd2=findCommands(cmd);
+		if(cmd2!=null)
+			for(Iterator<Command> i=cmd2.iterator();i.hasNext();){
+				Command c=i.next();
+				if(c.interprete(this, args))
+					return true;
+			}
 		write("Unknown command, type help for known commands.");
 		return false;
 	}

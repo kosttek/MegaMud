@@ -69,13 +69,13 @@ public class Creature extends CommandCollector{
 		this.controller=controller;
 		controller.setCreature(this);
 		
-		for(String cmd:getAllCommands().keySet()){
+		for(Command cmd:getAllCommands()){
 			controller.addCommand(cmd);
 		}
 	}
 	public void disconnect(){
-		for(String key:getAllCommands().keySet()){
-			controller.removeCommand(key);
+		for(Command cmd:getAllCommands()){
+			controller.removeCommand(cmd);
 		}
 		this.controller=null;
 	}
@@ -86,9 +86,9 @@ public class Creature extends CommandCollector{
 	
 	public final void setLocation(Location exit,String exitName){
 		if(location!=null){
-			for(String key:location.getAllCommands().keySet()){
-				removeCommand(key);
-				controller.removeCommand(key);
+			for(Command cmd:location.getAllCommands()){
+				removeCommand(cmd);
+				controller.removeCommand(cmd);
 			}
 			
 			location.removeCreature(this,exitName);
@@ -97,7 +97,7 @@ public class Creature extends CommandCollector{
 		location=exit;
 		
 		if(exit!=null){
-			for(String cmd:exit.getAllCommands().keySet()){
+			for(Command cmd:location.getAllCommands()){
 				addCommand(cmd);
 				controller.addCommand(cmd);
 			}

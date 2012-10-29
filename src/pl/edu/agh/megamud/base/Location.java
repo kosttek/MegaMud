@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pl.edu.agh.megamud.mockdata.MockCommands1;
+
 /*
  * A location in our world.
  */
@@ -16,9 +18,9 @@ public class Location extends CommandCollector {
 	public Location(String description){
 		this.description=description;
 		
-		addCommand("look");
-		addCommand("goto");
-		addCommand("say");
+		addCommand(MockCommands1.getBasicCommand("look"));
+		addCommand(MockCommands1.getBasicCommand("goto"));
+		addCommand(MockCommands1.getBasicCommand("say"));
 	}
 	
 	public final Map<String,Location> getExits(){

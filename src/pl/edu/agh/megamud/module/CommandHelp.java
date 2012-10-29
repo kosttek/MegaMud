@@ -9,8 +9,8 @@ public class CommandHelp implements Command {
 	}
 	public boolean interprete(Controller user, String command) {
 		String out="Known commands:";
-		for(String cmd : user.getAllCommands().keySet())
-			out+=" "+cmd;
+		for(Command cmd : user.getAllCommands())
+			out+=" <"+cmd.getName()+">";
 		user.write(out);
 		return true;
 	}

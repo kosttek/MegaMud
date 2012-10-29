@@ -33,7 +33,7 @@ public class PlayerController extends Controller {
 	}
 	
 	public void write(String txt){
-		session.write(txt+"\n");
+		session.write(txt+"\r\n");
 	}
 	
 	/*

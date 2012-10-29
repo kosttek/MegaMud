@@ -15,13 +15,13 @@ public class CommandInfo implements Command {
 		if(user.getCreature()==null)
 			return false;
 		Creature c=user.getCreature();
-		String s="You are a "+c.getPropClass()+" LV"+c.getLevel()+" (exp:"+c.getExp()+"/"+c.getExpNeeded()+") HP"+c.getHp()+"\n";
+		String s="You are a "+c.getPropClass()+" LV"+c.getLevel()+" (exp:"+c.getExp()+"/"+c.getExpNeeded()+") HP"+c.getHp()+"\r\n";
 		for(Iterator<String> i=c.getPropAttributes().keySet().iterator();i.hasNext();){
 			String t=i.next();
 			Long v=c.getPropAttributes().get(t);
 			s+=""+t+":"+v.longValue()+" ";
 		}
-		s+="\n";
+		s+="\r\n";
 		user.write(s);
 		return true;
 	}

@@ -84,13 +84,13 @@ public class Location extends CommandCollector {
 	 * Result for command "look". Contains location description, all exists and other creatures.
 	 */
 	public final String prepareLook(){
-		String desc = "You are in "+getDescription()+".\n";
+		String desc = "You are in "+getDescription()+".\r\n";
 		desc+="Possible exits: ";
 		for(String locationPointer : exits.keySet())
 			desc+= locationPointer+", ";
-		desc+="\n";
+		desc+="\r\n";
 		for(Creature creature : creatures)
-			desc+="Here is "+ creature.name+".\n";
+			desc+="Here is "+ creature.name+".\r\n";
 		
 		return desc;
 	}

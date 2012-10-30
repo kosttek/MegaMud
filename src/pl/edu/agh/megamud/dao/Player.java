@@ -41,7 +41,7 @@ public class Player extends PlayerBase {
 			PreparedQuery<Player> preparedQuery;
 			preparedQuery = accountDao.queryBuilder()
 					.where().eq("login", login)
-					.and().eq("passwordMd5", hashPassword(password))
+					.and().eq("password_md5", hashPassword(password))
 					.prepare();
 			List<Player> accounts = accountDao.query(preparedQuery);
 			if (accounts.size() == 1){

@@ -17,9 +17,6 @@ public abstract class PlayerBase{
     @DatabaseField(id = true)
     private String login;    
     
-    @DatabaseField(canBeNull = false)
-    private String passwordMd5;
-
 	public String getLogin() {
 		return login;
 	}
@@ -28,14 +25,28 @@ public abstract class PlayerBase{
 		this.login = login;
 	}
 
+	@DatabaseField(canBeNull = false)
+	private String password_md5;
+
 	public String getPasswordMd5() {
-		return this.passwordMd5;
+		return this.password_md5;
 	}
 
 	protected void setPasswordMd5(String passwordMd5) {
-		this.passwordMd5 = passwordMd5;
+		this.password_md5 = passwordMd5;
 	}
 
+    @DatabaseField(canBeNull = false, defaultValue = "0")
+    private Integer priviledges;
+
+	public Integer getPriviledges() {
+		return priviledges;
+	}
+
+	public void setPriviledges(Integer priviledges) {
+		this.priviledges = priviledges;
+	}	
+	
 	public PlayerBase() {
     	// all persisted classes must define a no-arg constructor with at least package visibility
     }

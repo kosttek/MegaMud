@@ -71,7 +71,7 @@ public class PlayerController extends Controller {
 		write(otherCreature.getName()+" said: "+message);
 	}
 	public void onConnect(){
-		write("Greetings! Type \"login admin admin\" to log in!");
+		write("Greetings! Type \"login username password\" to register or log in!");
 	}
 	public void onDisconnect(){
 		write("Bye!");

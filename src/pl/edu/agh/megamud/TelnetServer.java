@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import pl.edu.agh.megamud.base.DbManager;
+
 public class TelnetServer {
 
 	public static ServerSocket s = null;
@@ -15,6 +17,7 @@ public class TelnetServer {
 
 	public static void main(String[] args) {
 		ExecutorService executor = Executors.newCachedThreadPool();
+		DbManager.init();
 		while (true) {
 			
 			try {

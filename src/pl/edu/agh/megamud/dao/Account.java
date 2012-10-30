@@ -54,11 +54,12 @@ public class Account extends AccountBase {
 		return null;
 	}
 	
-	public static void registerNewAccount(String login, String password) throws SQLException{
+	public static Account registerNewAccount(String login, String password) throws SQLException{
 		Account account = new Account();
 		account.setLogin(login);
 		account.setPassword(password);
 
-		createDao().create(account);	
+		createDao().create(account);
+		return account;
 	}
 }

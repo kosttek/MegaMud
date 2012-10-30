@@ -33,7 +33,7 @@ public class DbManager {
 	
 	public static void init(){
 		try {
-			TableUtils.createTableIfNotExists(connectionSource, Account.class);
+			TableUtils.createTableIfNotExists(getConnectionSource(), Account.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

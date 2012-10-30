@@ -7,14 +7,14 @@ import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Location;
-import pl.edu.agh.megamud.dao.Account;
+import pl.edu.agh.megamud.dao.Player;
 
 public class CommandLogin implements Command {
 	public String getName(){
 		return "login";
 	}
 	
-	private Account account = null;
+	private Player account = null;
 	private Controller user = null;
 	
 	public boolean interprete(Controller user, String command) {
@@ -30,7 +30,7 @@ public class CommandLogin implements Command {
 		String login=args[0];
 		String pass=args[1];
 		
-		if (Account.isRegistered(login)){
+		if (Player.isRegistered(login)){
 			tryToLogin(login, pass);
 		} else {
 			registerNewAccount(login, pass);
@@ -39,7 +39,7 @@ public class CommandLogin implements Command {
 	}
 	
 	private void tryToLogin(String login, String password){
-		account = Account.getByLoginAndPassword(login, password);
+		account = Player.getByLoginAndPassword(login, password);
 		if (account != null) {
 			user.write("Login successfull!");
 			handleSucessfulAuthentication(user);
@@ -50,7 +50,7 @@ public class CommandLogin implements Command {
 	
 	private void registerNewAccount(String login, String password){
 		try {
-			account = Account.registerNewAccount(login, password);
+			account = Player.registerNewAccount(login, password);
 			user.write("New account registered.");
 			handleSucessfulAuthentication(user);
 		} catch (SQLException e) {

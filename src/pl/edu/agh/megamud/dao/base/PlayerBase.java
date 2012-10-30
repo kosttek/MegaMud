@@ -1,22 +1,24 @@
 package pl.edu.agh.megamud.dao.base;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import pl.edu.agh.megamud.base.DbManager;
-import pl.edu.agh.megamud.dao.Account;
+import pl.edu.agh.megamud.dao.Player;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "account")
-public abstract class AccountBase{
+@DatabaseTable(tableName = "player")
+public abstract class PlayerBase{
     @DatabaseField(id = true)
     private String login;    
     
     @DatabaseField(canBeNull = false)
-    private String password;
+    private String passwordMd5;
 
 	public String getLogin() {
 		return login;
@@ -26,21 +28,21 @@ public abstract class AccountBase{
 		this.login = login;
 	}
 
-	public String getPassword() {
-		return this.password;
+	public String getPasswordMd5() {
+		return this.passwordMd5;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	protected void setPasswordMd5(String passwordMd5) {
+		this.passwordMd5 = passwordMd5;
 	}
 
-	public AccountBase() {
+	public PlayerBase() {
     	// all persisted classes must define a no-arg constructor with at least package visibility
     }
     
-	public static Dao<Account,String> createDao(){
+	public static Dao<Player,String> createDao(){
 		try {
-			return DaoManager.createDao(DbManager.getConnectionSource(), Account.class);
+			return DaoManager.createDao(DbManager.getConnectionSource(), Player.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -7,7 +7,7 @@ package pl.edu.agh.megamud.base;
  * A behaviour run cyclicly - every specified time.
  */
 public abstract class CyclicBehaviour extends Behaviour {
-	public CyclicBehaviour(Creature o,long delay) {
+	public CyclicBehaviour(Object o,long delay) {
 		super(o,delay);
 	}
 	

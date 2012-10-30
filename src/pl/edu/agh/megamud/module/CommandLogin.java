@@ -60,11 +60,16 @@ public class CommandLogin implements Command {
 		}		
 	}
 	
+	/**
+	 * @todo A command to choose a creature to play with.
+	 * @todo Grab a creature data from database, its items etc.
+	 */
 	private void handleSucessfulAuthentication(Controller user){
 		Location loc=GameServer.getInstance().getLocations().get(0);
 		Creature c=new Creature(account.getLogin());
 		c.connect(user);
 		c.setLocation(loc,null);
-	}
 
+		GameServer.getInstance().initCreature(c);
+	}
 }

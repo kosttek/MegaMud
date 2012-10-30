@@ -19,6 +19,9 @@ public class MockCommands1 {
 		basicCommands.put("kill",new CommandKill());
 		basicCommands.put("login",new CommandLogin());
 		basicCommands.put("look",new CommandLook());
+		basicCommands.put("take",new CommandTake());
+		basicCommands.put("give",new CommandGive());
+		basicCommands.put("drop",new CommandDrop());
 		basicCommands.put("say",new CommandSay());
 	}
 	public final static Command getBasicCommand(String x){

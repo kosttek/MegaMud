@@ -1,23 +1,22 @@
 package pl.edu.agh.megamud;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.Controller;
-import pl.edu.agh.megamud.base.NPCController;
 import pl.edu.agh.megamud.mockdata.MockLocations1;
 import pl.edu.agh.megamud.mockdata.MockNPCs1;
-import pl.edu.agh.megamud.mockdata.SayinNutsBehaviour;
 
 public class GameServer {
 	private static GameServer gameServer=null;
 	//TODO it could be not important to have allLocations in GameServer
 	//maybe could be something else like map <id, Location>
-	private ArrayList<Location> allLocations = new ArrayList<Location>();
-	private ArrayList<Controller> allUsersLogged = new ArrayList<Controller>();
+	private List<Location> allLocations = new LinkedList<Location>();
+	private List<Controller> allUsersLogged = new LinkedList<Controller>();
 	
-	public ArrayList<Location> getLocations(){
+	public List<Location> getLocations(){
 		return allLocations;
 	}
 	
@@ -43,12 +42,13 @@ public class GameServer {
 	}
 	
 	public void initCreature(Creature c){
-		c.setPropClass("student");
+		c.setKlass("student");
 		c.setHp(100);
+		c.setMaxHp(150);
 		c.setLevel(22);
 		c.setExp(0);
 		c.setExpNeeded(1337);
-		c.getPropAttributes().put("power", 20000L);
+		c.getPropAttributes().put("POWER", 20000L);
 	}
 	
 	public void killUser(Controller user){

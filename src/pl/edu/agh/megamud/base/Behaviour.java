@@ -8,11 +8,11 @@ package pl.edu.agh.megamud.base;
  * Abstraction of a "action" that a creature can do.
  **/
 public abstract class Behaviour {
-	/*
+	/**
 	 * An owner of this behaviour. Behaviour will work on this creature.
 	 */
-	protected Creature owner;
-	/*
+	protected Object owner;
+	/**
 	 * Delay after which behaviour will run.
 	 */
 	protected long delay;
@@ -25,12 +25,12 @@ public abstract class Behaviour {
 		this.delay = delay;
 	}
 
-	public Behaviour(Creature o,long delay){
+	public Behaviour(Object o,long delay){
 		this.owner=o;
 		this.delay=delay;
 	}
 	
-	public Creature getOwner(){
+	public Object getOwner(){
 		return owner;
 	}
 	/**
@@ -38,20 +38,20 @@ public abstract class Behaviour {
 	 */
 	protected abstract void action();
 	
-	/*
+	/**
 	 * Initialize a behaviour.
 	 */
 	public final Behaviour init(){
 		put();
 		return this;
 	}
-	/*
+	/**
 	 * Use this to call an action on a behaviour.
 	 */
 	public void makeAction(){
 		action();
 	}
-	/*
+	/**
 	 * Use this in lower classes to (re-)initialize a behaviour.
 	 */
 	protected final void put(){

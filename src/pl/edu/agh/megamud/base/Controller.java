@@ -3,14 +3,12 @@ package pl.edu.agh.megamud.base;
 import java.util.Iterator;
 import java.util.List;
 
-import pl.edu.agh.megamud.GameServer;
-
 
 /**
  * Abstraction of a "controller" of a creature. Controler is a brain for a creature. Receives various events, can control creature's behaviour and initiates commands.
  **/
 public abstract class Controller extends CommandCollector{
-	/*
+	/**
 	 * Our creature. Placed after log-in (if real player) or after controller creation (if NPC).
 	 */
 	protected Creature creature=null;
@@ -24,14 +22,13 @@ public abstract class Controller extends CommandCollector{
 	
 	public void setCreature(Creature creature){
 		this.creature=creature;
-		GameServer.getInstance().initCreature(creature);
 	}
 	
 	public void disconnect(){
 		creature.setLocation(null,null);
 	}
 	
-	/*
+	/**
 	 * Method to run a command. Provide a command line from user.
 	 */
 	public boolean interpreteCommand(String commandString){
@@ -43,7 +40,8 @@ public abstract class Controller extends CommandCollector{
 		
 		return interpreteCommand(firstWord,args2);
 	}
-	/*
+	
+	/**
 	 * Method to run a command. Provide a command name and arguments. Use this even in NPC class, since due to modular nature of MegaMUD some commands may not be available to user at a specific moment, or other commands may be more appriopriate than default ones.
 	 * @return true, if any actual command was run.
 	 */
@@ -59,15 +57,26 @@ public abstract class Controller extends CommandCollector{
 		return false;
 	}
 	
-	
-	
-	/*
+	/**
 	 * Use this to send a message to controller.
 	 */
 	public void write(String txt){}
 	
-	/* In-location events.*/
+	/** In-location events.*/
 	public void onEnter(Creature otherCreature){}
 	public void onLeave(Creature otherCreature,String usedExit){}
-	public void onSay(Creature otherCreature,String message){}
+	public void onSayInLocation(Creature otherCreature,String message){}
+	/**
+	 * Abstract event for all item dis/appearances:
+	 * - item magically appeared in a location or creature's inventory;
+	 * -                disappeared                                   ;
+	 * - a creature gave an item to other creature (especially: _we_ gave (from), or _we_ were given (to));
+	 * - someone dropped an item (to=Location);
+	 * - someone picked an item (from=Location).
+	 * Here we will get notifications from the Location.
+	 */
+	public void onItemTransfer(ItemHolder from,ItemHolder to,Item item){}
+	/** Inherited from ItemHolder. */
+	public void onItemAppear(Item i,ItemHolder from){}
+	public void onItemDisappear(Item i,ItemHolder to){}
 }

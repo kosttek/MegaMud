@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /*
- * Collection of commands. Hosted in a map (string => list<commands>) - commands with the same name. 
+ * Object capable of collecting and managing commands. Hosted in a map (string => list<commands>) - commands with the same name. 
  */
-public abstract class CommandCollector {
+public abstract class CommandCollector extends ItemHolder {
 	private Map<String,List<Command>> map = new HashMap<String, List<Command>>();
 	/*
 	 * Gets all commands with specified name.

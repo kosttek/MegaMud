@@ -11,7 +11,7 @@ public class CommandSay implements Command {
 		if(user.getCreature()==null)
 			return false;
 		String outString=command;
-		user.getCreature().getLocation().sayCreature(user.getCreature(), outString);
+		user.getCreature().getLocation().onCreatureSay(user.getCreature(), outString);
 		return true;
 	}
 

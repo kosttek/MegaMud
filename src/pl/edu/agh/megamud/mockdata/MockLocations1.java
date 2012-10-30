@@ -1,11 +1,14 @@
 package pl.edu.agh.megamud.mockdata;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
+import pl.edu.agh.megamud.base.CyclicBehaviour;
 import pl.edu.agh.megamud.base.Location;
+import pl.edu.agh.megamud.base.SimpleItem;
 
 public class MockLocations1 {
-	public static ArrayList<Location> createLocations(){
+	public static List<Location> createLocations(){
 		Location loc1 = new Location("pokoj 1");
 		Location loc2 = new Location("pokoj 2");
 		Location loc3 = new Location("pokoj 3");
@@ -15,10 +18,22 @@ public class MockLocations1 {
 		loc2.addExit("schody", loc3);
 		loc3.addExit("schody", loc2);
 		
-		ArrayList<Location> result= new ArrayList<Location>();
+		List<Location> result= new LinkedList<Location>();
 		result.add(loc1);
 		result.add(loc2);
 		result.add(loc3);
+		
+		new CyclicBehaviour(loc2,1000L){
+			protected void action() {
+				Location c=(Location)owner;
+				
+				if(c.getItems().containsKey("apple"))
+					return;
+				
+				SimpleItem it=new SimpleItem("apple","Precious, golden apple.");
+				it.giveTo(c);
+			}
+		}.init();
 		
 		return result;
 	}

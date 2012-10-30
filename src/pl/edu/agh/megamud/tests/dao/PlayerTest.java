@@ -1,9 +1,6 @@
 package pl.edu.agh.megamud.tests.dao;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.sql.SQLException;
 
@@ -14,17 +11,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pl.edu.agh.megamud.base.DbManager;
-import pl.edu.agh.megamud.dao.Account;
+import pl.edu.agh.megamud.dao.Player;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-public class AccountTest {
+public class PlayerTest {
 
 	private static ConnectionSource connectionSource;
 	private static String databaseUrl = "jdbc:sqlite:db/test.db";
-	private static Dao<Account,String> accountDao;
+	private static Dao<Player,String> accountDao;
 	
 	private static String predefinedLogin = "predefinedLogin";
 	private static String predefinedPassword = "predefinedPassword";
@@ -34,13 +31,13 @@ public class AccountTest {
 		DbManager.setDbPath(databaseUrl);
 		connectionSource = DbManager.getConnectionSource();
 		DbManager.init();
-		TableUtils.clearTable(connectionSource, Account.class);
+		TableUtils.clearTable(connectionSource, Player.class);
 
-		accountDao = Account.createDao();
+		accountDao = Player.createDao();
 		
-		String predefinedLogin = AccountTest.predefinedLogin;
-		String password = AccountTest.predefinedPassword;
-		Account predefinedAccount = new Account();
+		String predefinedLogin = PlayerTest.predefinedLogin;
+		String password = PlayerTest.predefinedPassword;
+		Player predefinedAccount = new Player();
 		predefinedAccount.setLogin(predefinedLogin);
 		predefinedAccount.setPassword(password);
 
@@ -57,10 +54,10 @@ public class AccountTest {
 		try {
 			String login = "newLogin";
 			String password = "_secret";
-			Account.registerNewAccount(login, password);
+			Player.registerNewAccount(login, password);
 	
-			Account account2 = Account.getByLogin(login);
-			Assert.assertEquals(password, account2.getPassword());
+			Player account2 = Player.getByLogin(login);
+			Assert.assertNotNull(account2);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail("Could not create a new account.");
@@ -69,7 +66,7 @@ public class AccountTest {
 
 	@Test (expected = SQLException.class)
 	public void should_not_create_nonunique_login() throws SQLException{
-		Account account = new Account();
+		Player account = new Player();
 		account.setLogin(predefinedLogin);
 		account.setPassword(predefinedPassword);
 
@@ -78,23 +75,32 @@ public class AccountTest {
 	
 	@Test
 	public void should_get_account_by_login_and_password(){
-		Account account = Account.getByLoginAndPassword(predefinedLogin, predefinedPassword);
-		assertFalse(account == null);
+		Player account = Player.getByLoginAndPassword(predefinedLogin, predefinedPassword);
+		assertNotNull(account);
 		assertEquals(predefinedLogin, account.getLogin());
 	}
 	
 	@Test
 	public void should_return_null_for_invalid_password(){
-		assertEquals(null, Account.getByLoginAndPassword(predefinedLogin, "invalid_password"));
+		assertEquals(null, Player.getByLoginAndPassword(predefinedLogin, "invalid_password"));
 	}
 	
 	@Test
 	public void should_find_existing_account(){
-		assertTrue(Account.isRegistered(predefinedLogin));
+		assertTrue(Player.isRegistered(predefinedLogin));
 	}
 	
 	@Test
 	public void should_not_find_not_existing_account(){
-		assertFalse(Account.isRegistered("fakeAccount"));
+		assertFalse(Player.isRegistered("fakeAccount"));
+	}
+	
+	@Test
+	public void should_set_hashed_password(){
+		Player account = new Player();
+		account.setPassword(predefinedPassword);		
+		String hash = Player.hashPassword(predefinedPassword);
+		
+		assertEquals(hash, account.getPasswordMd5());
 	}
 }

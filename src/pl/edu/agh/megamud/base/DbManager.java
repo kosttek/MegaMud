@@ -2,7 +2,7 @@ package pl.edu.agh.megamud.base;
 
 import java.sql.SQLException;
 
-import pl.edu.agh.megamud.dao.Account;
+import pl.edu.agh.megamud.dao.Player;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
@@ -33,7 +33,7 @@ public class DbManager {
 	
 	public static void init(){
 		try {
-			TableUtils.createTableIfNotExists(getConnectionSource(), Account.class);
+			TableUtils.createTableIfNotExists(getConnectionSource(), Player.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

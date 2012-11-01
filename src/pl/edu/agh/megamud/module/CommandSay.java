@@ -3,7 +3,7 @@ package pl.edu.agh.megamud.module;
 import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Controller;
 
-public class CommandSay implements Command {
+public class CommandSay extends Command {
 	public String getName(){
 		return "say";
 	}

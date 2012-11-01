@@ -4,7 +4,7 @@ import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Controller;
 
-public class CommandGoto implements Command {
+public class CommandGoto extends Command {
 	public String getName(){
 		return "goto";
 	}

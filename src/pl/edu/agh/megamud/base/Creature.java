@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import pl.edu.agh.megamud.mockdata.MockCommands1;
-
 /**
  * A "creature", object/person that we can interact with.
  */
-public class Creature extends CommandCollector{
+public class Creature extends ItemHolder{
 	/**
 	 * Its name.
 	 */
@@ -40,7 +38,7 @@ public class Creature extends CommandCollector{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setLocation(Location location) {
+	public void setInitialLocation(Location location) {
 		this.location = location;
 	}
 	public void setHp(int hp) {
@@ -60,6 +58,9 @@ public class Creature extends CommandCollector{
 	}
 	public void setModifiers(List<Modifier> modifiers) {
 		this.modifiers = modifiers;
+	}
+	public List<Modifier> getModifiers() {
+		return modifiers;
 	}
 	public int getMaxHp() {
 		return maxHp;
@@ -82,7 +83,7 @@ public class Creature extends CommandCollector{
 	public int getExpNeeded() {
 		return expNeeded;
 	}
-	public Map<String, Long> getPropAttributes() {
+	public Map<String, Long> getAttributes() {
 		return attributes;
 	}
 	public final Controller getController(){
@@ -94,10 +95,6 @@ public class Creature extends CommandCollector{
 	
 	public Creature(String name){
 		this.name=name;
-		
-		addCommand(MockCommands1.getBasicCommand("take"));
-		addCommand(MockCommands1.getBasicCommand("drop"));
-		addCommand(MockCommands1.getBasicCommand("give"));
 	}
 	
 	/**

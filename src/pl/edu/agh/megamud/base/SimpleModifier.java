@@ -2,7 +2,7 @@ package pl.edu.agh.megamud.base;
 
 import java.util.Map;
 
-/*
+/**
  * This class implements a most simple Modifier that can be used. It changes a specified creature's attribute by adding/removing points. E.g. POWER +5.
  * After a specified time, the modifier will wear off.
  */
@@ -13,8 +13,8 @@ public class SimpleModifier implements Modifier{
 	private long diff;
 	private Behaviour beh=null;
 	
-	/*
-	 * We need this to wear the modifiers effect of after some time.
+	/**
+	 * We need this behaviour to wear the modifiers effect of after some time.
 	 */
 	private class SelfDestructBehaviour extends Behaviour{
 		public SelfDestructBehaviour(Creature o, long delay) {
@@ -27,24 +27,22 @@ public class SimpleModifier implements Modifier{
 		}
 	}
 	
-	public SimpleModifier(Creature creature,String name,String stat,long diff,long delay){
+	public SimpleModifier(Creature creature,String stat,long diff,long delay){
 		this.creature=creature;
-		this.name=name;
+		this.name=""+stat+" "+(diff>0 ? "+" : "")+diff+"";
 		this.stat=stat;
 		this.diff=diff;
 		if(delay>0){
 			beh=new SelfDestructBehaviour(creature,delay);
 			beh.put();
 		}
-		
-		creature.addModifier(this);
 	}
 	
 	public Creature getCreature(){
 		return creature;
 	}
 	
-	public Behaviour selfDestruct(){
+	public Behaviour willSelfDestruct(){
 		return beh;
 	}
 	
@@ -52,7 +50,7 @@ public class SimpleModifier implements Modifier{
 		return name;
 	}
 	
-	/*
+	/**
 	 * @todo What if there is no such attribute?
 	 */
 	public boolean modify(Creature c,Map<String,Long> attrs){

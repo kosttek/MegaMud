@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Tomasz
  *
  */
-public abstract class ItemHolder {
+public class ItemHolder extends CommandCollector {
 	protected Map<String,Item> items=new HashMap<String,Item>();
 	
 	/**
@@ -35,12 +35,12 @@ public abstract class ItemHolder {
 	 * @param i Item.
 	 * @param from Who gave this us, or null, if magically appeared.
 	 */
-	public abstract void onItemAppear(Item i,ItemHolder from);
+	public void onItemAppear(Item i,ItemHolder from){}
 	
 	/**
 	 * Event executed after this item disappears from our inventory.
 	 * @param i Item.
 	 * @param from Who gave this us, or null, if magically destroyed.
 	 */
-	public abstract void onItemDisappear(Item i,ItemHolder to);
+	public void onItemDisappear(Item i,ItemHolder to){}
 }

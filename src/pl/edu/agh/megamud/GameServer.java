@@ -1,23 +1,113 @@
 package pl.edu.agh.megamud;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import pl.edu.agh.megamud.base.Command;
+import pl.edu.agh.megamud.base.CommandCollector;
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Location;
+import pl.edu.agh.megamud.base.Module;
 import pl.edu.agh.megamud.base.Controller;
-import pl.edu.agh.megamud.mockdata.MockLocations1;
-import pl.edu.agh.megamud.mockdata.MockNPCs1;
+import pl.edu.agh.megamud.module.DefaultModule;
+import pl.edu.agh.megamud.statnpc.StatNpcModule;
 
 public class GameServer {
+	/**
+	 * Link to only instance.
+	 */
 	private static GameServer gameServer=null;
-	//TODO it could be not important to have allLocations in GameServer
-	//maybe could be something else like map <id, Location>
-	private List<Location> allLocations = new LinkedList<Location>();
-	private List<Controller> allUsersLogged = new LinkedList<Controller>();
 	
-	public List<Location> getLocations(){
-		return allLocations;
+	/**
+	 * List of all players, including NPCs.
+	 */
+	private List<Controller> players = new LinkedList<Controller>();
+	
+	/**
+	 * List of all creatures.
+	 */
+	private List<Creature> creatures= new LinkedList<Creature>();
+	
+	/**
+	 * List of all installed modules.
+	 */
+	private Map<String,Module> modules=new HashMap<String,Module>();
+	
+	/**
+	 * Map of all locations - installed by modules.
+	 */
+	private Map<String,Location> locations = new HashMap<String,Location>();
+	/**
+	 * Map of all commands - installed by modules.
+	 * @param loc
+	 */
+	private CommandCollector commands=new CommandCollector();
+	
+	public CommandCollector getCommands(){
+		synchronized(commands){
+			return commands;
+		}
+	}
+	
+	public List<Command> findCommands(String id){
+		synchronized(commands){
+			return commands.findCommands(id);
+		}
+	}
+	
+	public List<Command> findCommandsByModule(String module,String id){
+		synchronized(modules){
+			Module m=modules.get(module);
+			if(m!=null)
+				return m.findCommands(id);
+			return null;
+		}
+	}
+	
+	public void addLocation(Location loc){
+		synchronized(locations){
+			locations.put(loc.getId(),loc);
+		}
+	}
+	public void removeLocation(String id){
+		synchronized(locations){
+			locations.remove(id);
+		}
+	}
+	public void removeLocation(Location loc){
+		synchronized(locations){
+			locations.remove(loc.getId());
+		}
+	}
+	
+	public void addModule(Module m){
+		synchronized(modules){
+			modules.put(m.getId(),m);
+		}
+	}
+	public void removeModule(Module m){
+		synchronized(modules){
+			modules.remove(m.getId());
+		}
+	}
+	public void removeModule(String id){
+		synchronized(modules){
+			modules.remove(id);
+		}
+	}
+	
+	public Location getStartLocation(){
+		synchronized(locations){
+			return locations.get("start");
+		}
+	}
+	
+	public Location getLocation(String id){
+		synchronized(locations){
+			return locations.get(id);
+		}
 	}
 	
 	private GameServer(){
@@ -29,30 +119,69 @@ public class GameServer {
 			gameServer.init();
 		}
 		return gameServer;
-	}  
+	}
 	
 	private void init(){
-		allLocations.addAll(MockLocations1.createLocations());
+		new DefaultModule().install();
 		
-		MockNPCs1.loadNpcs();
+		new Thread(){
+			public void run(){
+				StatNpcModule mod=new StatNpcModule();
+				mod.install();
+				
+				try{Thread.sleep(15000);}catch(Exception e){}
+				
+				try{
+					mod.uninstall();
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+		}.start();
 	}
 	
-	public void initUser(Controller user){
-		allUsersLogged.add(user);
+	public void initController(Controller user){
+		synchronized(players){
+			players.add(user);
+			for(Module m:modules.values())
+				m.onNewController(user);
+			
+			user.onConnect();
+		}
 	}
 	
-	public void initCreature(Creature c){
-		c.setKlass("student");
-		c.setHp(100);
-		c.setMaxHp(150);
-		c.setLevel(22);
-		c.setExp(0);
-		c.setExpNeeded(1337);
-		c.getPropAttributes().put("POWER", 20000L);
+	public void killController(Controller user){
+		synchronized(players){
+			
+			if(user.getCreature()!=null){
+				user.getCreature().setLocation(null,null);
+				user.getCreature().disconnect();
+			}
+			
+			user.onDisconnect();
+			
+			for(Module m:modules.values())
+				m.onKillController(user);
+			players.remove(user);
+		}
+		
 	}
 	
-	public void killUser(Controller user){
-		allUsersLogged.remove(user);
+	public void initCreature(Controller user,Creature c){
+		synchronized(players){
+			c.connect(user);
+			creatures.add(c);
+			for(Module m:modules.values())
+				m.onNewCreature(c);
+		}
 	}
-
+	
+	public void killCreature(Creature c){
+		synchronized(players){
+			c.disconnect();
+			creatures.remove(c);
+			for(Module m:modules.values())
+				m.onKillCreature(c);
+		}
+	}
 }

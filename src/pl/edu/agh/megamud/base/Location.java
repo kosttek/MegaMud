@@ -1,27 +1,21 @@
 package pl.edu.agh.megamud.base;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-
-import pl.edu.agh.megamud.mockdata.MockCommands1;
 
 /**
  * A location in our world. Location has its description, exits and creatures inside.
+ * A location can serve a controller own commands (thus it extends CommandCollector).
  */
-public class Location extends CommandCollector {
+public class Location extends ItemHolder {
 	private Map<String,Location> exits = new HashMap<String,Location>();
 	private Map<String,Creature> creatures = new HashMap<String,Creature>();
+	private String id;
 	private String description;
 	
-	public Location(String description){
+	public Location(String id,String description,Module module){
+		this.id=id;
 		this.description=description;
-		
-		addCommand(MockCommands1.getBasicCommand("look"));
-		addCommand(MockCommands1.getBasicCommand("goto"));
-		addCommand(MockCommands1.getBasicCommand("say"));
-		addCommand(MockCommands1.getBasicCommand("take"));
 	}
 	
 	public final Map<String,Location> getExits(){
@@ -30,6 +24,10 @@ public class Location extends CommandCollector {
 	
 	public final Map<String,Creature> getCreatures(){
 		return creatures;
+	}
+	
+	public String getId(){
+		return this.id;
 	}
 	
 	/**
@@ -99,7 +97,6 @@ public class Location extends CommandCollector {
 		for(String locationPointer : exits.keySet())
 			desc+= locationPointer+(cnt>0 ? ", " : "");
 		desc+="\r\n";
-		
 
 		for(Item i : items.values())
 			desc+="Here is "+ i.getId()+" - "+i.getDescription()+"\r\n";

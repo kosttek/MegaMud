@@ -1,11 +1,15 @@
 package pl.edu.agh.megamud.base;
 
 import pl.edu.agh.megamud.Session;
-import pl.edu.agh.megamud.mockdata.MockCommands1;
 
 /**
  * User connected to server.
  * PlayerController is aware of possible commands, its creature and stuff.
+ * Typical workflow:
+ * - client connects - PlayerController is created;
+ * - after client logs in, controller is assigned a Creature and given all attributes from database.;
+ * - client disconnects - both PC and Creature are destroyed;
+ * - client logs out (possibly to change a creature) - only Creature is destroyed. 
  **/
 public class PlayerController extends Controller {
 	/**
@@ -24,32 +28,10 @@ public class PlayerController extends Controller {
 	public PlayerController(Session session){
 		super();
 		this.session=session;
-
-		addCommand(MockCommands1.getBasicCommand("login"));
-		addCommand(MockCommands1.getBasicCommand("exit"));
-		addCommand(MockCommands1.getBasicCommand("help"));
-		
-		addCommand(MockCommands1.getBasicCommand("kill"));
 	}
 	
 	public void write(String txt){
 		session.write(txt+"\r\n");
-	}
-	
-	/**
-	 * Called by creature, when they bound to us.
-	 * The creature does all command transfer.
-	 */
-	public void setCreature(Creature creature){
-		super.setCreature(creature);
-		
-		if(creature==null){
-			addCommand(MockCommands1.getBasicCommand("login"));
-			removeCommand(MockCommands1.getBasicCommand("info"));
-		}else{
-			addCommand(MockCommands1.getBasicCommand("info"));
-			removeCommand(MockCommands1.getBasicCommand("login"));
-		}
 	}
 	
 	/**
@@ -61,6 +43,12 @@ public class PlayerController extends Controller {
 		readyToDisconnect=true;
 	}
 
+	public void onEnter(Creature otherCreature){
+		write(""+otherCreature.getName()+" entered the room.");
+	}
+	public void onLeave(Creature otherCreature,String usedExit){
+		write(""+otherCreature.getName()+" left the room"+(usedExit!=null ? " (towards "+usedExit+")" : "")+".");
+	}
 	public void onSayInLocation(Creature otherCreature,String message){
 		write(""+otherCreature.getName()+" said: "+message);
 	}

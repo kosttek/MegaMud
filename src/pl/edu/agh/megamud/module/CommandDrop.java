@@ -5,7 +5,7 @@ import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Item;
 
-public class CommandDrop implements Command {
+public class CommandDrop extends Command {
 	public String getName(){
 		return "drop";
 	}

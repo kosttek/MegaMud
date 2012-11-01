@@ -16,6 +16,10 @@ public abstract class Behaviour {
 	 * Delay after which behaviour will run.
 	 */
 	protected long delay;
+	/**
+	 * Time this behaviour will be run.
+	 */
+	protected long nextTime;
 	
 	public long getDelay() {
 		return delay;
@@ -23,6 +27,10 @@ public abstract class Behaviour {
 
 	public void setDelay(long delay) {
 		this.delay = delay;
+	}
+	
+	public long getNextTime(){
+		return nextTime;
 	}
 
 	public Behaviour(Object o,long delay){
@@ -45,17 +53,19 @@ public abstract class Behaviour {
 		put();
 		return this;
 	}
+	
 	/**
 	 * Use this to call an action on a behaviour.
 	 */
 	public void makeAction(){
 		action();
 	}
+	
 	/**
 	 * Use this in lower classes to (re-)initialize a behaviour.
 	 */
 	protected final void put(){
-		EventManager.getInstance().put(new Long(delay), this);
+		nextTime=EventManager.getInstance().put(new Long(delay), this);
 	}
 }
 

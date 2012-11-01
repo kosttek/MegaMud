@@ -9,7 +9,7 @@ import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.dao.Player;
 
-public class CommandLogin implements Command {
+public class CommandLogin extends Command {
 	public String getName(){
 		return "login";
 	}
@@ -65,11 +65,10 @@ public class CommandLogin implements Command {
 	 * @todo Grab a creature data from database, its items etc.
 	 */
 	private void handleSucessfulAuthentication(Controller user){
-		Location loc=GameServer.getInstance().getLocations().get(0);
+		Location loc=GameServer.getInstance().getStartLocation();
 		Creature c=new Creature(account.getLogin());
-		c.connect(user);
+		GameServer.getInstance().initCreature(user,c);
+		
 		c.setLocation(loc,null);
-
-		GameServer.getInstance().initCreature(c);
 	}
 }

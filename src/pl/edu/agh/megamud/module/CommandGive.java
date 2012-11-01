@@ -6,7 +6,7 @@ import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Item;
 import pl.edu.agh.megamud.base.Location;
 
-public class CommandGive implements Command {
+public class CommandGive extends Command {
 	public String getName(){
 		return "give";
 	}

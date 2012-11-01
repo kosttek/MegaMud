@@ -5,7 +5,7 @@ import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Item;
 import pl.edu.agh.megamud.base.Location;
 
-public class CommandTake implements Command {
+public class CommandTake extends Command {
 	public String getName(){
 		return "take";
 	}

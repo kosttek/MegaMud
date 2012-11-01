@@ -44,8 +44,9 @@ public class Session implements Runnable {
 	 */
 	
 	public void run() {
+		GameServer.getInstance().initController(user);
+		
 		try {
-			user.onConnect();
 			
 			while (!user.isReadyToDisconnect() && in.hasNextLine()) {
 				String line = in.nextLine();
@@ -57,13 +58,14 @@ public class Session implements Runnable {
 				}
 			}
 			
-			user.onDisconnect();
 		} finally{
 			try{
 				socket.close();
 			}catch(Exception e2){}
 			socket= null;
 		}
+		
+		GameServer.getInstance().killController(user);
 	}
 	
 	/*

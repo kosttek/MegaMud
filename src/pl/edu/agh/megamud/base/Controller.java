@@ -79,4 +79,15 @@ public abstract class Controller extends CommandCollector{
 	/** Inherited from ItemHolder. */
 	public void onItemAppear(Item i,ItemHolder from){}
 	public void onItemDisappear(Item i,ItemHolder to){}
+	
+	
+	/**
+	 * Called upon connection. Executed also in NPC controller.
+	 */
+	public void onConnect(){}
+	
+	/**
+	 * Called upon disconnection. Executed also in NPC controller.
+	 */
+	public void onDisconnect(){}
 }

@@ -7,22 +7,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-/*
+/**
  * Object capable of collecting and managing commands. Hosted in a map (string => list<commands>) - commands with the same name. 
  */
-public abstract class CommandCollector extends ItemHolder {
+public class CommandCollector {
 	private Map<String,List<Command>> map = new HashMap<String, List<Command>>();
-	/*
+	/**
 	 * Gets all commands with specified name.
 	 */
 	public final List<Command> findCommands(String name){
 		return map.get(name);
 	}
 	
-	/*
+	/**
 	 * Remove a command from this collector.
 	 */
-	protected final void removeCommand(Command cmd){
+	public final void removeCommand(Command cmd){
 		List<Command> v=map.get(cmd.getName());
 		if(v==null)
 			return;
@@ -34,7 +34,7 @@ public abstract class CommandCollector extends ItemHolder {
 	/*
 	 * Add a command to this collector.
 	 */
-	protected final void addCommand(Command cmd){
+	public final void addCommand(Command cmd){
 		List<Command> v=map.get(cmd.getName());
 		if(v==null){
 			v=new LinkedList<Command>();
@@ -43,7 +43,7 @@ public abstract class CommandCollector extends ItemHolder {
 		v.add(cmd);
 	}
 	
-	/*
+	/**
 	 * Get a list of all commands supported by this collector.
 	 */
 	public final List<Command> getAllCommands(){

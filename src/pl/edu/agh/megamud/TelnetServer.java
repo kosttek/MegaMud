@@ -18,6 +18,9 @@ public class TelnetServer {
 	public static void main(String[] args) {
 		ExecutorService executor = Executors.newCachedThreadPool();
 		DbManager.init();
+		
+		GameServer.getInstance();
+		
 		while (true) {
 			
 			try {

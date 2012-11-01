@@ -1,10 +1,9 @@
 package pl.edu.agh.megamud.tests.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.sql.SQLException;
-
-import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
@@ -14,7 +13,7 @@ import org.junit.Test;
 import pl.edu.agh.megamud.base.DbManager;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
-import pl.edu.agh.megamud.dao.base.PlayerCreatureBase;
+import pl.edu.agh.megamud.dao.Profession;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;

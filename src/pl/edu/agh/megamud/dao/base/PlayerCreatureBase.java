@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import pl.edu.agh.megamud.base.DbManager;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
+import pl.edu.agh.megamud.dao.Profession;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -35,6 +36,8 @@ public abstract class PlayerCreatureBase {
 	@DatabaseField(canBeNull = false, defaultValue = "100")
 	private Integer exp_needed;
 	
+	@DatabaseField(foreign = true, canBeNull = true, foreignAutoRefresh = true)
+	private Profession profession;
 	
 	public PlayerCreatureBase(){
 		
@@ -43,66 +46,63 @@ public abstract class PlayerCreatureBase {
 	public Integer getId() {
 		return id;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
 	public Player getPlayer() {
 		return player;
 	}
-
 
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
 
-
 	public Integer getHp() {
 		return hp;
 	}
-
 
 	public void setHp(Integer hp) {
 		this.hp = hp;
 	}
 
-
 	public Integer getLevel() {
 		return level;
 	}
-
 
 	public void setLevel(Integer level) {
 		this.level = level;
 	}
 
-
 	public Integer getExp() {
 		return exp;
 	}
-
 
 	public void setExp(Integer exp) {
 		this.exp = exp;
 	}
 
-
 	public Integer getExp_needed() {
 		return exp_needed;
 	}
-
 
 	public void setExp_needed(Integer exp_needed) {
 		this.exp_needed = exp_needed;
 	}
 	
+	public Profession getProfession() {
+		return profession;
+	}
+
+	public void setProfession(Profession profession) {
+		this.profession = profession;
+	}
+
 	public static Dao<PlayerCreature,String> createDao(){
 		try {
 			return DaoManager.createDao(DbManager.getConnectionSource(), PlayerCreature.class);

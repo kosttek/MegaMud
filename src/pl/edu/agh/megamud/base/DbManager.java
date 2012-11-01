@@ -3,6 +3,9 @@ package pl.edu.agh.megamud.base;
 import java.sql.SQLException;
 
 import pl.edu.agh.megamud.dao.Player;
+import pl.edu.agh.megamud.dao.PlayerCreature;
+import pl.edu.agh.megamud.dao.base.PlayerBase;
+import pl.edu.agh.megamud.dao.base.PlayerCreatureBase;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
@@ -34,6 +37,7 @@ public class DbManager {
 	public static void init(){
 		try {
 			TableUtils.createTableIfNotExists(getConnectionSource(), Player.class);
+			TableUtils.createTableIfNotExists(getConnectionSource(), PlayerCreature.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

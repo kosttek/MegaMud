@@ -7,9 +7,11 @@ import java.util.List;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.table.DatabaseTable;
 
 import pl.edu.agh.megamud.dao.base.PlayerBase;
 
+@DatabaseTable(tableName = "player")
 public class Player extends PlayerBase {
 	public static boolean isRegistered(String login){
 		return getByLogin(login) != null;

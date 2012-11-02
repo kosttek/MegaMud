@@ -38,6 +38,7 @@ public class DbManager {
 			TableUtils.createTableIfNotExists(getConnectionSource(), Player.class);
 			TableUtils.createTableIfNotExists(getConnectionSource(), PlayerCreature.class);
 			TableUtils.createTableIfNotExists(getConnectionSource(), Profession.class);
+			TableUtils.createTableIfNotExists(getConnectionSource(), pl.edu.agh.megamud.dao.Item.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

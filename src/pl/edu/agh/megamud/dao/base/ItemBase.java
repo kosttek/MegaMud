@@ -3,11 +3,14 @@ package pl.edu.agh.megamud.dao.base;
 import java.sql.SQLException;
 
 import pl.edu.agh.megamud.base.DbManager;
+import pl.edu.agh.megamud.dao.CreatureItem;
 import pl.edu.agh.megamud.dao.Item;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 
 public abstract class ItemBase {
 
@@ -20,6 +23,9 @@ public abstract class ItemBase {
 	@DatabaseField(canBeNull = false, defaultValue = "0")
 	private Integer max_level;
 	
+	@ForeignCollectionField(eager = true)
+	private ForeignCollection<CreatureItem> creatureItems;
+
 	public Integer getId() {
 		return id;
 	}
@@ -44,6 +50,14 @@ public abstract class ItemBase {
 		this.max_level = max_level;
 	}
 
+	public ForeignCollection<CreatureItem> getCreatureItems() {
+		return creatureItems;
+	}
+
+	public void setCreatureItems(ForeignCollection<CreatureItem> creatureItems) {
+		this.creatureItems = creatureItems;
+	}	
+	
 	public ItemBase(){
 		
 	}

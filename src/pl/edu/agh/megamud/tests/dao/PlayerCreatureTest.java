@@ -7,51 +7,18 @@ import java.sql.SQLException;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pl.edu.agh.megamud.base.DbManager;
+import pl.edu.agh.megamud.dao.CreatureItem;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
-import pl.edu.agh.megamud.dao.Profession;
 
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
+public class PlayerCreatureTest extends TestBase{
 
-public class PlayerCreatureTest {
-
-	private static ConnectionSource connectionSource;
-	private static String databaseUrl = "jdbc:sqlite:db/test.db";
-	private static Dao<PlayerCreature,String> playerCreatureDao;
-	private static Dao<Player,String> playerDao;
-	private static Player predefinedPlayer = null;
-	
-	@BeforeClass
-	public static void init() throws SQLException{
-		DbManager.setDbPath(databaseUrl);
-		connectionSource = DbManager.getConnectionSource();
-		TableUtils.dropTable(connectionSource, Player.class, true);
-		TableUtils.dropTable(connectionSource, PlayerCreature.class, true);
-		
-		DbManager.init();
-
-		playerCreatureDao = PlayerCreature.createDao();
-		playerDao = Player.createDao();	
-		
-		connectionSource.close();
-	}
-	
 	@Before
 	public void setUp() throws Exception {
-		connectionSource = DbManager.getConnectionSource();
-		TableUtils.clearTable(connectionSource, PlayerCreature.class);
-		TableUtils.clearTable(connectionSource, Player.class);
-
-		predefinedPlayer = new Player();
-		predefinedPlayer.setLogin("predefinedPlayer");
-		predefinedPlayer.setPassword("_secret");
-		playerDao.create(predefinedPlayer);		
+		super.prepareDatabase();
+		super.resetPlayer();
 	}
 
 	@After
@@ -123,5 +90,29 @@ public class PlayerCreatureTest {
 		
 		assertFalse(predefinedPlayer.getLogin().equals(pc1.getPlayer().getLogin()));
 		assertEquals(timmy.getLogin(), pc1.getPlayer().getLogin());
+	}
+	
+	@Test
+	public void should_get_creatures_items() throws SQLException{
+		super.resetPlayerCreature();
+		super.resetItem();
+		
+		CreatureItem ci1 = new CreatureItem();
+		ci1.setCreature(predefinedPlayerCreature);
+		ci1.setItem(predefinedItem);
+		creatureItemDao.create(ci1);
+		
+		CreatureItem ci2 = new CreatureItem();
+		ci2.setCreature(predefinedPlayerCreature);
+		ci2.setItem(predefinedItem);
+		creatureItemDao.create(ci2);
+		
+		CreatureItem ci3 = new CreatureItem();
+		ci3.setCreature(predefinedPlayerCreature);
+		ci3.setItem(predefinedItem);
+		creatureItemDao.create(ci3);
+		
+		playerCreatureDao.refresh(predefinedPlayerCreature);
+		assertEquals(3, predefinedPlayerCreature.getCreatureItems().size());
 	}
 }

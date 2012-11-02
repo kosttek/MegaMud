@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import pl.edu.agh.megamud.base.DbManager;
+import pl.edu.agh.megamud.dao.CreatureItem;
 import pl.edu.agh.megamud.dao.Item;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
@@ -20,29 +21,11 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-public class ItemTest {
+public class ItemTest extends TestBase{
 
-	private static ConnectionSource connectionSource;
-	private static String databaseUrl = "jdbc:sqlite:db/test.db";
-
-	private static Dao<Item, Integer> itemDao;
-	
-	@BeforeClass
-	public static void init() throws SQLException{
-		DbManager.setDbPath(databaseUrl);
-		connectionSource = DbManager.getConnectionSource();
-
-		TableUtils.dropTable(connectionSource, Item.class, true);
-		DbManager.init();
-		itemDao = Item.createDao();	
-		
-		connectionSource.close();
-	}
-	
 	@Before
 	public void setUp() throws Exception {
-		connectionSource = DbManager.getConnectionSource();
-		TableUtils.clearTable(connectionSource, Item.class);
+		super.prepareDatabase();
 	}
 
 	@After
@@ -63,5 +46,30 @@ public class ItemTest {
 		itemDao.create(item);
 		assertTrue(item.getId() != 0);
 		assertTrue(item.getId() != null);
+	}
+	
+	@Test
+	public void should_get_creatures_having_this_item() throws SQLException{
+		super.resetItem();
+		super.resetPlayer();
+		super.resetPlayerCreature();
+		
+		CreatureItem ci1 = new CreatureItem();
+		ci1.setCreature(predefinedPlayerCreature);
+		ci1.setItem(predefinedItem);
+		creatureItemDao.create(ci1);
+		
+		CreatureItem ci2 = new CreatureItem();
+		ci2.setCreature(predefinedPlayerCreature);
+		ci2.setItem(predefinedItem);
+		creatureItemDao.create(ci2);
+		
+		CreatureItem ci3 = new CreatureItem();
+		ci3.setCreature(predefinedPlayerCreature);
+		ci3.setItem(predefinedItem);
+		creatureItemDao.create(ci3);
+		
+		itemDao.refresh(predefinedItem);
+		assertEquals(3, predefinedItem.getCreatureItems().size());		
 	}
 }

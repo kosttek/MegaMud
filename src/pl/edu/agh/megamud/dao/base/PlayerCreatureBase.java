@@ -3,13 +3,16 @@ package pl.edu.agh.megamud.dao.base;
 import java.sql.SQLException;
 
 import pl.edu.agh.megamud.base.DbManager;
+import pl.edu.agh.megamud.dao.CreatureItem;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Profession;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "player_creature")
@@ -39,6 +42,17 @@ public abstract class PlayerCreatureBase {
 	@DatabaseField(foreign = true, canBeNull = true, foreignAutoRefresh = true)
 	private Profession profession;
 	
+	@ForeignCollectionField(eager = true)
+	private ForeignCollection<CreatureItem> creatureItems;
+	
+	public ForeignCollection<CreatureItem> getCreatureItems() {
+		return creatureItems;
+	}
+
+	public void setCreatureItems(ForeignCollection<CreatureItem> creatureItems) {
+		this.creatureItems = creatureItems;
+	}
+
 	public PlayerCreatureBase(){
 		
 	}

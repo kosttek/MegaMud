@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import pl.edu.agh.megamud.dao.Item;
+
 /**
  * A "creature", object/person that we can interact with.
  */

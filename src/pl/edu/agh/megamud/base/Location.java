@@ -3,6 +3,8 @@ package pl.edu.agh.megamud.base;
 import java.util.HashMap;
 import java.util.Map;
 
+import pl.edu.agh.megamud.dao.Item;
+
 /**
  * A location in our world. Location has its description, exits and creatures inside.
  * A location can serve a controller own commands (thus it extends CommandCollector).
@@ -99,7 +101,7 @@ public class Location extends ItemHolder {
 		desc+="\r\n";
 
 		for(Item i : items.values())
-			desc+="Here is "+ i.getId()+" - "+i.getDescription()+"\r\n";
+			desc+="Here is "+ i.getName()+" - "+i.getDescription()+"\r\n";
 		desc+="\r\n";
 		
 		for(Creature creature : creatures.values())

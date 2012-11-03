@@ -1,5 +1,7 @@
 package pl.edu.agh.megamud.base;
 
+import pl.edu.agh.megamud.dao.Item;
+
 /**
  * A simple item, that can be held by anyone and can be dropped everywhere. It plainly does nothing.
  * @author Tomasz

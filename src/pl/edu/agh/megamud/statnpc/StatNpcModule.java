@@ -7,11 +7,11 @@ import pl.edu.agh.megamud.GameServer;
 import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
-import pl.edu.agh.megamud.base.Item;
 import pl.edu.agh.megamud.base.ItemHolder;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.Module;
 import pl.edu.agh.megamud.base.NPCController;
+import pl.edu.agh.megamud.dao.Item;
 
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items etc.

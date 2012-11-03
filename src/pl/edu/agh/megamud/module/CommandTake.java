@@ -2,8 +2,8 @@ package pl.edu.agh.megamud.module;
 
 import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Controller;
-import pl.edu.agh.megamud.base.Item;
 import pl.edu.agh.megamud.base.Location;
+import pl.edu.agh.megamud.dao.Item;
 
 public class CommandTake extends Command {
 	public String getName(){
@@ -20,7 +20,7 @@ public class CommandTake extends Command {
 			user.write("There is no such item as "+command+"!");
 		}else{
 			if(user.getCreature().getItems().containsKey(command)){
-				user.write("You already have "+it.getId()+"!");
+				user.write("You already have "+it.getName()+"!");
 			}else{
 				boolean b=it.giveTo(user.getCreature());
 				if(!b){

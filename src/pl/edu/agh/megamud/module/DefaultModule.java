@@ -9,13 +9,13 @@ import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.CyclicBehaviour;
-import pl.edu.agh.megamud.base.Item;
 import pl.edu.agh.megamud.base.ItemHolder;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.Module;
 import pl.edu.agh.megamud.base.NPCController;
 import pl.edu.agh.megamud.base.SimpleItem;
 import pl.edu.agh.megamud.base.SimpleModifier;
+import pl.edu.agh.megamud.dao.Item;
 import pl.edu.agh.megamud.mockdata.SayinNutsBehaviour;
 
 /**

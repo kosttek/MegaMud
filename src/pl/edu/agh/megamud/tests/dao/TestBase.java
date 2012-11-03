@@ -5,11 +5,7 @@ import java.sql.SQLException;
 import org.junit.BeforeClass;
 
 import pl.edu.agh.megamud.base.DbManager;
-import pl.edu.agh.megamud.dao.Attribute;
-import pl.edu.agh.megamud.dao.CreatureItem;
-import pl.edu.agh.megamud.dao.Item;
-import pl.edu.agh.megamud.dao.Player;
-import pl.edu.agh.megamud.dao.PlayerCreature;
+import pl.edu.agh.megamud.dao.*;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
@@ -25,11 +21,13 @@ public abstract class TestBase{
 	protected static Dao<PlayerCreature, String> playerCreatureDao;
 	protected static Dao<Player, String> playerDao;
 	protected static Dao<Attribute, Integer> attributeDao;
+	protected static Dao<ItemAttribute, Integer> itemAttributeDao;
 	
 	protected Player predefinedPlayer = null;
 	protected PlayerCreature predefinedPlayerCreature = null;
 	protected Item predefinedItem = null;	
 	protected CreatureItem predefinedCreatureItem = null;
+	protected Attribute predefinedAttribute = null;
 	
 	@BeforeClass
 	public static void init() throws SQLException{
@@ -41,6 +39,8 @@ public abstract class TestBase{
 		TableUtils.dropTable(connectionSource, PlayerCreature.class, true);
 		TableUtils.dropTable(connectionSource, Player.class, true);
 		TableUtils.dropTable(connectionSource, Attribute.class, true);
+		TableUtils.dropTable(connectionSource, ItemAttribute.class, true);
+		
 		DbManager.init();
 		
 		creatureItemDao = CreatureItem.createDao();
@@ -48,6 +48,7 @@ public abstract class TestBase{
 		playerCreatureDao = PlayerCreature.createDao();
 		playerDao = Player.createDao();
 		attributeDao = Attribute.createDao();
+		itemAttributeDao = ItemAttribute.createDao();
 		
 		connectionSource.close();
 	}	
@@ -58,7 +59,8 @@ public abstract class TestBase{
 		TableUtils.clearTable(connectionSource, Player.class);
 		TableUtils.clearTable(connectionSource, PlayerCreature.class);
 		TableUtils.clearTable(connectionSource, Item.class);
-		TableUtils.clearTable(connectionSource, Attribute.class);	
+		TableUtils.clearTable(connectionSource, Attribute.class);
+		TableUtils.clearTable(connectionSource, ItemAttribute.class);	
 	}
 	
 	protected void resetPlayer() throws SQLException{
@@ -81,10 +83,17 @@ public abstract class TestBase{
 		itemDao.create(predefinedItem);		
 	}
 	
+	protected void resetAttribute() throws SQLException{
+		predefinedAttribute = new Attribute();
+		predefinedAttribute.setName("predefinedAttribute");
+		attributeDao.create(predefinedAttribute);
+	}
+	
 	protected void resetEntities() throws SQLException{
 		resetPlayer();
 		resetPlayerCreature();
 		resetItem();
+		resetAttribute();
 		
 		predefinedCreatureItem = new CreatureItem();
 		predefinedCreatureItem.setCreature(predefinedPlayerCreature);

@@ -13,6 +13,7 @@ import org.junit.Test;
 import pl.edu.agh.megamud.base.DbManager;
 import pl.edu.agh.megamud.dao.CreatureItem;
 import pl.edu.agh.megamud.dao.Item;
+import pl.edu.agh.megamud.dao.ItemAttribute;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Profession;
@@ -72,4 +73,28 @@ public class ItemTest extends TestBase{
 		itemDao.refresh(predefinedItem);
 		assertEquals(3, predefinedItem.getCreatureItems().size());		
 	}
+	
+	@Test
+	public void should_get_items_attributes() throws SQLException{
+		super.resetAttribute();
+		super.resetItem();
+		
+		ItemAttribute ia1 = new ItemAttribute();
+		ia1.setAttribute(predefinedAttribute);
+		ia1.setItem(predefinedItem);
+		itemAttributeDao.create(ia1);
+		
+		ItemAttribute ia2 = new ItemAttribute();
+		ia2.setAttribute(predefinedAttribute);
+		ia2.setItem(predefinedItem);
+		itemAttributeDao.create(ia2);
+
+		ItemAttribute ia3 = new ItemAttribute();
+		ia3.setAttribute(predefinedAttribute);
+		ia3.setItem(predefinedItem);
+		itemAttributeDao.create(ia3);
+		
+		itemDao.refresh(predefinedItem);
+		assertEquals(3, predefinedItem.getItemAttributes().size());		
+	}	
 }

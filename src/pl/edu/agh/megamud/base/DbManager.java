@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.dao.CreatureItem;
+import pl.edu.agh.megamud.dao.ItemAttribute;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Profession;
@@ -43,6 +44,7 @@ public class DbManager {
 			TableUtils.createTableIfNotExists(getConnectionSource(), pl.edu.agh.megamud.dao.Item.class);
 			TableUtils.createTableIfNotExists(getConnectionSource(), CreatureItem.class);
 			TableUtils.createTableIfNotExists(getConnectionSource(), Attribute.class);
+			TableUtils.createTableIfNotExists(getConnectionSource(), ItemAttribute.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

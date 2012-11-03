@@ -4,10 +4,13 @@ import java.sql.SQLException;
 
 import pl.edu.agh.megamud.base.DbManager;
 import pl.edu.agh.megamud.dao.Attribute;
+import pl.edu.agh.megamud.dao.ItemAttribute;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 
 public abstract class AttributeBase {
 
@@ -16,6 +19,9 @@ public abstract class AttributeBase {
 	
 	@DatabaseField(canBeNull = false)
 	private String name;
+	
+	@ForeignCollectionField(eager = true)
+	private ForeignCollection<ItemAttribute> itemAttributes;	
 
 	public String getName() {
 		return name;
@@ -27,6 +33,14 @@ public abstract class AttributeBase {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public ForeignCollection<ItemAttribute> getItemAttributes() {
+		return itemAttributes;
+	}
+
+	public void setItemAttributes(ForeignCollection<ItemAttribute> itemAttributes) {
+		this.itemAttributes = itemAttributes;
 	}
 
 	public AttributeBase(){

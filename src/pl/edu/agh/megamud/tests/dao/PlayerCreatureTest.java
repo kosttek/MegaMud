@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import pl.edu.agh.megamud.dao.CreatureAttribute;
 import pl.edu.agh.megamud.dao.CreatureItem;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
@@ -115,4 +116,28 @@ public class PlayerCreatureTest extends TestBase{
 		playerCreatureDao.refresh(predefinedPlayerCreature);
 		assertEquals(3, predefinedPlayerCreature.getCreatureItems().size());
 	}
+	
+	@Test
+	public void should_get_attributes_creatures() throws SQLException{
+		super.resetAttribute();
+		super.resetPlayerCreature();
+		
+		CreatureAttribute ca1 = new CreatureAttribute();
+		ca1.setAttribute(predefinedAttribute);
+		ca1.setCreature(predefinedPlayerCreature);
+		creatureAttributeDao.create(ca1);
+		
+		CreatureAttribute ca2 = new CreatureAttribute();
+		ca2.setAttribute(predefinedAttribute);
+		ca2.setCreature(predefinedPlayerCreature);
+		creatureAttributeDao.create(ca2);
+
+		CreatureAttribute ca3 = new CreatureAttribute();
+		ca3.setAttribute(predefinedAttribute);
+		ca3.setCreature(predefinedPlayerCreature);
+		creatureAttributeDao.create(ca3);
+		
+		playerCreatureDao.refresh(predefinedPlayerCreature);
+		assertEquals(3, predefinedPlayerCreature.getCreatureAttributes().size());		
+	}			
 }

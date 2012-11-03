@@ -3,6 +3,7 @@ package pl.edu.agh.megamud.dao.base;
 import java.sql.SQLException;
 
 import pl.edu.agh.megamud.base.DbManager;
+import pl.edu.agh.megamud.dao.CreatureAttribute;
 import pl.edu.agh.megamud.dao.CreatureItem;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
@@ -44,6 +45,9 @@ public abstract class PlayerCreatureBase {
 	
 	@ForeignCollectionField(eager = true)
 	private ForeignCollection<CreatureItem> creatureItems;
+	
+	@ForeignCollectionField(eager = true)
+	private ForeignCollection<CreatureAttribute> creatureAttributes;	
 	
 	public ForeignCollection<CreatureItem> getCreatureItems() {
 		return creatureItems;
@@ -115,6 +119,15 @@ public abstract class PlayerCreatureBase {
 
 	public void setProfession(Profession profession) {
 		this.profession = profession;
+	}
+
+	public ForeignCollection<CreatureAttribute> getCreatureAttributes() {
+		return creatureAttributes;
+	}
+
+	public void setCreatureAttributes(
+			ForeignCollection<CreatureAttribute> creatureAttributes) {
+		this.creatureAttributes = creatureAttributes;
 	}
 
 	public static Dao<PlayerCreature,String> createDao(){

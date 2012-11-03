@@ -22,6 +22,7 @@ public abstract class TestBase{
 	protected static Dao<Player, String> playerDao;
 	protected static Dao<Attribute, Integer> attributeDao;
 	protected static Dao<ItemAttribute, Integer> itemAttributeDao;
+	protected static Dao<CreatureAttribute, Integer> creatureAttributeDao;
 	
 	protected Player predefinedPlayer = null;
 	protected PlayerCreature predefinedPlayerCreature = null;
@@ -40,6 +41,7 @@ public abstract class TestBase{
 		TableUtils.dropTable(connectionSource, Player.class, true);
 		TableUtils.dropTable(connectionSource, Attribute.class, true);
 		TableUtils.dropTable(connectionSource, ItemAttribute.class, true);
+		TableUtils.dropTable(connectionSource, CreatureAttribute.class, true);
 		
 		DbManager.init();
 		
@@ -49,6 +51,7 @@ public abstract class TestBase{
 		playerDao = Player.createDao();
 		attributeDao = Attribute.createDao();
 		itemAttributeDao = ItemAttribute.createDao();
+		creatureAttributeDao = CreatureAttribute.createDao();
 		
 		connectionSource.close();
 	}	
@@ -60,7 +63,8 @@ public abstract class TestBase{
 		TableUtils.clearTable(connectionSource, PlayerCreature.class);
 		TableUtils.clearTable(connectionSource, Item.class);
 		TableUtils.clearTable(connectionSource, Attribute.class);
-		TableUtils.clearTable(connectionSource, ItemAttribute.class);	
+		TableUtils.clearTable(connectionSource, ItemAttribute.class);
+		TableUtils.clearTable(connectionSource, CreatureAttribute.class);	
 	}
 	
 	protected void resetPlayer() throws SQLException{

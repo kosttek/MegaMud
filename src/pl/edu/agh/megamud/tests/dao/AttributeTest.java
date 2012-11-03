@@ -9,8 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import pl.edu.agh.megamud.dao.Attribute;
-import pl.edu.agh.megamud.dao.ItemAttribute;
+import pl.edu.agh.megamud.dao.*;
 
 public class AttributeTest extends TestBase{
 
@@ -62,5 +61,30 @@ public class AttributeTest extends TestBase{
 		
 		attributeDao.refresh(predefinedAttribute);
 		assertEquals(3, predefinedAttribute.getItemAttributes().size());		
+	}		
+	
+	@Test
+	public void should_get_attributes_creatures() throws SQLException{
+		super.resetAttribute();
+		super.resetPlayer();
+		super.resetPlayerCreature();
+		
+		CreatureAttribute ca1 = new CreatureAttribute();
+		ca1.setAttribute(predefinedAttribute);
+		ca1.setCreature(predefinedPlayerCreature);
+		creatureAttributeDao.create(ca1);
+		
+		CreatureAttribute ca2 = new CreatureAttribute();
+		ca2.setAttribute(predefinedAttribute);
+		ca2.setCreature(predefinedPlayerCreature);
+		creatureAttributeDao.create(ca2);
+
+		CreatureAttribute ca3 = new CreatureAttribute();
+		ca3.setAttribute(predefinedAttribute);
+		ca3.setCreature(predefinedPlayerCreature);
+		creatureAttributeDao.create(ca3);
+		
+		attributeDao.refresh(predefinedAttribute);
+		assertEquals(3, predefinedAttribute.getCreatureAttributes().size());		
 	}		
 }

@@ -3,8 +3,7 @@ package pl.edu.agh.megamud.dao.base;
 import java.sql.SQLException;
 
 import pl.edu.agh.megamud.base.DbManager;
-import pl.edu.agh.megamud.dao.Attribute;
-import pl.edu.agh.megamud.dao.ItemAttribute;
+import pl.edu.agh.megamud.dao.*;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -23,6 +22,9 @@ public abstract class AttributeBase {
 	@ForeignCollectionField(eager = true)
 	private ForeignCollection<ItemAttribute> itemAttributes;	
 
+	@ForeignCollectionField(eager = true)
+	private ForeignCollection<CreatureAttribute> creatureAttributes;
+	
 	public String getName() {
 		return name;
 	}
@@ -41,6 +43,15 @@ public abstract class AttributeBase {
 
 	public void setItemAttributes(ForeignCollection<ItemAttribute> itemAttributes) {
 		this.itemAttributes = itemAttributes;
+	}
+
+	public ForeignCollection<CreatureAttribute> getCreatureAttributes() {
+		return creatureAttributes;
+	}
+
+	public void setCreatureAttributes(
+			ForeignCollection<CreatureAttribute> creatureAttributes) {
+		this.creatureAttributes = creatureAttributes;
 	}
 
 	public AttributeBase(){

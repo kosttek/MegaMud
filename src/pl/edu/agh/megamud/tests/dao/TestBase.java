@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import org.junit.BeforeClass;
 
 import pl.edu.agh.megamud.base.DbManager;
+import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.dao.CreatureItem;
 import pl.edu.agh.megamud.dao.Item;
 import pl.edu.agh.megamud.dao.Player;
@@ -23,10 +24,12 @@ public abstract class TestBase{
 	protected static Dao<Item, Integer> itemDao;
 	protected static Dao<PlayerCreature, String> playerCreatureDao;
 	protected static Dao<Player, String> playerDao;
+	protected static Dao<Attribute, Integer> attributeDao;
 	
 	protected Player predefinedPlayer = null;
 	protected PlayerCreature predefinedPlayerCreature = null;
 	protected Item predefinedItem = null;	
+	protected CreatureItem predefinedCreatureItem = null;
 	
 	@BeforeClass
 	public static void init() throws SQLException{
@@ -37,12 +40,14 @@ public abstract class TestBase{
 		TableUtils.dropTable(connectionSource, Item.class, true);
 		TableUtils.dropTable(connectionSource, PlayerCreature.class, true);
 		TableUtils.dropTable(connectionSource, Player.class, true);
+		TableUtils.dropTable(connectionSource, Attribute.class, true);
 		DbManager.init();
 		
 		creatureItemDao = CreatureItem.createDao();
 		itemDao = Item.createDao();
 		playerCreatureDao = PlayerCreature.createDao();
 		playerDao = Player.createDao();
+		attributeDao = Attribute.createDao();
 		
 		connectionSource.close();
 	}	
@@ -52,7 +57,8 @@ public abstract class TestBase{
 		TableUtils.clearTable(connectionSource, CreatureItem.class);
 		TableUtils.clearTable(connectionSource, Player.class);
 		TableUtils.clearTable(connectionSource, PlayerCreature.class);
-		TableUtils.clearTable(connectionSource, Item.class);		
+		TableUtils.clearTable(connectionSource, Item.class);
+		TableUtils.clearTable(connectionSource, Attribute.class);	
 	}
 	
 	protected void resetPlayer() throws SQLException{
@@ -73,5 +79,16 @@ public abstract class TestBase{
 		predefinedItem = new Item();
 		predefinedItem.setName("predefinedItem");
 		itemDao.create(predefinedItem);		
+	}
+	
+	protected void resetEntities() throws SQLException{
+		resetPlayer();
+		resetPlayerCreature();
+		resetItem();
+		
+		predefinedCreatureItem = new CreatureItem();
+		predefinedCreatureItem.setCreature(predefinedPlayerCreature);
+		predefinedCreatureItem.setItem(predefinedItem);
+		creatureItemDao.create(predefinedCreatureItem);
 	}
 }

@@ -19,6 +19,9 @@ public abstract class ItemBase {
 	@DatabaseField(canBeNull = false)
 	private String name;
 
+	@DatabaseField(canBeNull = true)
+	private String description;
+	
 	@DatabaseField(canBeNull = false, defaultValue = "0")
 	private Integer max_level;
 	
@@ -42,6 +45,14 @@ public abstract class ItemBase {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Integer getMax_level() {

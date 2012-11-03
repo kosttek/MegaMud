@@ -82,7 +82,7 @@ public abstract class TestBase{
 	}
 	
 	protected void resetItem() throws SQLException{
-		predefinedItem = new Item();
+		predefinedItem = new Item("name", "description");
 		predefinedItem.setName("predefinedItem");
 		itemDao.create(predefinedItem);		
 	}

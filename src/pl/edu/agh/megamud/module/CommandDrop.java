@@ -3,7 +3,7 @@ package pl.edu.agh.megamud.module;
 import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
-import pl.edu.agh.megamud.base.Item;
+import pl.edu.agh.megamud.dao.Item;
 
 public class CommandDrop implements Command {
 	public String getName(){

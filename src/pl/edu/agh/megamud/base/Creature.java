@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import pl.edu.agh.megamud.dao.Item;
 import pl.edu.agh.megamud.mockdata.MockCommands1;
 
 /**

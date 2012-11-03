@@ -3,6 +3,8 @@ package pl.edu.agh.megamud.base;
 import java.util.HashMap;
 import java.util.Map;
 
+import pl.edu.agh.megamud.dao.Item;
+
 /**
  * Abstraction of an object, that can hold items.
  * @author Tomasz
@@ -16,14 +18,14 @@ public abstract class ItemHolder {
 	 * @param i
 	 */
 	public void addItem(Item i){
-		items.put(i.getId(),i);
+		items.put(i.getName(),i);
 	}
 	/**
 	 * Executed after an item was removed from here.
 	 * @param i
 	 */
 	public void removeItem(Item i){
-		items.remove(i.getId());
+		items.remove(i.getName());
 	}
 	
 	public Map<String,Item> getItems(){

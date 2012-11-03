@@ -3,9 +3,9 @@ package pl.edu.agh.megamud.module;
 import java.util.Iterator;
 
 import pl.edu.agh.megamud.base.Command;
-import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Controller;
-import pl.edu.agh.megamud.base.Item;
+import pl.edu.agh.megamud.base.Creature;
+import pl.edu.agh.megamud.dao.Item;
 
 public class CommandInfo implements Command {
 	public String getName(){
@@ -28,7 +28,7 @@ public class CommandInfo implements Command {
 		user.write(s);
 		
 		for(Item i:c.getItems().values())
-			user.write("You have "+ i.getId()+" - "+i.getDescription());
+			user.write("You have "+ i.getName()+" - "+i.getDescription());
 		
 		return true;
 	}

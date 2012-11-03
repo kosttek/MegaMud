@@ -3,6 +3,8 @@ package pl.edu.agh.megamud.base;
 import java.util.Iterator;
 import java.util.List;
 
+import pl.edu.agh.megamud.dao.Item;
+
 
 /**
  * Abstraction of a "controller" of a creature. Controler is a brain for a creature. Receives various events, can control creature's behaviour and initiates commands.

@@ -1,10 +1,9 @@
 package pl.edu.agh.megamud.base;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
+import pl.edu.agh.megamud.dao.Item;
 import pl.edu.agh.megamud.mockdata.MockCommands1;
 
 /**
@@ -102,7 +101,7 @@ public class Location extends CommandCollector {
 		
 
 		for(Item i : items.values())
-			desc+="Here is "+ i.getId()+" - "+i.getDescription()+"\r\n";
+			desc+="Here is "+ i.getName()+" - "+i.getDescription()+"\r\n";
 		desc+="\r\n";
 		
 		for(Creature creature : creatures.values())

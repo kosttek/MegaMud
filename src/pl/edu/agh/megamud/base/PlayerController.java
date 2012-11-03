@@ -1,6 +1,7 @@
 package pl.edu.agh.megamud.base;
 
 import pl.edu.agh.megamud.Session;
+import pl.edu.agh.megamud.dao.Item;
 import pl.edu.agh.megamud.mockdata.MockCommands1;
 
 /**
@@ -78,17 +79,17 @@ public class PlayerController extends Controller {
 	}
 	public void onGive(Creature from,Creature to,Item item){
 		if(from==creature)
-			write("You gave "+item.getId()+" to "+to.getName()+".");
+			write("You gave "+item.getName()+" to "+to.getName()+".");
 		else if(to==creature)
-			write(""+from.getName()+" gave you "+item.getId()+"!");
+			write(""+from.getName()+" gave you "+item.getName()+"!");
 		else
-			write(""+from.getName()+" gave "+item.getId()+" to "+to.getName()+".");
+			write(""+from.getName()+" gave "+item.getName()+" to "+to.getName()+".");
 	}
 	public void onAppear(Item item){
-		write("Suddenly, a wild "+item.getId()+" appeared.");
+		write("Suddenly, a wild "+item.getName()+" appeared.");
 	}
 	public void onDisappear(Item item){
-		write("A "+item.getId()+" has turned into ashes.");
+		write("A "+item.getName()+" has turned into ashes.");
 	}
 	
 	public void onItemTransfer(ItemHolder from,ItemHolder to,Item item){
@@ -96,39 +97,39 @@ public class PlayerController extends Controller {
 			return;
 		
 		if(from==null){
-			write("Suddenly a wild "+item.getId()+" appeared.");
+			write("Suddenly a wild "+item.getName()+" appeared.");
 		}else if(from instanceof Location){
 			if(to==null){
 				//???
 			}else if(to instanceof Location){
 				//transfer from location to location?
 			}else{
-				write(""+((Creature)to).getName()+" took a "+item.getId()+".");
+				write(""+((Creature)to).getName()+" took a "+item.getName()+".");
 			}
 		}else{
 			if(to==null){
-				write("A wild "+item.getId()+" has perished.");
+				write("A wild "+item.getName()+" has perished.");
 			}else if(to instanceof Location){
-				write(""+((Creature)from).getName()+" dropped a "+item.getId()+".");
+				write(""+((Creature)from).getName()+" dropped a "+item.getName()+".");
 			}else{
-				write(""+((Creature)from).getName()+" gave a "+item.getId()+" to "+((Creature)to).getName()+".");
+				write(""+((Creature)from).getName()+" gave a "+item.getName()+" to "+((Creature)to).getName()+".");
 			}
 		}
 	}
 	public void onItemAppear(Item i,ItemHolder from){
 		if(from!=null && from instanceof Creature)
-			write("You have now "+i.getId()+" from "+((Creature)from).getName()+"!");
+			write("You have now "+i.getName()+" from "+((Creature)from).getName()+"!");
 		else if(from!=null && from instanceof Location)
-			write("You took "+i.getId()+"!");
+			write("You took "+i.getName()+"!");
 		else
-			write("Suddenly you have "+i.getId()+"!");
+			write("Suddenly you have "+i.getName()+"!");
 	}
 	public void onItemDisappear(Item i,ItemHolder to){
 		if(to!=null && to instanceof Creature)
-			write("You gave "+i.getId()+" to "+((Creature)to).getName()+"!");
+			write("You gave "+i.getName()+" to "+((Creature)to).getName()+"!");
 		else if(to!=null && to instanceof Location)
-			write("You dropped "+i.getId()+"!");
+			write("You dropped "+i.getName()+"!");
 		else
-			write("Suddenly your "+i.getId()+" disappeared!");
+			write("Suddenly your "+i.getName()+" disappeared!");
 	}
 }

@@ -1,13 +1,13 @@
 package pl.edu.agh.megamud.mockdata;
 
 import pl.edu.agh.megamud.GameServer;
-import pl.edu.agh.megamud.base.Creature;
-import pl.edu.agh.megamud.base.Item;
 import pl.edu.agh.megamud.base.Behaviour;
+import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.ItemHolder;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.NPCController;
 import pl.edu.agh.megamud.base.SimpleItem;
+import pl.edu.agh.megamud.dao.Item;
 
 public class MockNPCs1 {
 	public static void loadNpcs(){
@@ -19,7 +19,7 @@ public class MockNPCs1 {
 				if(to==getCreature() && from!=null && from instanceof Creature){
 					Creature fromc=(Creature)from;
 					
-					if(item.getId().equals("apple")){
+					if(item.getName().equals("apple")){
 						interpreteCommand("say","Great, I like that. Have this for your quest.");
 						
 						Item prize=new SimpleItem("prize","Hiper-duper prize.");

@@ -23,12 +23,16 @@ public abstract class TestBase{
 	protected static Dao<Attribute, Integer> attributeDao;
 	protected static Dao<ItemAttribute, Integer> itemAttributeDao;
 	protected static Dao<CreatureAttribute, Integer> creatureAttributeDao;
+	protected static Dao<Location, Integer> locationDao;
+	protected static Dao<Portal, Integer> portalDao;
 	
 	protected Player predefinedPlayer = null;
 	protected PlayerCreature predefinedPlayerCreature = null;
 	protected Item predefinedItem = null;	
 	protected CreatureItem predefinedCreatureItem = null;
 	protected Attribute predefinedAttribute = null;
+	protected Location predefinedLocation = null;
+	protected Portal predefinedPortal = null;
 	
 	@BeforeClass
 	public static void init() throws SQLException{
@@ -42,6 +46,8 @@ public abstract class TestBase{
 		TableUtils.dropTable(connectionSource, Attribute.class, true);
 		TableUtils.dropTable(connectionSource, ItemAttribute.class, true);
 		TableUtils.dropTable(connectionSource, CreatureAttribute.class, true);
+		TableUtils.dropTable(connectionSource, Location.class, true);
+		TableUtils.dropTable(connectionSource, Portal.class, true);
 		
 		DbManager.init();
 		
@@ -52,6 +58,8 @@ public abstract class TestBase{
 		attributeDao = Attribute.createDao();
 		itemAttributeDao = ItemAttribute.createDao();
 		creatureAttributeDao = CreatureAttribute.createDao();
+		locationDao = Location.createDao();
+		portalDao = Portal.createDao();
 		
 		connectionSource.close();
 	}	
@@ -64,7 +72,9 @@ public abstract class TestBase{
 		TableUtils.clearTable(connectionSource, Item.class);
 		TableUtils.clearTable(connectionSource, Attribute.class);
 		TableUtils.clearTable(connectionSource, ItemAttribute.class);
-		TableUtils.clearTable(connectionSource, CreatureAttribute.class);	
+		TableUtils.clearTable(connectionSource, CreatureAttribute.class);
+		TableUtils.clearTable(connectionSource, Location.class);
+		TableUtils.clearTable(connectionSource, Portal.class);
 	}
 	
 	protected void resetPlayer() throws SQLException{

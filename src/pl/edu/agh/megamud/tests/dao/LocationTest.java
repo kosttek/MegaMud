@@ -76,5 +76,76 @@ public class LocationTest extends TestBase{
 		
 		locationDao.refresh(location1);
 		assertEquals(2, location1.getExits().size());		
-	}		
+	}
+	
+	@Test
+	public void should_add_two_way_connection() throws SQLException{
+		Location location1 = new Location();
+		location1.setName("Big room");
+		location1.setDescription("Some very large room");
+		locationDao.create(location1);
+
+		Location location2 = new Location();
+		location2.setName("Medium room");
+		location2.setDescription("The room seems rather boring. Nothing special about it.");
+		locationDao.create(location2);
+		
+		location1.connectTo(location2, "Door");
+		
+		location1.refresh();
+		location2.refresh();
+		
+		assertEquals(1, location1.getExits().size());
+		assertEquals(1, location2.getExits().size());
+		
+		Portal fromLocation1 = location1.getExits().iterator().next();
+		Portal fromLocation2 = location2.getExits().iterator().next();
+		
+		assertTrue(fromLocation1.getId() != fromLocation2.getId());
+
+		assertEquals("Door", fromLocation1.getName());
+		assertEquals("Door", fromLocation2.getName());
+	}
+	
+	@Test
+	public void should_find_available_exit_by_name() throws SQLException{
+		Location location1 = new Location();
+		location1.setName("Big room");
+		location1.setDescription("Some very large room");
+		locationDao.create(location1);
+
+		Location location2 = new Location();
+		location2.setName("Medium room");
+		location2.setDescription("The room seems rather boring. Nothing special about it.");
+		locationDao.create(location2);
+		
+		location1.connectTo(location2, "door");
+		location1.refresh();
+		
+		Portal p2 = location1.getExitByName("door");
+		
+		assertNotNull(p2);
+	}
+	
+	@Test
+	public void should_get_location_by_exit_name() throws SQLException{
+		Location location1 = new Location();
+		location1.setName("Big room");
+		location1.setDescription("Some very large room");
+		locationDao.create(location1);
+
+		Location location2 = new Location();
+		location2.setName("Medium room");
+		location2.setDescription("The room seems rather boring. Nothing special about it.");
+		locationDao.create(location2);
+		
+		location1.connectTo(location2, "door");
+		location1.refresh();
+		location2.refresh();
+		
+		Location fetchedLocation = location1.getDestinationByExitName("door");
+		
+		assertNotNull(fetchedLocation);
+		assertTrue(fetchedLocation.getId() == location2.getId());
+	}
 }

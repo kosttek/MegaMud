@@ -1,5 +1,6 @@
 package pl.edu.agh.megamud.base;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.megamud.GameServer;
@@ -10,9 +11,9 @@ import pl.edu.agh.megamud.GameServer;
  * @author Tomasz
  */
 public abstract class Module {
-	protected List<Location> installedLocations=null;
-	protected List<NPCController> installedNpcs=null;
-	protected CommandCollector installedCommands=null;
+	private List<Location> installedLocations=null;
+	private List<NPCController> installedNpcs=null;
+	private CommandCollector installedCommands=null;
 	
 	/**
 	 * Returns module name.
@@ -34,34 +35,21 @@ public abstract class Module {
 	 * Then the module is loaded.
 	 * @param gs
 	 */
-	public void install(){
+	public final void install(){
 		GameServer gs=GameServer.getInstance();
 		gs.addModule(this);
 		
-		List<Command> cs=installCommands();
-		
 		this.installedCommands=new CommandCollector();
-		if(this.installedCommands!=null){
-			for(Command cmd:cs){
-				cmd.installTo(this.installedCommands);
-				cmd.installTo(gs.getCommands());
-			}
-		}
+		this.installedLocations=new LinkedList<Location>();
+		this.installedNpcs=new LinkedList<NPCController>();
 		
-		this.installedLocations=installLocations();
-		if(this.installedLocations!=null){
-			for(Location loc:this.installedLocations){
-				gs.addLocation(loc);
-			}
-		}
-		
-		this.installedNpcs=installNPCs();
+		this.init();
 	}
 	
 	/**
 	 * Use this any time to uninstall the module.
 	 */
-	public void uninstall(){
+	public final void uninstall(){
 		GameServer gs=GameServer.getInstance();
 		
 		gs.removeModule(this);
@@ -95,41 +83,36 @@ public abstract class Module {
 	 * @param id
 	 * @return
 	 */
-	public List<Command> findCommands(String id){
+	public final List<Command> findCommands(String id){
 		return installedCommands.findCommands(id);
 	}
 	
 	/**
-	 * Implement this to provide locations to be installed.
-	 * This method will be executed only once, in install(). Generated list will be used in eventual uninstall().
-	 * Here you can:
-	 * - create new locations, link them with existing locations (if any);
-	 * - give them items;
-	 * - spawn NPCs (using NPCController and Creature);
-	 * - etc.
-	 * @return By default, null.
+	 * Use this to initialize:
+	 * - commands - installCommand;
+	 * - locations - installLocation;
+	 * - NPCS - installNPC;
 	 */
-	protected List<Location> installLocations(){
-		return null;
+	protected abstract void init();
+	
+	protected final void installCommand(Command c){
+		c.installTo(this.installedCommands);
+		c.installTo(GameServer.getInstance().getCommands());
 	}
 	
-	/**
-	 * Implement this to provide own commands to game. These commands will be given to a creature upon spawn.
-	 * These commands will be internally added to GameServer's command collector.
-	 * This method will be executed only once, in install(). Generated list will be used in eventual uninstall().
-	 * @return By default null.
-	 */
-	protected List<Command> installCommands(){
-		return null;
+	protected final void installLocation(Location loc){
+		this.installedLocations.add(loc);
+		GameServer.getInstance().addLocation(loc);
 	}
 	
-	/**
-	 * Implement this to add own NPC creatures in game. Internally you must do GameServer.initController() and GameServer.initCreature() by yourself.
-	 * This method will be executed only once, in install(). Generated list will be used in eventual uninstall().
-	 * @return By default null.
-	 */
-	protected List<NPCController> installNPCs(){
-		return null;
+	protected final void installNPC(NPCController bot,Creature creature,Location loc){
+		GameServer.getInstance().initController(bot);
+		GameServer.getInstance().initCreature(bot,creature);
+		
+		creature.setLocation(loc,null);
+		
+		this.installedNpcs.add(bot);
+		
 	}
 	
 	/**

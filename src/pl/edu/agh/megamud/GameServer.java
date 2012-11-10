@@ -12,7 +12,6 @@ import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.Module;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.module.DefaultModule;
-import pl.edu.agh.megamud.statnpc.StatNpcModule;
 
 public class GameServer {
 	/**
@@ -122,22 +121,10 @@ public class GameServer {
 	}
 	
 	private void init(){
+		/*
+		 * @todo Loading modules from configuration/db.
+		 */
 		new DefaultModule().install();
-		
-		new Thread(){
-			public void run(){
-				StatNpcModule mod=new StatNpcModule();
-				mod.install();
-				
-				try{Thread.sleep(15000);}catch(Exception e){}
-				
-				try{
-					mod.uninstall();
-				}catch(Exception e){
-					e.printStackTrace();
-				}
-			}
-		}.start();
 	}
 	
 	public void initController(Controller user){

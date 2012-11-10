@@ -16,7 +16,6 @@ import pl.edu.agh.megamud.base.Module;
 import pl.edu.agh.megamud.base.NPCController;
 import pl.edu.agh.megamud.base.SimpleItem;
 import pl.edu.agh.megamud.base.SimpleModifier;
-import pl.edu.agh.megamud.mockdata.SayinNutsBehaviour;
 
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items etc.
@@ -31,29 +30,25 @@ public class DefaultModule extends Module{
 		return "Default game module.";
 	}
 	
-	protected List<Command> installCommands(){
-		List<Command> cs=new LinkedList<Command>();
-		cs.add(new CommandExit());
-		cs.add(new CommandGoto());
-		cs.add(new CommandHelp());
-		cs.add(new CommandInfo());
-		cs.add(new CommandLogin());
-		cs.add(new CommandLook());
+	protected void init(){
+		//Commands
 		
-		cs.add(new CommandTake());
-		cs.add(new CommandGive());
-		cs.add(new CommandDrop());
+		installCommand(new CommandExit());
+		installCommand(new CommandGoto());
+		installCommand(new CommandHelp());
+		installCommand(new CommandInfo());
+		installCommand(new CommandLogin());
+		installCommand(new CommandLook());
 		
-		cs.add(new CommandSay());
+		installCommand(new CommandTake());
+		installCommand(new CommandGive());
+		installCommand(new CommandDrop());
 		
-		cs.add(new CommandKill());
+		installCommand(new CommandSay());
 		
-		return cs;
-	}
-	
-	protected List<Location> installLocations(){
-		List<Location> locs=new LinkedList<Location>();
+		installCommand(new CommandKill());
 		
+		// Locations	
 		Location loc1 = new Location("start","Pokoj 1",this);
 		Location loc2 = new Location("p2","pokoj 2",this);
 		Location loc3 = new Location("p3","pokoj 3",this);
@@ -63,9 +58,9 @@ public class DefaultModule extends Module{
 		loc2.addExit("schody", loc3);
 		loc3.addExit("schody", loc2);
 		
-		locs.add(loc1);
-		locs.add(loc2);
-		locs.add(loc3);
+		installLocation(loc1);
+		installLocation(loc2);
+		installLocation(loc3);
 		
 		new CyclicBehaviour(loc2,1000L){
 			protected void action() {
@@ -78,11 +73,6 @@ public class DefaultModule extends Module{
 				it.giveTo(c);
 			}
 		}.init();
-		
-		return locs;
-	}
-	protected List<NPCController> installNPCs(){
-		List<NPCController> npcs=new LinkedList<NPCController>();
 		
 		NPCController bot=new NPCController(){
 			public void onEnter(Creature otherCreature){
@@ -124,16 +114,12 @@ public class DefaultModule extends Module{
 		final Creature botCreature=new Creature("Hohlik");
 		final Location botRoom=GameServer.getInstance().getStartLocation();
 		
-		GameServer.getInstance().initController(bot);
-		GameServer.getInstance().initCreature(bot,botCreature);
-		
-		botCreature.setLocation(botRoom,null);
 		botCreature.setKlass("Troll");
 		botCreature.setLevel(100);
 		botCreature.setHp(666);
 		botCreature.setMaxHp(666);
 		
-		new SayinNutsBehaviour(botCreature,5000L).init();
+		installNPC(bot,botCreature,botRoom);
 		
 		Item botBall=new Item("ball","Extreme expensive NIKE-signed foot-ball."){
 			protected boolean canBeGivenTo(ItemHolder owner) {
@@ -154,41 +140,37 @@ public class DefaultModule extends Module{
 				}
 			}
 		}.init();
-		
-		npcs.add(bot);
-		
-		return npcs;
 	}
 	
 	public void onNewController(Controller c){
-		installedCommands.findCommands("login").get(0).installTo(c);
-		installedCommands.findCommands("exit").get(0).installTo(c);
-		installedCommands.findCommands("help").get(0).installTo(c);
+		findCommands("login").get(0).installTo(c);
+		findCommands("exit").get(0).installTo(c);
+		findCommands("help").get(0).installTo(c);
 		
-		installedCommands.findCommands("kill").get(0).installTo(c);
+		findCommands("kill").get(0).installTo(c);
 	}
 	
 	public void onKillController(Controller c){
-		installedCommands.findCommands("login").get(0).uninstallFrom(c);
-		installedCommands.findCommands("exit").get(0).uninstallFrom(c);
-		installedCommands.findCommands("help").get(0).uninstallFrom(c);
+		findCommands("login").get(0).uninstallFrom(c);
+		findCommands("exit").get(0).uninstallFrom(c);
+		findCommands("help").get(0).uninstallFrom(c);
 		
-		installedCommands.findCommands("kill").get(0).uninstallFrom(c);
+		findCommands("kill").get(0).uninstallFrom(c);
 	}
 	
 	public void onNewCreature(Creature c){
 		Controller d=c.getController();
 		
-		installedCommands.findCommands("login").get(0).uninstallFrom(d);
-		installedCommands.findCommands("info").get(0).installTo(d);
+		findCommands("login").get(0).uninstallFrom(d);
+		findCommands("info").get(0).installTo(d);
 		
-		installedCommands.findCommands("take").get(0).installTo(d);
-		installedCommands.findCommands("drop").get(0).installTo(d);
-		installedCommands.findCommands("give").get(0).installTo(d);
+		findCommands("take").get(0).installTo(d);
+		findCommands("drop").get(0).installTo(d);
+		findCommands("give").get(0).installTo(d);
 		
-		installedCommands.findCommands("look").get(0).installTo(d);
-		installedCommands.findCommands("goto").get(0).installTo(d);
-		installedCommands.findCommands("say").get(0).installTo(d);
+		findCommands("look").get(0).installTo(d);
+		findCommands("goto").get(0).installTo(d);
+		findCommands("say").get(0).installTo(d);
 		
 		c.setHp(100);
 		c.setMaxHp(100);
@@ -202,15 +184,15 @@ public class DefaultModule extends Module{
 	public void onKillCreature(Creature c){
 		Controller d=c.getController();
 		
-		installedCommands.findCommands("info").get(0).uninstallFrom(d);
-		installedCommands.findCommands("login").get(0).installTo(d);
+		findCommands("info").get(0).uninstallFrom(d);
+		findCommands("login").get(0).installTo(d);
 		
-		installedCommands.findCommands("take").get(0).uninstallFrom(d);
-		installedCommands.findCommands("drop").get(0).uninstallFrom(d);
-		installedCommands.findCommands("give").get(0).uninstallFrom(d);
+		findCommands("take").get(0).uninstallFrom(d);
+		findCommands("drop").get(0).uninstallFrom(d);
+		findCommands("give").get(0).uninstallFrom(d);
 		
-		installedCommands.findCommands("look").get(0).uninstallFrom(d);
-		installedCommands.findCommands("goto").get(0).uninstallFrom(d);
-		installedCommands.findCommands("say").get(0).uninstallFrom(d);
+		findCommands("look").get(0).uninstallFrom(d);
+		findCommands("goto").get(0).uninstallFrom(d);
+		findCommands("say").get(0).uninstallFrom(d);
 	}
 }

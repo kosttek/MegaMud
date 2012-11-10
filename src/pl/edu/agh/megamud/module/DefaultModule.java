@@ -1,11 +1,7 @@
 package pl.edu.agh.megamud.module;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import pl.edu.agh.megamud.GameServer;
 import pl.edu.agh.megamud.base.Behaviour;
-import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.CyclicBehaviour;

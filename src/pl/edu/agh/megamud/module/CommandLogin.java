@@ -88,6 +88,7 @@ public class CommandLogin extends Command {
 			
 			try {
 				PlayerCreature.createDao().create(pc);
+				PlayerCreature.createDao().refresh(pc);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

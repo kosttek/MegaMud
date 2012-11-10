@@ -12,6 +12,8 @@ import pl.edu.agh.megamud.base.Module;
 import pl.edu.agh.megamud.base.NPCController;
 import pl.edu.agh.megamud.base.SimpleItem;
 import pl.edu.agh.megamud.base.SimpleModifier;
+import pl.edu.agh.megamud.dao.Player;
+import pl.edu.agh.megamud.dao.PlayerCreature;
 
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items etc.
@@ -19,7 +21,7 @@ import pl.edu.agh.megamud.base.SimpleModifier;
  */
 public class DefaultModule extends Module{
 	public String getId(){
-		return "mock";
+		return "default";
 	}
 	
 	public String getDescription(){
@@ -70,72 +72,16 @@ public class DefaultModule extends Module{
 			}
 		}.init();
 		
-		NPCController bot=new NPCController(){
-			public void onEnter(Creature otherCreature){
-				interpreteCommand("say","Welcome, useless "+otherCreature.getName()+". Find me an apple, or die!");
-			}
-			public void onItemTransfer(ItemHolder from,ItemHolder to,Item item){
-				if(to==getCreature() && from!=null && from instanceof Creature){
-					Creature fromc=(Creature)from;
-					
-					if(item.getId().equals("apple")){
-						interpreteCommand("say","Great, I like that. Have this for your quest.");
-						
-						Item prize=new SimpleItem("prize","Hiper-duper prize.");
-						prize.giveTo(getCreature());
-						
-						interpreteCommand("give","prize "+fromc.getName());
-						
-						long delay=5000L;
-						new Behaviour(to,delay){
-							public void action(){
-								interpreteCommand("say","Hahahaha, I tricked you. Watch as your dreams perish.");
-							}
-						}.init();
-						new Behaviour(prize,delay){
-							public void action(){
-								Item i=(Item)owner;
-								i.giveTo(null);
-							}
-						}.init();
-						
-						fromc.addModifier(new SimpleModifier(fromc, "power", +10, delay));
-					}else{
-						interpreteCommand("say","I don't want this, I want an apple!");
-						interpreteCommand("give","apple "+fromc.getName());
-					}
-				}
-			}
-		};
-		final Creature botCreature=new Creature("Hohlik");
-		final Location botRoom=GameServer.getInstance().getStartLocation();
+		NPCController bot=new SampleBot();
 		
-		botCreature.setKlass("Troll");
+		final Creature botCreature=new Creature("Hohlik");
 		botCreature.setLevel(100);
-		botCreature.setHp(666);
-		botCreature.setMaxHp(666);
+		botCreature.setHp(66666);
+		
+		final Location botRoom=GameServer.getInstance().getStartLocation();
 		
 		installNPC(bot,botCreature,botRoom);
 		
-		Item botBall=new Item("ball","Extreme expensive NIKE-signed foot-ball."){
-			protected boolean canBeGivenTo(ItemHolder owner) {
-				return owner==botCreature || owner==botRoom;
-			}
-			
-		};
-		botBall.giveTo(botRoom);
-		new CyclicBehaviour(botCreature,2500L){
-			public void action() {
-				Creature owner = (Creature) getOwner();
-				Controller con=owner.getController();
-				
-				if(owner.getItems().size()==0){
-					con.interpreteCommand("take", "ball");
-				}else{
-					con.interpreteCommand("drop", "ball");
-				}
-			}
-		}.init();
 	}
 	
 	public void onNewController(Controller c){
@@ -167,14 +113,6 @@ public class DefaultModule extends Module{
 		findCommands("look").get(0).installTo(d);
 		findCommands("goto").get(0).installTo(d);
 		findCommands("say").get(0).installTo(d);
-		
-		c.setHp(100);
-		c.setMaxHp(100);
-		c.setLevel(1);
-		c.setExp(0);
-		c.setExpNeeded(5);
-		
-		c.getAttributes().put("power", 1L);
 	}
 	
 	public void onKillCreature(Creature c){

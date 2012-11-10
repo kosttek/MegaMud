@@ -1,15 +1,17 @@
 package pl.edu.agh.megamud.base;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import pl.edu.agh.megamud.dao.PlayerCreature;
-import pl.edu.agh.megamud.dao.Profession;
+<<<<<<< HEAD
+=======
+import pl.edu.agh.megamud.dao.Item;
+import pl.edu.agh.megamud.mockdata.MockCommands1;
 
+>>>>>>> 45f3289f7457eb2866c814fcca4734ac9d693fd6
 /**
  * A "creature", object/person that we can interact with.
  */
@@ -28,120 +30,73 @@ public class Creature extends ItemHolder{
 	protected Location location=null;
 	
 	/**
-	 * In-database representation.
+	 * Class ID from database.
 	 */
-	protected PlayerCreature dbCreature;
-	
-	protected Profession profession=Profession.DEFAULT;
-	private int level;
-	private int hp;
-	private int expNeeded;
-	private int exp;
-	
-	public PlayerCreature getDbCreature() {
-		return dbCreature;
-	}
-	
-	public void setDbCreature(PlayerCreature dbCreature) {
-		this.dbCreature = dbCreature;
-		
-		this.profession=dbCreature.getProfession();
-		this.level=dbCreature.getLevel();
-		this.hp=dbCreature.getHp();
-		this.exp=dbCreature.getExp();
-		this.expNeeded=dbCreature.getExp_needed();
-	}
-	
-	// @todo integrate with db
+	protected String klass;
+	protected int hp=100;
+	protected int maxHp=100;
+
+	protected int level=0;
+	protected int exp=0, expNeeded=0;
 	protected Map<String,Long> attributes=new HashMap<String,Long>();
 	protected List<Modifier> modifiers=new LinkedList<Modifier>();
 	
 	public void setName(String name) {
-		this.name=name;
-		if(this.dbCreature!=null){
-			this.dbCreature.setName(name);
-			this.commit();
-		}
+		this.name = name;
 	}
-	
-	public void commit(){
-		if(this.dbCreature==null)
-			return;
-		try{
-			PlayerCreature.createDao().update(this.dbCreature);
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
+	public void setInitialLocation(Location location) {
+		this.location = location;
 	}
 	public void setHp(int hp) {
-		this.hp=hp;
-		if(this.dbCreature!=null){
-			this.dbCreature.setHp(hp);
-			this.commit();
-		}
+		this.hp = hp;
+	}
+	public void setMaxHp(int maxHp) {
+		this.maxHp = maxHp;
 	}
 	public void setLevel(int level) {
-		this.level=level;
-		if(this.dbCreature!=null){
-			this.dbCreature.setLevel(level);
-			this.commit();
-		}
+		this.level = level;
 	}
 	public void setExp(int exp) {
-		this.exp=exp;
-		if(this.dbCreature!=null){
-			this.dbCreature.setHp(exp);
-			this.commit();
-		}
+		this.exp = exp;
 	}
 	public void setExpNeeded(int expNeeded) {
-		this.expNeeded=expNeeded;
-		if(this.dbCreature!=null){
-			this.dbCreature.setExp_needed(expNeeded);
-			this.commit();
-		}
+		this.expNeeded = expNeeded;
 	}
-	
 	public void setModifiers(List<Modifier> modifiers) {
 		this.modifiers = modifiers;
 	}
 	public List<Modifier> getModifiers() {
-		return this.modifiers;
+		return modifiers;
 	}
-	
-	public void setProfession(Profession profession) {
-		this.profession=profession;
-		if(this.dbCreature!=null){
-			this.dbCreature.setProfession(profession);
-			this.commit();
-		}
+	public int getMaxHp() {
+		return maxHp;
 	}
-	
+	public String getKlass() {
+		return klass;
+	}
+	public void setKlass(String propClass) {
+		this.klass = propClass;
+	}
 	public int getHp() {
-		return this.hp;
+		return hp;
 	}
-	
 	public int getLevel() {
-		return this.level;
+		return level;
 	}
-	
 	public int getExp() {
-		return this.exp;
+		return exp;
 	}
 	public int getExpNeeded() {
-		return this.expNeeded;
+		return expNeeded;
 	}
 	public Map<String, Long> getAttributes() {
-		return this.attributes;
+		return attributes;
 	}
 	public final Controller getController(){
-		return this.controller;
+		return controller;
 	}
-	public String getName(){
-		return this.name;
-	}
-	public Profession getProfession(){
-		return this.profession;
+	public final String getName(){
+		return name;
 	}
 	
 	public Creature(String name){
@@ -177,7 +132,7 @@ public class Creature extends ItemHolder{
 	 * Moves creature to other location. Optionally provide an exit name for notifications.
 	 * @todo Write this to database.
 	 */
-	public void setLocation(Location exit,String exitName){
+	public final void setLocation(Location exit,String exitName){
 		if(location!=null){
 			for(Command cmd:location.getAllCommands()){
 				removeCommand(cmd);
@@ -196,7 +151,6 @@ public class Creature extends ItemHolder{
 			}
 			location.onAddCreature(this);
 		}
-		//@todo write to db
 	}
 	
 	/**
@@ -219,22 +173,13 @@ public class Creature extends ItemHolder{
 	 * @todo Write this to database
 	 */
 	public void giveExp(int num){
-		int exp=this.getExp();
-		int expn=this.getExpNeeded();
-		int lev=this.getLevel();
-		
-		exp+=num;
-		while(exp>=expn){
+		this.exp+=num;
+		while(this.exp>=this.expNeeded){
 			//TODO sensowne wartoci?
-			exp-=expn;
-			expn*=1.2;
-			lev++;
+			this.exp-=this.expNeeded;
+			this.expNeeded*=1.2;
+			this.level++;
 		}
-		
-		this.setExp(exp);
-		this.setExpNeeded(expn);
-		this.setLevel(lev);
-		this.commit();
 	}
 	
 	/**
@@ -243,12 +188,13 @@ public class Creature extends ItemHolder{
 	 * @todo Write this to database
 	 */
 	public void giveHp(int num){
-		int hp=this.getHp();
-		hp+=num;
-		if(hp<=0){
+		this.hp+=num;
+		if(this.hp<=0){
 			//TODO die
 		}
-		this.setHp(hp);
+		if(this.hp>=this.maxHp){
+			this.hp=this.maxHp;
+		}
 	}
 	
 	/**

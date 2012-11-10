@@ -5,8 +5,8 @@ import java.util.Iterator;
 import pl.edu.agh.megamud.base.Behaviour;
 import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Modifier;
-import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Controller;
+import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Item;
 
 public class CommandInfo extends Command {
@@ -17,9 +17,10 @@ public class CommandInfo extends Command {
 	public boolean interprete(Controller user, String command) {
 		if(user.getCreature()==null)
 			return false;
+		
 		Creature c=user.getCreature();
 		
-		user.write("You are a "+c.getKlass()+" LV"+c.getLevel()+" (exp:"+c.getExp()+"/"+c.getExpNeeded()+") HP"+c.getHp()+"/"+c.getMaxHp()+"\r\n");
+		user.write("You are a "+c.getProfession().getName()+" LV"+c.getLevel()+" (exp:"+c.getExp()+"/"+c.getExpNeeded()+") HP"+c.getHp()+"\r\n");
 		
 		String s="";
 		for(Iterator<String> i=c.getAttributes().keySet().iterator();i.hasNext();){
@@ -46,7 +47,7 @@ public class CommandInfo extends Command {
 		}
 		
 		for(Item i:c.getItems().values()){
-			user.write("You have "+ i.getId()+" - "+i.getDescription());
+            user.write("You have "+ i.getName()+" - "+i.getDescription());
 		}
 		
 		return true;

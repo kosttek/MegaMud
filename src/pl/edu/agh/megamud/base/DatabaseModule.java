@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.megamud.GameServer;
+import pl.edu.agh.megamud.dao.Player;
+import pl.edu.agh.megamud.dao.PlayerCreature;
 
 /**
  * A module that grabs possible locations and NPCs from database.
@@ -67,17 +69,21 @@ public abstract class DatabaseModule extends Module{
 		for(;;){
 			String npcId="id";
 			String creatureName="name";
-			String creatureClass="pl.edu.agh.megamud.Base.NPCController";
+			String npcController="pl.edu.agh.megamud.Base.NPCController";
 			
 			String creatureLocation="start";
 			
 			try{
 				@SuppressWarnings("unchecked")
-				Class<NPCController> klazz=(Class<NPCController>) Class.forName(creatureClass);
+				Class<NPCController> klazz=(Class<NPCController>) Class.forName(npcController);
 				Constructor<NPCController> cons=klazz.getConstructor();
 				NPCController bot=cons.newInstance();
-						
+				
+				Player p=new Player();
+				PlayerCreature pc=new PlayerCreature(p);
+				
 				Creature c=new Creature(creatureName);
+				c.setDbCreature(pc);
 				
 				Location loc=GameServer.getInstance().getLocation(creatureLocation);
 				

@@ -1,18 +1,15 @@
 package pl.edu.agh.megamud.dao.base;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import pl.edu.agh.megamud.base.DbManager;
-import pl.edu.agh.megamud.dao.Player;
+import pl.edu.agh.megamud.dao.*;
 
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.*;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "player")
 public abstract class PlayerBase{
     @DatabaseField(id = true)
     private String login;    
@@ -47,6 +44,24 @@ public abstract class PlayerBase{
 		this.priviledges = priviledges;
 	}	
 	
+	@ForeignCollectionField(eager = true)
+	private ForeignCollection<PlayerCreature> playerCreatures;
+	
+	
+	public ForeignCollection<PlayerCreature> getPlayerCreatures() {
+		try {
+			createDao().refresh((Player) this);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return playerCreatures;
+	}
+
+	public void setPlayerCreatures(ForeignCollection<PlayerCreature> playerCreatures) {
+		this.playerCreatures = playerCreatures;
+	}
+
 	public PlayerBase() {
     	// all persisted classes must define a no-arg constructor with at least package visibility
     }

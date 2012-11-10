@@ -3,6 +3,8 @@ package pl.edu.agh.megamud.base;
 import java.util.Iterator;
 import java.util.List;
 
+import pl.edu.agh.megamud.dao.Player;
+
 
 /**
  * Abstraction of a "controller" of a creature. Controler is a brain for a creature. Receives various events, can control creature's behaviour and initiates commands.
@@ -13,6 +15,19 @@ public abstract class Controller extends CommandCollector{
 	 */
 	protected Creature creature=null;
 	
+	/**
+	 * In-database representation.
+	 */
+	protected Player dbPlayer=null;
+	
+	public Player getDbPlayer() {
+		return dbPlayer;
+	}
+
+	public void setDbPlayer(Player dbPlayer) {
+		this.dbPlayer = dbPlayer;
+	}
+
 	public Controller(){
 	}
 	

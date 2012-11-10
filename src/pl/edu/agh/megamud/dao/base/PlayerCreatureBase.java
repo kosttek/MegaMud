@@ -40,8 +40,8 @@ public abstract class PlayerCreatureBase {
 	@DatabaseField(canBeNull = false, defaultValue = "100")
 	private Integer exp_needed;
 	
-	@DatabaseField(foreign = true, canBeNull = true, foreignAutoRefresh = true)
-	private Profession profession;
+	@DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
+	private Profession profession=Profession.DEFAULT;
 	
 	@ForeignCollectionField(eager = true)
 	private ForeignCollection<CreatureItem> creatureItems;

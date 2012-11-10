@@ -13,6 +13,7 @@ import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.PlayerController;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
+import pl.edu.agh.megamud.dao.Profession;
 
 public class CommandLogin extends Command {
 	public String getName(){
@@ -83,7 +84,8 @@ public class CommandLogin extends Command {
 			pc.setExp(0);
 			pc.setExp_needed(5);
 			pc.setLevel(1);
-			pc.setProfession(null); //@todo
+			pc.setHp(100);
+			pc.setProfession(Profession.DEFAULT);
 			pc.setName(player.getLogin()+"_XXX");
 			
 			try {

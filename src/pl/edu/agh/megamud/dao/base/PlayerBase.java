@@ -8,7 +8,6 @@ import pl.edu.agh.megamud.dao.*;
 import com.j256.ormlite.dao.*;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
-import com.j256.ormlite.table.DatabaseTable;
 
 public abstract class PlayerBase{
     @DatabaseField(id = true)

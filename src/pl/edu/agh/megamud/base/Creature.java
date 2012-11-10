@@ -56,12 +56,13 @@ public class Creature extends ItemHolder{
 	protected Map<String,Long> attributes=new HashMap<String,Long>();
 	protected List<Modifier> modifiers=new LinkedList<Modifier>();
 	
-	public void setName(String name) {
+	public Creature setName(String name) {
 		this.name=name;
 		if(this.dbCreature!=null){
 			this.dbCreature.setName(name);
 			this.commit();
 		}
+		return this;
 	}
 	
 	public void commit(){
@@ -73,48 +74,54 @@ public class Creature extends ItemHolder{
 			e.printStackTrace();
 		}
 	}
-	public void setHp(int hp) {
+	public Creature setHp(int hp) {
 		this.hp=hp;
 		if(this.dbCreature!=null){
 			this.dbCreature.setHp(hp);
 			this.commit();
 		}
+		return this;
 	}
-	public void setLevel(int level) {
+	public Creature setLevel(int level) {
 		this.level=level;
 		if(this.dbCreature!=null){
 			this.dbCreature.setLevel(level);
 			this.commit();
 		}
+		return this;
 	}
-	public void setExp(int exp) {
+	public Creature setExp(int exp) {
 		this.exp=exp;
 		if(this.dbCreature!=null){
 			this.dbCreature.setHp(exp);
 			this.commit();
 		}
+		return this;
 	}
-	public void setExpNeeded(int expNeeded) {
+	public Creature setExpNeeded(int expNeeded) {
 		this.expNeeded=expNeeded;
 		if(this.dbCreature!=null){
 			this.dbCreature.setExp_needed(expNeeded);
 			this.commit();
 		}
+		return this;
 	}
 	
-	public void setModifiers(List<Modifier> modifiers) {
+	public Creature setModifiers(List<Modifier> modifiers) {
 		this.modifiers = modifiers;
+		return this;
 	}
 	public List<Modifier> getModifiers() {
 		return this.modifiers;
 	}
 	
-	public void setProfession(Profession profession) {
+	public Creature setProfession(Profession profession) {
 		this.profession=profession;
 		if(this.dbCreature!=null){
 			this.dbCreature.setProfession(profession);
 			this.commit();
 		}
+		return this;
 	}
 	
 	public int getHp() {

@@ -1,19 +1,12 @@
 package pl.edu.agh.megamud.module;
 
 import pl.edu.agh.megamud.GameServer;
-import pl.edu.agh.megamud.base.Behaviour;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.CyclicBehaviour;
-import pl.edu.agh.megamud.base.Item;
-import pl.edu.agh.megamud.base.ItemHolder;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.Module;
-import pl.edu.agh.megamud.base.NPCController;
 import pl.edu.agh.megamud.base.SimpleItem;
-import pl.edu.agh.megamud.base.SimpleModifier;
-import pl.edu.agh.megamud.dao.Player;
-import pl.edu.agh.megamud.dao.PlayerCreature;
 
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items etc.
@@ -72,16 +65,7 @@ public class DefaultModule extends Module{
 			}
 		}.init();
 		
-		NPCController bot=new SampleBot();
-		
-		final Creature botCreature=new Creature("Hohlik");
-		botCreature.setLevel(100);
-		botCreature.setHp(66666);
-		
-		final Location botRoom=GameServer.getInstance().getStartLocation();
-		
-		installNPC(bot,botCreature,botRoom);
-		
+		installNPC(new SampleBot(),new Creature("Hohlik").setLevel(100).setHp(666),GameServer.getInstance().getStartLocation());
 	}
 	
 	public void onNewController(Controller c){

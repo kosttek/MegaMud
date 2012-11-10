@@ -11,14 +11,17 @@ import pl.edu.agh.megamud.base.SimpleItem;
 import pl.edu.agh.megamud.base.SimpleModifier;
 
 public class SampleBot extends NPCController {
-	private Item ball=null;
+	private Item ball;
+	private CyclicBehaviour ballBehaviour;
 	
 	public SampleBot(){
 		super();
 	}
+	
 	public void onEnter(Creature otherCreature){
 		interpreteCommand("say","Welcome, useless "+otherCreature.getName()+". Find me an apple, or die!");
 	}
+	
 	public void onItemTransfer(ItemHolder from,ItemHolder to,Item item){
 		if(to==getCreature() && from!=null && from instanceof Creature){
 			Creature fromc=(Creature)from;
@@ -53,6 +56,11 @@ public class SampleBot extends NPCController {
 	}
 	
 	public void setLocation(Location exit,String exitName){
+		if(ball!=null){
+			ball.giveTo(null);
+			ballBehaviour.setDone(true);
+		}
+		
 		ball=new Item("ball","Extreme expensive NIKE-signed foot-ball."){
 			protected boolean canBeGivenTo(ItemHolder owner) {
 				return owner==SampleBot.this.getCreature() || owner==SampleBot.this.getCreature().getLocation();
@@ -60,7 +68,8 @@ public class SampleBot extends NPCController {
 			
 		};
 		ball.giveTo(getCreature());
-		new CyclicBehaviour(getCreature().getLocation(),2500L){
+		
+		ballBehaviour=(CyclicBehaviour)new CyclicBehaviour(getCreature().getLocation(),2500L){
 			public void action() {
 				Creature owner = (Creature) getOwner();
 				

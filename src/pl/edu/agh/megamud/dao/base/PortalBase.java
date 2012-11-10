@@ -8,24 +8,22 @@ import pl.edu.agh.megamud.dao.Portal;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 
-public abstract class LocationBase {
+public abstract class PortalBase {
 
 	@DatabaseField(generatedId = true)
 	private Integer id;
 	
 	@DatabaseField(canBeNull = false)
 	private String name;
-	
-	@DatabaseField(canBeNull = false)
-	private String description;
-	
-	@ForeignCollectionField(eager = true)
-	private ForeignCollection<Portal> exits;	
 
+	@DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
+	private Location entry;
+	
+	@DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
+	private Location destination;
+	
 	public String getName() {
 		return name;
 	}
@@ -38,29 +36,29 @@ public abstract class LocationBase {
 		return id;
 	}
 
-	public String getDescription() {
-		return description;
+	public Location getEntry() {
+		return entry;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public ForeignCollection<Portal> getExits() {
-		return exits;
+	public void setEntry(Location entry) {
+		this.entry = entry;
 	}
 
-	public void setExits(ForeignCollection<Portal> exits) {
-		this.exits = exits;
+	public Location getDestination() {
+		return destination;
 	}
 
-	public LocationBase(){
+	public void setDestination(Location destination) {
+		this.destination = destination;
+	}
+
+	public PortalBase(){
 		
 	}
 	
-	public static Dao<Location, Integer> createDao(){
+	public static Dao<Portal, Integer> createDao(){
 		try {
-			return DaoManager.createDao(DbManager.getConnectionSource(), Location.class);
+			return DaoManager.createDao(DbManager.getConnectionSource(), Portal.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

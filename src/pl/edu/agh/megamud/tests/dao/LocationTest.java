@@ -45,27 +45,36 @@ public class LocationTest extends TestBase{
 		assertTrue(location.getId() != null);
 	}
 	
-//	@Test
-//	public void should_get_attributes_items() throws SQLException{
-//		super.resetAttribute();
-//		super.resetItem();
-//		
-//		ItemAttribute ia1 = new ItemAttribute();
-//		ia1.setAttribute(predefinedAttribute);
-//		ia1.setItem(predefinedItem);
-//		itemAttributeDao.create(ia1);
-//		
-//		ItemAttribute ia2 = new ItemAttribute();
-//		ia2.setAttribute(predefinedAttribute);
-//		ia2.setItem(predefinedItem);
-//		itemAttributeDao.create(ia2);
-//
-//		ItemAttribute ia3 = new ItemAttribute();
-//		ia3.setAttribute(predefinedAttribute);
-//		ia3.setItem(predefinedItem);
-//		itemAttributeDao.create(ia3);
-//		
-//		attributeDao.refresh(predefinedAttribute);
-//		assertEquals(3, predefinedAttribute.getItemAttributes().size());		
-//	}		
+	@Test
+	public void should_get_exits() throws SQLException{
+		Location location1 = new Location();
+		location1.setName("Big room");
+		location1.setDescription("Some very large room");
+		locationDao.create(location1);
+
+		Location location2 = new Location();
+		location2.setName("Medium room");
+		location2.setDescription("The room seems rather boring. Nothing special about it.");
+		locationDao.create(location2);
+		
+		Location location3 = new Location();
+		location3.setName("Small room");
+		location3.setDescription("This room makes you feel claustrophobic!");
+		locationDao.create(location3);
+		
+		Portal p1 = new Portal();
+		p1.setEntry(location1);
+		p1.setDestination(location2);
+		p1.setName("Door");
+		portalDao.create(p1);
+		
+		Portal p2 = new Portal();
+		p2.setEntry(location1);
+		p2.setDestination(location3);
+		p2.setName("stairs");
+		portalDao.create(p2);
+		
+		locationDao.refresh(location1);
+		assertEquals(2, location1.getExits().size());		
+	}		
 }

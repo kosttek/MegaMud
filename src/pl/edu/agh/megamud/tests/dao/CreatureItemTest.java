@@ -31,11 +31,15 @@ public class CreatureItemTest extends TestBase{
 		creatureItemDao.create(creatureItem);
 	}
 	
-	@Test(expected = SQLException.class)
-	public void should_not_create_without_player_creature() throws SQLException{
+	@Test
+	public void should_create_without_player_creature() throws SQLException{
 		CreatureItem creatureItem = new CreatureItem();
 		creatureItem.setItem(predefinedItem);
-		creatureItemDao.create(creatureItem);		
+		creatureItemDao.create(creatureItem);
+		creatureItemDao.refresh(creatureItem);
+		
+		Assert.assertNotNull(creatureItem.getId());
+		Assert.assertTrue(creatureItem.getId() != 0);
 	}
 	
 	@Test

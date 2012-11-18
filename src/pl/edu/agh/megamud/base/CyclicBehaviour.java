@@ -7,7 +7,7 @@ package pl.edu.agh.megamud.base;
  * A behaviour run cyclicly - every specified time.
  */
 public abstract class CyclicBehaviour extends Behaviour {
-	public CyclicBehaviour(Object o,long delay) {
+	public CyclicBehaviour(BehaviourHolderInterface o,long delay) {
 		super(o,delay);
 	}
 	
@@ -15,8 +15,11 @@ public abstract class CyclicBehaviour extends Behaviour {
 	
 	public void makeAction(){
 		action();
-		if(!isDone())
+		if(!isDone()){
 			put();
+		}else{
+//			owner.removeBehaviour(this);
+		}
 	}
 	public boolean isDone() {
 		return done;

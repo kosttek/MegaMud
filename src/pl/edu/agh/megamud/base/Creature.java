@@ -1,24 +1,24 @@
 package pl.edu.agh.megamud.base;
 
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import com.j256.ormlite.dao.ForeignCollection;
-
+import pl.edu.agh.megamud.GameServer;
 import pl.edu.agh.megamud.dao.CreatureAttribute;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Profession;
 import pl.edu.agh.megamud.mechanix.MockAtributes;
 
+import com.j256.ormlite.dao.ForeignCollection;
+
 /**
  * A "creature", object/person that we can interact with.
  */
-public class Creature extends ItemHolder{
+public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	/**
 	 * Its name.
 	 */
@@ -36,6 +36,8 @@ public class Creature extends ItemHolder{
 	 * In-database representation.
 	 */
 	protected PlayerCreature dbCreature;
+	
+	private BehaviourHolder behaviourHolder = new BehaviourHolder();
 	
 	protected Profession profession=Profession.DEFAULT;
 	private int level;
@@ -140,6 +142,17 @@ public class Creature extends ItemHolder{
 		return this.hp;
 	}
 	
+	public boolean addDamage(int hpMinus){
+		hp-= hpMinus;
+		if(hp <=0 ){
+			//TODO Death
+//			getLocation().getCreatures
+			GameServer.getInstance().killCreature(this);
+			return true;
+		}
+		return false;
+	}
+	
 	public int getLevel() {
 		return this.level;
 	}
@@ -189,6 +202,8 @@ public class Creature extends ItemHolder{
 			controller.removeCommand(cmd);
 		}
 		this.controller=null;
+		location.getCreatures().remove(name);
+		location = null;
 	}
 	
 	public final Location getLocation(){
@@ -324,6 +339,32 @@ public class Creature extends ItemHolder{
 	}
 	public void onItemDisappear(Item i,ItemHolder to){
 		getController().onItemDisappear(i, to);
+	}
+
+	@Override
+	public List<Behaviour> getBehaviourList() {
+		return behaviourHolder.getBehaviourList();
+	}
+
+	@Override
+	public void setBehaviourList(List<Behaviour> list) {
+		behaviourHolder.setBehaviourList(list);
+	}
+
+	@Override
+	public void addBehaviour(Behaviour behaviour) {
+		behaviourHolder.addBehaviour(behaviour);
+	}
+
+	@Override
+	public void removeBehaviour(Behaviour behaviour) {
+		behaviourHolder.removeBehaviour(behaviour);
+		
+	}
+
+	@Override
+	public List<Behaviour> getBehaviourByType(Class clazz) {
+		return behaviourHolder.getBehaviourByType(clazz);
 	}
 
 	

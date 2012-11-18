@@ -35,17 +35,17 @@ public class SampleBot extends NPCController {
 				interpreteCommand("give","prize "+fromc.getName());
 				
 				long delay=5000L;
-				new Behaviour(to,delay){
-					public void action(){
-						interpreteCommand("say","Hahahaha, I tricked you. Watch as your dreams perish.");
-					}
-				}.init();
-				new Behaviour(prize,delay){
-					public void action(){
-						Item i=(Item)owner;
-						i.giveTo(null);
-					}
-				}.init();
+//				new Behaviour(to,delay){
+//					public void action(){
+//						interpreteCommand("say","Hahahaha, I tricked you. Watch as your dreams perish.");
+//					}
+//				}.init();
+//				new Behaviour(prize,delay){
+//					public void action(){
+//						Item i=(Item)owner;
+//						i.giveTo(null);
+//					}
+//				}.init();
 				
 				fromc.addModifier(new SimpleModifier(fromc, "power", +10, delay));
 			}else{

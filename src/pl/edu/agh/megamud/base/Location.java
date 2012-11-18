@@ -1,13 +1,15 @@
 package pl.edu.agh.megamud.base;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * A location in our world. Location has its description, exits and creatures inside.
  * A location can serve a controller own commands (thus it extends CommandCollector).
  */
-public class Location extends ItemHolder {
+public class Location extends ItemHolder implements BehaviourHolderInterface{
+	private BehaviourHolder behaviourHolder = new BehaviourHolder();
 	private Map<String,Location> exits = new HashMap<String,Location>();
 	private Map<String,Creature> creatures = new HashMap<String,Creature>();
 	private String id;
@@ -120,5 +122,32 @@ public class Location extends ItemHolder {
 		
 		return desc;
 	}
+	
+	@Override
+	public List<Behaviour> getBehaviourList() {
+		return behaviourHolder.getBehaviourList();
+	}
+
+	@Override
+	public void setBehaviourList(List<Behaviour> list) {
+		behaviourHolder.setBehaviourList(list);
+	}
+
+	@Override
+	public void addBehaviour(Behaviour behaviour) {
+		behaviourHolder.addBehaviour(behaviour);
+	}
+
+	@Override
+	public void removeBehaviour(Behaviour behaviour) {
+		behaviourHolder.removeBehaviour(behaviour);
+		
+	}
+
+	@Override
+	public List<Behaviour> getBehaviourByType(Class<Behaviour> clazz) {
+		return behaviourHolder.getBehaviourByType(clazz);
+	}
+
 
 }

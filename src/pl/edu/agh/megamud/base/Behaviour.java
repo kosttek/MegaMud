@@ -6,12 +6,14 @@ package pl.edu.agh.megamud.base;
 
 /**
  * Abstraction of a "action" that a creature can do.
+ * Behaviur should last short(time) beacouse it takes time of the eventmanager 
+ * which is on another thread but all beahaviours are running on this eventmanager thread
  **/
 public abstract class Behaviour {
 	/**
 	 * An owner of this behaviour. Behaviour will work on this creature.
 	 */
-	protected Object owner;
+	protected BehaviourHolderInterface owner;
 	/**
 	 * Delay after which behaviour will run.
 	 */
@@ -33,10 +35,17 @@ public abstract class Behaviour {
 		return nextTime;
 	}
 
-	public Behaviour(Object o,long delay){
+	public Behaviour(BehaviourHolderInterface o,long delay){
 		this.owner=o;
 		this.delay=delay;
+		installBehaviourInHoleder();
 	}
+	
+	public void installBehaviourInHoleder(){
+		owner.addBehaviour(this);
+	}
+	
+	
 	
 	public Object getOwner(){
 		return owner;
@@ -49,8 +58,9 @@ public abstract class Behaviour {
 	/**
 	 * Initialize a behaviour.
 	 */
-	public final Behaviour init(){
+	public Behaviour init(){
 		put();
+	
 		return this;
 	}
 	
@@ -59,6 +69,7 @@ public abstract class Behaviour {
 	 */
 	public void makeAction(){
 		action();
+//		owner.removeBehaviour(this);
 	}
 	
 	/**
@@ -67,6 +78,7 @@ public abstract class Behaviour {
 	protected final void put(){
 		nextTime=EventManager.getInstance().put(new Long(delay), this);
 	}
+	
 }
 
 

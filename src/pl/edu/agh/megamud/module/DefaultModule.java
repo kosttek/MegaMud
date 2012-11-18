@@ -13,6 +13,8 @@ import pl.edu.agh.megamud.base.itemtype.Weapon;
 import pl.edu.agh.megamud.dao.Portal;
 import pl.edu.agh.megamud.dao.base.LocationBase;
 import pl.edu.agh.megamud.dao.base.PortalBase;
+import pl.edu.agh.megamud.mechanix.CommandHit;
+import pl.edu.agh.megamud.mechanix.FightBehaviour;
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items etc.
  * @author Tomasz
@@ -67,7 +69,7 @@ public class DefaultModule extends DatabaseModule{
 		
 		//Commands
 		installCommand(new CommandEquip());
-		
+		installCommand(new CommandHit());
 		installCommand(new CommandUnequip());
 		installCommand(new CommandExit());
 		installCommand(new CommandGoto());
@@ -99,6 +101,9 @@ Weapon sword = new Weapon("sword", "little rusty sword");
 		}.init();
 		
 		installNPC(new SampleBot(),new Creature("Hohlik").setLevel(100).setHp(666),GameServer.getInstance().getStartLocation());
+		Creature rat =new Creature("rat").setLevel(1).setHp(34);
+		rat.addBehaviour(new FightBehaviour(rat));
+		installNPC(new SampleBot(),rat,GameServer.getInstance().getStartLocation());
 	}
 	
 	public void onNewController(Controller c){
@@ -124,6 +129,7 @@ Weapon sword = new Weapon("sword", "little rusty sword");
 		findCommands("info").get(0).installTo(d);
 		findCommands(CommandEquip.commandString).get(0).installTo(d);
 		findCommands(CommandUnequip.commandString).get(0).installTo(d);
+		findCommands(CommandHit.commandString).get(0).installTo(d);
 		
 		findCommands("take").get(0).installTo(d);
 		findCommands("drop").get(0).installTo(d);
@@ -136,12 +142,14 @@ Weapon sword = new Weapon("sword", "little rusty sword");
 	
 	public void onKillCreature(Creature c){
 		Controller d=c.getController();
-		
+		if(d == null)
+			return;
 		findCommands("info").get(0).uninstallFrom(d);
 		findCommands("login").get(0).installTo(d);
 		
 		findCommands(CommandEquip.commandString).get(0).uninstallFrom(d);
 		findCommands(CommandUnequip.commandString).get(0).uninstallFrom(d);
+		findCommands(CommandHit.commandString).get(0).uninstallFrom(d);
 		findCommands("take").get(0).uninstallFrom(d);
 		findCommands("drop").get(0).uninstallFrom(d);
 		findCommands("give").get(0).uninstallFrom(d);

@@ -7,7 +7,7 @@ import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.itemtype.ItemToWorn;
 
 public class CommandUnequip extends Command {
-	static final String commandString = "unequip";
+	public static final String commandString = "unequip";
 	public String getName(){
 		return commandString;
 	}

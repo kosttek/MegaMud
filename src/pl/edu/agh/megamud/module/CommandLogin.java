@@ -15,6 +15,7 @@ import pl.edu.agh.megamud.base.PlayerController;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Profession;
+import pl.edu.agh.megamud.mechanix.FightBehaviour;
 import pl.edu.agh.megamud.mechanix.InitMechanix;
 
 public class CommandLogin extends Command {
@@ -103,6 +104,7 @@ public class CommandLogin extends Command {
 		Location loc=GameServer.getInstance().getStartLocation();
 		Creature c=new Creature(pc.getName());
 		InitMechanix.initEquipment(c);
+		c.addBehaviour(new FightBehaviour(c));
 		c.setDbCreature(pc);
 		
 		GameServer.getInstance().initCreature(user,c);

@@ -9,10 +9,15 @@ import pl.edu.agh.megamud.base.CyclicBehaviour;
 import pl.edu.agh.megamud.base.DatabaseModule;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.SimpleItem;
+<<<<<<< HEAD
 import pl.edu.agh.megamud.base.itemtype.Weapon;
+=======
 import pl.edu.agh.megamud.dao.Portal;
 import pl.edu.agh.megamud.dao.base.LocationBase;
+import pl.edu.agh.megamud.dao.base.ModuleBase;
 import pl.edu.agh.megamud.dao.base.PortalBase;
+>>>>>>> origin/master
+
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items etc.
  * @author Tomasz
@@ -66,9 +71,8 @@ public class DefaultModule extends DatabaseModule{
 		super.init();
 		
 		//Commands
-		installCommand(new CommandEquip());
-		
 		installCommand(new CommandUnequip());
+		installCommand(new CommandEquip());
 		installCommand(new CommandExit());
 		installCommand(new CommandGoto());
 		installCommand(new CommandHelp());
@@ -83,18 +87,40 @@ public class DefaultModule extends DatabaseModule{
 		installCommand(new CommandSay());
 		
 		installCommand(new CommandKill());
-Weapon sword = new Weapon("sword", "little rusty sword");
-		sword.giveTo(GameServer.getInstance().getLocation("p2"));
 		
+<<<<<<< HEAD
+		// Locations	
+		Location loc1 = new Location("start","Pokoj 1",this);
+		Location loc2 = new Location("p2","pokoj 2",this);
+		Location loc3 = new Location("p3","pokoj 3",this);
+		
+		loc1.addExit("drzwi", loc2);
+		loc2.addExit("drzwi", loc1);
+		loc2.addExit("schody", loc3);
+		loc3.addExit("schody", loc2);
+		
+		
+		
+		installLocation(loc1);
+		installLocation(loc2);
+		installLocation(loc3);
+		
+		Weapon sword = new Weapon("sword", "little rusty sword");
+		sword.giveTo(loc1);
+		
+		new CyclicBehaviour(loc2,1000L){
+=======
 		new CyclicBehaviour(GameServer.getInstance().getLocation("p2"),1000L){
+>>>>>>> origin/master
 			protected void action() {
-				Location c=(Location)owner;
+		 		Location c=(Location)owner;
 				
 				if(c.getItems().containsKey("apple"))
 					return;
 				
-				SimpleItem it=new SimpleItem("apple","Precious, golden apple.");
+				SimpleItem it=new SimpleItem("apple","Precious, golden appleee.");
 				it.giveTo(c);
+				
 			}
 		}.init();
 		

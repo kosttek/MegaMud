@@ -31,7 +31,6 @@ public class Player extends PlayerBase {
 				return null;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -52,7 +51,6 @@ public class Player extends PlayerBase {
 				return null;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -71,9 +69,8 @@ public class Player extends PlayerBase {
 			byte[] thedigest = md.digest(bytesOfMessage);
 			return Arrays.toString(thedigest);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return ""; // TODO Fuck?
+			return "";
 		}		
 	}
 	

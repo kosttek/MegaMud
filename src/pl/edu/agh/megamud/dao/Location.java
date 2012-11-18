@@ -12,7 +12,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "location")
 public class Location extends LocationBase{
 	
-	public void connectTo(Location destination, String exitName) throws SQLException{
+	public Location connectTo(Location destination, String exitName) throws SQLException{
 		Portal outgoing = new Portal(exitName);
 		Portal incoming = new Portal(exitName);
 		
@@ -25,6 +25,8 @@ public class Location extends LocationBase{
 		Dao<Portal, Integer> portalDao  = Portal.createDao();
 		portalDao.create(outgoing);
 		portalDao.create(incoming);
+		
+		return this;
 	}
 	
 	public Portal getExitByName(String name) throws SQLException{
@@ -49,11 +51,13 @@ public class Location extends LocationBase{
 		return portal.getDestination();
 	}
 	
-	public void create() throws SQLException{
+	public Location create() throws SQLException{
 		Location.createDao().create(this);
+		return this;
 	}	
 
-	public void refresh() throws SQLException{
+	public Location refresh() throws SQLException{
 		Location.createDao().refresh(this);
+		return this;
 	}
 }

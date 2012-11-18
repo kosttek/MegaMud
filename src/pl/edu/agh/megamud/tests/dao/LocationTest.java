@@ -34,6 +34,13 @@ public class LocationTest extends TestBase{
 		locationDao.create(location);
 	}
 	
+	@Test(expected = SQLException.class)
+	public void should_not_create_location_without_module() throws SQLException{
+		Location location = new Location();
+		location.setModule("default");
+		locationDao.create(location);
+	}
+	
 	@Test
 	public void should_create_location() throws SQLException{
 		Location location = new Location();
@@ -50,16 +57,19 @@ public class LocationTest extends TestBase{
 		Location location1 = new Location();
 		location1.setName("Big room");
 		location1.setDescription("Some very large room");
+		location1.setModule("default");
 		locationDao.create(location1);
 
 		Location location2 = new Location();
 		location2.setName("Medium room");
 		location2.setDescription("The room seems rather boring. Nothing special about it.");
+		location2.setModule("default");
 		locationDao.create(location2);
 		
 		Location location3 = new Location();
 		location3.setName("Small room");
 		location3.setDescription("This room makes you feel claustrophobic!");
+		location3.setModule("default");
 		locationDao.create(location3);
 		
 		Portal p1 = new Portal();
@@ -83,11 +93,13 @@ public class LocationTest extends TestBase{
 		Location location1 = new Location();
 		location1.setName("Big room");
 		location1.setDescription("Some very large room");
+		location1.setModule("default");
 		locationDao.create(location1);
 
 		Location location2 = new Location();
 		location2.setName("Medium room");
 		location2.setDescription("The room seems rather boring. Nothing special about it.");
+		location2.setModule("default");
 		locationDao.create(location2);
 		
 		location1.connectTo(location2, "Door");
@@ -112,11 +124,13 @@ public class LocationTest extends TestBase{
 		Location location1 = new Location();
 		location1.setName("Big room");
 		location1.setDescription("Some very large room");
+		location1.setModule("default");
 		locationDao.create(location1);
 
 		Location location2 = new Location();
 		location2.setName("Medium room");
 		location2.setDescription("The room seems rather boring. Nothing special about it.");
+		location2.setModule("default");
 		locationDao.create(location2);
 		
 		location1.connectTo(location2, "door");
@@ -132,11 +146,13 @@ public class LocationTest extends TestBase{
 		Location location1 = new Location();
 		location1.setName("Big room");
 		location1.setDescription("Some very large room");
+		location1.setModule("default");
 		locationDao.create(location1);
 
 		Location location2 = new Location();
 		location2.setName("Medium room");
 		location2.setDescription("The room seems rather boring. Nothing special about it.");
+		location2.setModule("default");
 		locationDao.create(location2);
 		
 		location1.connectTo(location2, "door");

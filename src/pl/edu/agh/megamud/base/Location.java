@@ -13,10 +13,22 @@ public class Location extends ItemHolder {
 	private String id;
 	private String description;
 	
+	private pl.edu.agh.megamud.dao.Location dbLocation=null;
+	
+	public pl.edu.agh.megamud.dao.Location getDbLocation() {
+		return dbLocation;
+	}
+
+	public void setDbLocation(pl.edu.agh.megamud.dao.Location dbLocation) {
+		this.dbLocation = dbLocation;
+	}
+
 	public Location(String id,String description,Module module){
 		this.id=id;
 		this.description=description;
 	}
+	
+	
 	
 	public final Map<String,Location> getExits(){
 		return exits;

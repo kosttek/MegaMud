@@ -99,6 +99,6 @@ public class Item {
 	 * @param owner
 	 */
 	protected boolean canBeGivenTo(ItemHolder owner){
-		return false; // TODO Add some logic.
+		return false;
 	}
 }

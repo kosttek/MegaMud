@@ -1,6 +1,7 @@
 package pl.edu.agh.megamud.dao.base;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import pl.edu.agh.megamud.base.DbManager;
 import pl.edu.agh.megamud.dao.*;
@@ -10,13 +11,14 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.stmt.PreparedQuery;
 
 public abstract class AttributeBase {
 
 	@DatabaseField(generatedId = true)
 	private Integer id;
 	
-	@DatabaseField(canBeNull = false)
+	@DatabaseField(canBeNull = false, unique = true)
 	private String name;
 	
 	@ForeignCollectionField(eager = true)
@@ -56,6 +58,35 @@ public abstract class AttributeBase {
 
 	public AttributeBase(){
 		
+	}
+	
+	public static Attribute findByName(String name){
+		Dao<Attribute, Integer> dao = createDao();
+		PreparedQuery<Attribute> preparedQuery;
+		try {
+			preparedQuery = dao.queryBuilder()
+					.where().eq("name", name)
+					.prepare();
+			List<Attribute> accounts = dao.query(preparedQuery);
+			if (accounts.size() == 1){
+				return accounts.get(0);
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;	
+	}
+	
+	public static void insertIfNotExists(String name) throws SQLException{
+		Attribute attribute = findByName(name);
+		if (attribute == null){
+			attribute = new Attribute();
+			attribute.setName(name);
+			Attribute.createDao().create(attribute);
+		}
 	}
 	
 	public static Dao<Attribute, Integer> createDao(){

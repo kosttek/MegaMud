@@ -8,6 +8,7 @@ import pl.edu.agh.megamud.base.Modifier;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Item;
+import pl.edu.agh.megamud.base.itemtype.ItemToWorn;
 
 public class CommandInfo extends Command {
 	public String getName(){
@@ -49,6 +50,14 @@ public class CommandInfo extends Command {
 		for(Item i:c.getItems().values()){
             user.write("You have "+ i.getName()+" - "+i.getDescription());
 		}
+		
+		String out = "You wore:\n";
+		for(Class<ItemToWorn> clazz : c.getEquipment().keySet()){
+			Item item = c.getEquipment().get(clazz);
+			if(item != null)
+				out+= clazz.getSimpleName()+": "+item.getName();
+		}
+		user.write(out);
 		
 		return true;
 	}

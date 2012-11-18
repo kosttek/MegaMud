@@ -98,7 +98,7 @@ public class Item {
 	 * Internal check, whether this item can be held by a creature. It can depend on its stats (class, some attribute's value) or other held items.
 	 * @param owner
 	 */
-	protected boolean canBeGivenTo(ItemHolder owner){
+	public boolean canBeGivenTo(ItemHolder owner){
 		return false; // TODO Add some logic.
 	}
 }

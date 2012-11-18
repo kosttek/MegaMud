@@ -8,7 +8,8 @@ public class SimpleItem extends Item{
 	public SimpleItem(String a,String b){
 		super(a,b);
 	}
-	protected boolean canBeGivenTo(ItemHolder owner){
+	@Override
+	public boolean canBeGivenTo(ItemHolder owner){
 		return true;
 	}
 }

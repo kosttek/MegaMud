@@ -1,7 +1,10 @@
 package pl.edu.agh.megamud.base;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import pl.edu.agh.megamud.base.itemtype.ItemToWorn;
 
 /**
  * Abstraction of an object, that can hold items.
@@ -10,7 +13,7 @@ import java.util.Map;
  */
 public class ItemHolder extends CommandCollector {
 	protected Map<String,Item> items=new HashMap<String,Item>();
-	
+	protected Map<Class<ItemToWorn>,ItemToWorn> equipment = new HashMap<Class<ItemToWorn>, ItemToWorn>();
 	/**
 	 * Executed after an item was added here.
 	 * @param i
@@ -43,4 +46,35 @@ public class ItemHolder extends CommandCollector {
 	 * @param from Who gave this us, or null, if magically destroyed.
 	 */
 	public void onItemDisappear(Item i,ItemHolder to){}
+	/**
+	 * Its set how equpiment you can use
+	 * @param item of classes you can have items on like Head, Hand or Body.
+	 * 
+	 */
+	public void setEquipmentTypes(List<Class> list){
+		for(Class clazz : list){
+			equipment.put(clazz, null);
+		}
+	}
+	
+	public void equip(ItemToWorn item){
+		for(Class<ItemToWorn> clazz:equipment.keySet()){
+			if(clazz.isAssignableFrom(item.getClass())){
+				equipment.put(clazz, item);
+			}
+		}
+		
+	}
+	
+	public void unequip(ItemToWorn item){
+		for(Class<ItemToWorn> clazz:equipment.keySet()){
+			if(clazz.isAssignableFrom(item.getClass())){
+				equipment.put(clazz, null);
+			}
+		}
+	}
+	
+	public Map<Class<ItemToWorn>,ItemToWorn> getEquipment(){
+		return this.equipment;
+	}
 }

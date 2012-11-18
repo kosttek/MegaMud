@@ -45,6 +45,7 @@ public class DbManager {
 			TableUtils.createTableIfNotExists(getConnectionSource(), Portal.class);
 
 			Attribute.insertIfNotExists(Attribute.STRENGTH);
+			Attribute.insertIfNotExists(Attribute.DEXTERITY);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

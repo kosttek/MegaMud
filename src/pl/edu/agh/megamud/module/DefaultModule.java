@@ -7,6 +7,7 @@ import pl.edu.agh.megamud.base.CyclicBehaviour;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.Module;
 import pl.edu.agh.megamud.base.SimpleItem;
+import pl.edu.agh.megamud.base.itemtype.Weapon;
 
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items etc.
@@ -23,7 +24,8 @@ public class DefaultModule extends Module{
 	
 	protected void init(){
 		//Commands
-		
+		installCommand(new CommandUnequip());
+		installCommand(new CommandEquip());
 		installCommand(new CommandExit());
 		installCommand(new CommandGoto());
 		installCommand(new CommandHelp());
@@ -49,9 +51,14 @@ public class DefaultModule extends Module{
 		loc2.addExit("schody", loc3);
 		loc3.addExit("schody", loc2);
 		
+		
+		
 		installLocation(loc1);
 		installLocation(loc2);
 		installLocation(loc3);
+		
+		Weapon sword = new Weapon("sword", "little rusty sword");
+		sword.giveTo(loc1);
 		
 		new CyclicBehaviour(loc2,1000L){
 			protected void action() {
@@ -60,8 +67,9 @@ public class DefaultModule extends Module{
 				if(c.getItems().containsKey("apple"))
 					return;
 				
-				SimpleItem it=new SimpleItem("apple","Precious, golden apple.");
+				SimpleItem it=new SimpleItem("apple","Precious, golden appleee.");
 				it.giveTo(c);
+				
 			}
 		}.init();
 		
@@ -89,6 +97,8 @@ public class DefaultModule extends Module{
 		
 		findCommands("login").get(0).uninstallFrom(d);
 		findCommands("info").get(0).installTo(d);
+		findCommands(CommandEquip.commandString).get(0).installTo(d);
+		findCommands(CommandUnequip.commandString).get(0).installTo(d);
 		
 		findCommands("take").get(0).installTo(d);
 		findCommands("drop").get(0).installTo(d);
@@ -105,6 +115,8 @@ public class DefaultModule extends Module{
 		findCommands("info").get(0).uninstallFrom(d);
 		findCommands("login").get(0).installTo(d);
 		
+		findCommands(CommandEquip.commandString).get(0).uninstallFrom(d);
+		findCommands(CommandUnequip.commandString).get(0).uninstallFrom(d);
 		findCommands("take").get(0).uninstallFrom(d);
 		findCommands("drop").get(0).uninstallFrom(d);
 		findCommands("give").get(0).uninstallFrom(d);

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Iterator;
 
 import com.j256.ormlite.dao.ForeignCollection;
+import com.sun.org.apache.xml.internal.security.Init;
 
 import pl.edu.agh.megamud.GameServer;
 import pl.edu.agh.megamud.base.Command;
@@ -14,6 +15,7 @@ import pl.edu.agh.megamud.base.PlayerController;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Profession;
+import pl.edu.agh.megamud.mechanix.InitMechanix;
 
 public class CommandLogin extends Command {
 	public String getName(){
@@ -100,6 +102,7 @@ public class CommandLogin extends Command {
 		
 		Location loc=GameServer.getInstance().getStartLocation();
 		Creature c=new Creature(pc.getName());
+		InitMechanix.initEquipment(c);
 		c.setDbCreature(pc);
 		
 		GameServer.getInstance().initCreature(user,c);

@@ -20,6 +20,8 @@ public abstract class Controller extends CommandCollector{
 	 */
 	protected Player dbPlayer=null;
 	
+
+	
 	public Player getDbPlayer() {
 		return dbPlayer;
 	}

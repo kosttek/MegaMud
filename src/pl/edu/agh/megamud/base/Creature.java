@@ -1,14 +1,19 @@
 package pl.edu.agh.megamud.base;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import com.j256.ormlite.dao.ForeignCollection;
+
+import pl.edu.agh.megamud.dao.CreatureAttribute;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Profession;
+import pl.edu.agh.megamud.mechanix.MockAtributes;
 
 /**
  * A "creature", object/person that we can interact with.
@@ -50,10 +55,17 @@ public class Creature extends ItemHolder{
 		this.hp=dbCreature.getHp();
 		this.exp=dbCreature.getExp();
 		this.expNeeded=dbCreature.getExp_needed();
+		
+		ForeignCollection<CreatureAttribute> creatureAttributes =  dbCreature.getCreatureAttributes();
+
+		if(creatureAttributes==null || creatureAttributes.isEmpty()){
+			MockAtributes.setAttributesToCreature(this);
+		}
+		//TODO get atributes form database and set them to creature !
 	}
 	
 	// @todo integrate with db
-	protected Map<String,Long> attributes=new HashMap<String,Long>();
+	private Map<String,Long> attributes=new HashMap<String,Long>();
 	protected List<Modifier> modifiers=new LinkedList<Modifier>();
 	
 	public Creature setName(String name) {
@@ -140,6 +152,9 @@ public class Creature extends ItemHolder{
 	}
 	public Map<String, Long> getAttributes() {
 		return this.attributes;
+	}
+	public void setAttributes(Map<String,Long> attributes) {
+		this.attributes = attributes;
 	}
 	public final Controller getController(){
 		return this.controller;
@@ -285,7 +300,7 @@ public class Creature extends ItemHolder{
 	 */	
 	protected Map<String,Long> generateAttributes(){
 		Map<String,Long> cur=new HashMap<String,Long>();
-		cur.putAll(attributes);
+		cur.putAll(getAttributes());
 		
 		for(ListIterator<Modifier> i=modifiers.listIterator();i.hasNext();){
 			Modifier m=i.next();
@@ -310,4 +325,6 @@ public class Creature extends ItemHolder{
 	public void onItemDisappear(Item i,ItemHolder to){
 		getController().onItemDisappear(i, to);
 	}
+
+	
 }

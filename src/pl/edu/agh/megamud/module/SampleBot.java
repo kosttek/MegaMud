@@ -62,7 +62,7 @@ public class SampleBot extends NPCController {
 		}
 		
 		ball=new Item("ball","Extreme expensive NIKE-signed foot-ball."){
-			protected boolean canBeGivenTo(ItemHolder owner) {
+			public boolean canBeGivenTo(ItemHolder owner) {
 				return owner==SampleBot.this.getCreature() || owner==SampleBot.this.getCreature().getLocation();
 			}
 			

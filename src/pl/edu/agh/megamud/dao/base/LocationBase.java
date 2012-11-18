@@ -23,6 +23,18 @@ public abstract class LocationBase {
 	@DatabaseField(canBeNull = false)
 	private String description;
 	
+	@DatabaseField(canBeNull = false)
+	private String module;
+	
+	public String getModule() {
+		return module;
+	}
+
+	public LocationBase setModule(String module) {
+		this.module = module;
+		return this;
+	}
+
 	@ForeignCollectionField(eager = true)
 	private ForeignCollection<Portal> exits;	
 
@@ -30,8 +42,9 @@ public abstract class LocationBase {
 		return name;
 	}
 
-	public void setName(String name) {
+	public LocationBase setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 	public Integer getId() {
@@ -42,8 +55,9 @@ public abstract class LocationBase {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public LocationBase setDescription(String description) {
 		this.description = description;
+		return this;
 	}
 	
 	public ForeignCollection<Portal> getExits() {

@@ -1,6 +1,8 @@
 package pl.edu.agh.megamud;
 
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,7 @@ import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.Module;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.module.DefaultModule;
+import sun.net.www.content.text.plain;
 
 public class GameServer {
 	/**
@@ -120,11 +123,35 @@ public class GameServer {
 		return gameServer;
 	}
 	
-	private void init(){
+	@SuppressWarnings("unchecked")
+	private void init() {
 		/*
 		 * @todo Loading modules from configuration/db.
 		 */
-		new DefaultModule().install();
+		
+		List<pl.edu.agh.megamud.dao.Module> mod;
+		try {
+			mod = pl.edu.agh.megamud.dao.Module.getModules();
+			for(Iterator<pl.edu.agh.megamud.dao.Module> i=mod.iterator();i.hasNext();){
+				pl.edu.agh.megamud.dao.Module m=i.next();
+				try{
+					Class<Module> klazz=(Class<Module>) Class.forName(m.getJava_class());
+					System.out.println(klazz);
+					
+					Module inst=klazz.newInstance();
+					System.out.println("      "+inst);
+					
+					inst.install();
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+			
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 	}
 	
 	public void initController(Controller user){

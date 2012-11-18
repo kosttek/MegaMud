@@ -1,16 +1,14 @@
 package pl.edu.agh.megamud.tests.dao;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pl.edu.agh.megamud.base.DbManager;
 import pl.edu.agh.megamud.dao.CreatureItem;
 import pl.edu.agh.megamud.dao.Item;
 import pl.edu.agh.megamud.dao.ItemAttribute;

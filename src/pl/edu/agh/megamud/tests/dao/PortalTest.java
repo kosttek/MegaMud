@@ -32,11 +32,13 @@ public class PortalTest extends TestBase{
 		Location location1 = new Location();
 		location1.setName("Big room");
 		location1.setDescription("Some very big room. You can hear echo.");
+		location1.setModule("some module");
 		locationDao.create(location1);
 		
 		Location location2 = new Location();
 		location2.setName("Small room");
 		location2.setDescription("There is so little space in here you can barely breathe!");
+		location2.setModule("some module");
 		locationDao.create(location2);
 		
 		Portal portal = new Portal();

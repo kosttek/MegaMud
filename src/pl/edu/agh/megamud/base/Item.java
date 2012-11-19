@@ -18,7 +18,7 @@ import pl.edu.agh.megamud.dao.PlayerCreature;
  * @author Tomasz
  *
  */
-public class Item {
+public class Item implements BehaviourHolderInterface{
 	/**
 	 * In-database representation of this item.
 	 */
@@ -33,6 +33,8 @@ public class Item {
 	
 	protected String name;
 	protected String description;
+	
+	private BehaviourHolder behaviourHolder = new BehaviourHolder();
 	
 	public Long getAttributeValue(String x){
 		if(attributes.containsKey(x))
@@ -173,5 +175,30 @@ public class Item {
 	 */
 	public boolean canBeGivenTo(ItemHolder owner){
 		return false; // TODO Add some logic.
+	}
+	@Override
+	public List<Behaviour> getBehaviourList() {
+		return behaviourHolder.getBehaviourList();
+	}
+
+	@Override
+	public void setBehaviourList(List<Behaviour> list) {
+		behaviourHolder.setBehaviourList(list);
+	}
+
+	@Override
+	public void addBehaviour(Behaviour behaviour) {
+		behaviourHolder.addBehaviour(behaviour);
+	}
+
+	@Override
+	public void removeBehaviour(Behaviour behaviour) {
+		behaviourHolder.removeBehaviour(behaviour);
+		
+	}
+
+	@Override
+	public List<Behaviour> getBehaviourByType(Class clazz) {
+		return behaviourHolder.getBehaviourByType(clazz);
 	}
 }

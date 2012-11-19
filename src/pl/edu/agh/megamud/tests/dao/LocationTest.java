@@ -46,6 +46,7 @@ public class LocationTest extends TestBase{
 		Location location = new Location();
 		location.setDescription("some location description");
 		location.setName("some location name");
+		location.setModule("some module");
 		locationDao.create(location);
 		
 		assertTrue(location.getId() != 0);

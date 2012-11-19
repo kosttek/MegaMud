@@ -65,7 +65,6 @@ public abstract class DatabaseModule extends Module{
 				if(end==null)
 					continue;
 				
-				System.out.println(""+from.getId()+" to "+end.getId());
 				from.addExit(name, end);
 			}
 		}

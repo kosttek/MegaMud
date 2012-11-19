@@ -136,10 +136,8 @@ public class GameServer {
 				pl.edu.agh.megamud.dao.Module m=i.next();
 				try{
 					Class<Module> klazz=(Class<Module>) Class.forName(m.getJava_class());
-					System.out.println(klazz);
 					
 					Module inst=klazz.newInstance();
-					System.out.println("      "+inst);
 					
 					inst.install();
 				}catch(Exception e){

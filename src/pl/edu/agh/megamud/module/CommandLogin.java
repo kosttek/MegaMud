@@ -103,9 +103,10 @@ public class CommandLogin extends Command {
 		
 		Location loc=GameServer.getInstance().getStartLocation();
 		Creature c=new Creature(pc.getName());
+		c.setDbCreature(pc);
+		
 		InitMechanix.initEquipment(c);
 		c.addBehaviour(new FightBehaviour(c));
-		c.setDbCreature(pc);
 		
 		GameServer.getInstance().initCreature(user,c);
 		

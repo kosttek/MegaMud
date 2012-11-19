@@ -41,7 +41,6 @@ public class TelnetServer {
 			try {
 				s.close();
 				s = null;
-				System.out.println("end");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

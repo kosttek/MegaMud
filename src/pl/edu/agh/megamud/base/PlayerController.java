@@ -129,7 +129,6 @@ public class PlayerController extends Controller {
 	
 	public void onItemAppear(Item i,ItemHolder from){
 		super.onItemAppear(i,from);
-		System.out.println("item appear "+i+" "+from);
 		if(from!=null && from instanceof Creature)
 			write("You have now "+i.getName()+" from "+((Creature)from).getName()+"!");
 		else if(from!=null && from instanceof Location)
@@ -140,7 +139,6 @@ public class PlayerController extends Controller {
 	
 	public void onItemDisappear(Item i,ItemHolder to){
 		super.onItemDisappear(i,to);
-		System.out.println("disitem appear "+i+" "+to);
 		if(to!=null && to instanceof Creature)
 			write("You gave "+i.getName()+" to "+((Creature)to).getName()+"!");
 		else if(to!=null && to instanceof Location)

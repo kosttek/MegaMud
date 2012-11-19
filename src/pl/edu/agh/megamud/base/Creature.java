@@ -66,14 +66,11 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 			attrs = Attribute.createDao().queryForAll();
 			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
 				Attribute a=i.next();
-				System.out.println(a);
 				List<CreatureAttribute> found=CreatureAttribute.createDao().queryBuilder().where().eq("attribute_id",a).and().eq("creature_id", this.dbCreature).query();
-				System.out.println("    "+found);
 				
 				if(found.size()>0){
 					CreatureAttribute first=found.get(0);
 					this.attributes.put(a,first.getValue().longValue());
-					System.out.println("============ "+a+" "+first.getValue());
 				}else{
 					this.attributes.put(a,Long.valueOf(0L));
 				}
@@ -81,8 +78,6 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		//TODO get atributes form database and set them to creature !
 	}
 	
 	// @todo integrate with db
@@ -207,8 +202,6 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 						ne.setCreature(this.dbCreature);
 						ne.setValue(val.intValue());
 						CreatureAttribute.createDao().create(ne);
-						
-						System.out.println("SET CREATURE "+x+" = "+val);
 					}catch(SQLException e){
 						e.printStackTrace();
 					}

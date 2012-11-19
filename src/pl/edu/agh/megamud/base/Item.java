@@ -57,8 +57,6 @@ public class Item implements BehaviourHolderInterface{
 					ne.setLevel(1);
 					ne.setValue(val.intValue());
 					ItemAttribute.createDao().create(ne);
-					
-					System.out.println(""+x+" = "+val);
 				}catch(SQLException e){
 					e.printStackTrace();
 				}
@@ -87,9 +85,7 @@ public class Item implements BehaviourHolderInterface{
 			attrs = Attribute.createDao().queryForAll();
 			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
 				Attribute a=i.next();
-				System.out.println(a);
 				List<ItemAttribute> found=ItemAttribute.createDao().queryBuilder().where().eq("attribute",a).and().eq("item", it).query();
-				System.out.println("    "+found);
 				if(found.size()>0){
 					ItemAttribute first=found.get(0);
 					this.attributes.put(a,first.getValue().longValue());

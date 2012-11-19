@@ -30,8 +30,6 @@ public class Location extends ItemHolder implements BehaviourHolderInterface{
 		this.description=description;
 	}
 	
-	
-	
 	public final Map<String,Location> getExits(){
 		return exits;
 	}
@@ -104,7 +102,7 @@ public class Location extends ItemHolder implements BehaviourHolderInterface{
 	 * Result for command "look". Contains location description, all exists and other creatures.
 	 */
 	public final String prepareLook(){
-		String desc = "You are in "+getId()+", "+getDescription()+".\r\n";
+		String desc = ""+getDescription()+"\r\n";
 		desc+="Possible exits: ";
 		
 		int cnt=exits.size();
@@ -148,6 +146,4 @@ public class Location extends ItemHolder implements BehaviourHolderInterface{
 	public List<Behaviour> getBehaviourByType(Class<Behaviour> clazz) {
 		return behaviourHolder.getBehaviourByType(clazz);
 	}
-
-
 }

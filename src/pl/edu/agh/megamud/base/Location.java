@@ -104,7 +104,7 @@ public class Location extends ItemHolder implements BehaviourHolderInterface{
 	 * Result for command "look". Contains location description, all exists and other creatures.
 	 */
 	public final String prepareLook(){
-		String desc = "You are in "+getDescription()+".\r\n";
+		String desc = "You are in "+getId()+", "+getDescription()+".\r\n";
 		desc+="Possible exits: ";
 		
 		int cnt=exits.size();

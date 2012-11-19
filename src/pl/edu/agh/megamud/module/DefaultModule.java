@@ -10,7 +10,9 @@ import pl.edu.agh.megamud.base.DatabaseModule;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.SimpleItem;
 import pl.edu.agh.megamud.base.itemtype.Weapon;
+import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.dao.Portal;
+import pl.edu.agh.megamud.dao.base.AttributeBase;
 import pl.edu.agh.megamud.dao.base.LocationBase;
 import pl.edu.agh.megamud.dao.base.PortalBase;
 import pl.edu.agh.megamud.mechanix.CommandHit;
@@ -26,6 +28,12 @@ public class DefaultModule extends DatabaseModule{
 	
 	public String getDescription(){
 		return "Default game module.";
+	}
+	
+	private void prepareAttributes() throws SQLException{
+		AttributeBase.createDao().deleteBuilder().delete();
+		Attribute.insertIfNotExists(Attribute.STRENGTH);
+		Attribute.insertIfNotExists(Attribute.DEXTERITY);
 	}
 	
 	private void clearLocations() throws SQLException{
@@ -52,6 +60,7 @@ public class DefaultModule extends DatabaseModule{
 	protected void init(){
 		try {
 			clearLocations();
+			prepareAttributes();
 			
 			prepareLocation("start","Pokoj glowny");
 			prepareLocation("p2","Pokoj 2");
@@ -85,7 +94,8 @@ public class DefaultModule extends DatabaseModule{
 		installCommand(new CommandSay());
 		
 		installCommand(new CommandKill());
-Weapon sword = new Weapon("sword", "little rusty sword");
+		
+		Weapon sword = new Weapon("sword", "little rusty sword");
 		sword.giveTo(GameServer.getInstance().getLocation("p2"));
 		
 		new CyclicBehaviour(GameServer.getInstance().getLocation("p2"),1000L){

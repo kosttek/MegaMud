@@ -1,6 +1,16 @@
 package pl.edu.agh.megamud.base;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.dao.CreatureItem;
+import pl.edu.agh.megamud.dao.ItemAttribute;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 
 /**
@@ -19,14 +29,75 @@ public class Item {
 	 */
 	protected ItemHolder owner=null;
 	
+	private Map<Attribute,Long> attributes=new HashMap<Attribute,Long>();
+	
 	protected String name;
 	protected String description;
 	
+	public Long getAttributeValue(String x){
+		if(attributes.containsKey(x))
+			return attributes.get(x);
+		return null;
+	}
+	
+	public void setAttribute(String x,Long val){
+		for(Iterator<Entry<Attribute,Long>> set=attributes.entrySet().iterator();set.hasNext();){
+			Entry<Attribute,Long> next=set.next();
+			Attribute a=next.getKey();
+			if(a.getName().equals(x)){
+				next.setValue(val);
+				try{
+					ItemAttribute.createDao().deleteBuilder().where().eq("attribute",a).and().eq("item", this.creatureItem.getItem()).query();
+					
+					ItemAttribute ne=new ItemAttribute();
+					ne.setAttribute(a);
+					ne.setItem(this.creatureItem.getItem());
+					ne.setLevel(1);
+					ne.setValue(val.intValue());
+					ItemAttribute.createDao().create(ne);
+					
+					System.out.println(""+x+" = "+val);
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+				return;
+			}
+		}
+		//@todo save to db
+	}
+	
 	public Item(CreatureItem it){
+		setCreatureItem(it);
+	}
+	
+	public CreatureItem getCreatureItem(){
+		return this.creatureItem;
+	}
+	
+	public void setCreatureItem(CreatureItem it){
 		this.creatureItem=it;
 		
 		this.name=it.getItem().getName();
 		this.description=it.getItem().getDescription();
+		
+		List<Attribute> attrs;
+		try {
+			attrs = Attribute.createDao().queryForAll();
+			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
+				Attribute a=i.next();
+				System.out.println(a);
+				List<ItemAttribute> found=ItemAttribute.createDao().queryBuilder().where().eq("attribute",a).and().eq("item", it).query();
+				System.out.println("    "+found);
+				if(found.size()>0){
+					ItemAttribute first=found.get(0);
+					this.attributes.put(a,first.getValue().longValue());
+				}else{
+					this.attributes.put(a,Long.valueOf(0L));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Item(String name,String description){
@@ -55,8 +126,9 @@ public class Item {
 	public boolean giveTo(ItemHolder newOwner){
 		ItemHolder oldOwner=owner;
 		
-		if(!canBeGivenTo(newOwner))
+		if(!canBeGivenTo(newOwner)){
 			return false;
+		}
 		
 		if(oldOwner!=null){
 			oldOwner.removeItem(this);
@@ -70,6 +142,7 @@ public class Item {
 		}
 		
 		this.owner=newOwner;
+		
 		if(newOwner!=null){
 			newOwner.addItem(this);
 			newOwner.onItemAppear(this,oldOwner);

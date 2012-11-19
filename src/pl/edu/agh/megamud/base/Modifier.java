@@ -2,6 +2,8 @@ package pl.edu.agh.megamud.base;
 
 import java.util.Map;
 
+import pl.edu.agh.megamud.dao.Attribute;
+
 /**
  * A temporary modifier to creature's attributes.
  * Works like that:
@@ -30,7 +32,7 @@ public interface Modifier {
 	 * Modify any attribute from attrs.
 	 * Returns false, if the modifier expired.
 	 */
-	public boolean modify(Creature c,Map<String,Long> attrs);
+	public boolean modify(Creature c,Map<Attribute,Long> attrs);
 	
 	/**
 	 * Executed upon binding to a creature. Shall send some information.

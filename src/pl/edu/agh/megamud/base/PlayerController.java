@@ -1,7 +1,7 @@
 package pl.edu.agh.megamud.base;
 
 import pl.edu.agh.megamud.Session;
-import pl.edu.agh.megamud.dao.Item;
+import pl.edu.agh.megamud.base.Item;
 import pl.edu.agh.megamud.dao.Player;
 
 /**
@@ -74,10 +74,10 @@ public class PlayerController extends Controller {
 		write("Bye!");
 	}
 	public void onTake(Creature otherCreature,Item item){
-		write(""+otherCreature.getName()+" took "+item.getId()+" from the ground.");
+		write(""+otherCreature.getName()+" took "+item.getName()+" from the ground.");
 	}
 	public void onDrop(Creature otherCreature,Item item){
-		write(""+otherCreature.getName()+" dropped "+item.getId()+" to the ground.");
+		write(""+otherCreature.getName()+" dropped "+item.getName()+" to the ground.");
 	}
 	public void onGive(Creature from,Creature to,Item item){
 		if(from==creature)
@@ -92,6 +92,14 @@ public class PlayerController extends Controller {
 	}
 	public void onDisappear(Item item){
 		write("A "+item.getName()+" has turned into ashes.");
+	}
+	
+	public void onItemEquip(Item i){
+		write("You equiped "+i.getName()+".");
+	}
+	
+	public void onItemUnequip(Item i){
+		write("You unequiped "+i.getName()+".");
 	}
 	
 	public void onItemTransfer(ItemHolder from,ItemHolder to,Item item){
@@ -118,7 +126,10 @@ public class PlayerController extends Controller {
 			}
 		}
 	}
+	
 	public void onItemAppear(Item i,ItemHolder from){
+		super.onItemAppear(i,from);
+		System.out.println("item appear "+i+" "+from);
 		if(from!=null && from instanceof Creature)
 			write("You have now "+i.getName()+" from "+((Creature)from).getName()+"!");
 		else if(from!=null && from instanceof Location)
@@ -126,7 +137,10 @@ public class PlayerController extends Controller {
 		else
 			write("Suddenly you have "+i.getName()+"!");
 	}
+	
 	public void onItemDisappear(Item i,ItemHolder to){
+		super.onItemDisappear(i,to);
+		System.out.println("disitem appear "+i+" "+to);
 		if(to!=null && to instanceof Creature)
 			write("You gave "+i.getName()+" to "+((Creature)to).getName()+"!");
 		else if(to!=null && to instanceof Location)

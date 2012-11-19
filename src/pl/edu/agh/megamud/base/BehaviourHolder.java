@@ -17,7 +17,6 @@ public class BehaviourHolder implements BehaviourHolderInterface {
 	@Override
 	public void setBehaviourList(List<Behaviour> list) {
 		this.list = new HashSet<Behaviour>(list);
-		
 	}
 
 	@Override

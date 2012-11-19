@@ -98,8 +98,7 @@ public abstract class TestBase{
 	}
 	
 	protected void resetAttribute() throws SQLException{
-		predefinedAttribute = new Attribute();
-		predefinedAttribute.setName("predefinedAttribute");
+		predefinedAttribute = new Attribute("predefinedAttribute");
 		attributeDao.create(predefinedAttribute);
 	}
 	

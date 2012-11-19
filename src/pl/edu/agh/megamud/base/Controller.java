@@ -94,8 +94,11 @@ public abstract class Controller extends CommandCollector{
 	 */
 	public void onItemTransfer(ItemHolder from,ItemHolder to,Item item){}
 	/** Inherited from ItemHolder. */
-	public void onItemAppear(Item i,ItemHolder from){}
-	public void onItemDisappear(Item i,ItemHolder to){}
+	public void onItemAppear(Item i,ItemHolder from){
+	}
+	public void onItemDisappear(Item i,ItemHolder to){
+	}
+	
 	
 	
 	/**

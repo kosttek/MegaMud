@@ -9,6 +9,7 @@ import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Item;
 import pl.edu.agh.megamud.base.itemtype.ItemToWorn;
+import pl.edu.agh.megamud.dao.Attribute;
 
 public class CommandInfo extends Command {
 	public String getName(){
@@ -24,10 +25,10 @@ public class CommandInfo extends Command {
 		user.write("You are a "+c.getProfession().getName()+" LV"+c.getLevel()+" (exp:"+c.getExp()+"/"+c.getExpNeeded()+") HP"+c.getHp()+"\r\n");
 		
 		String s="";
-		for(Iterator<String> i=c.getAttributes().keySet().iterator();i.hasNext();){
-			String t=i.next();
+		for(Iterator<Attribute> i=c.getAttributes().keySet().iterator();i.hasNext();){
+			Attribute t=i.next();
 			Long v=c.getAttributes().get(t);
-			s+=""+t+":"+v.longValue()+" ";
+			s+=""+t.getName()+":"+v.longValue()+" ";
 		}
 		user.write(s);
 		

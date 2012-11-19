@@ -1,6 +1,10 @@
 package pl.edu.agh.megamud.base;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import pl.edu.agh.megamud.dao.Attribute;
 
 /**
  * This class implements a most simple Modifier that can be used. It changes a specified creature's attribute by adding/removing points. E.g. POWER +5.
@@ -53,12 +57,16 @@ public class SimpleModifier implements Modifier{
 	/**
 	 * @todo What if there is no such attribute?
 	 */
-	public boolean modify(Creature c,Map<String,Long> attrs){
-		if(attrs.containsKey(stat)){
-			Long l=attrs.get(stat);
-			attrs.put(stat,new Long(l.longValue()+diff));
-		}
-		return true;
+	public boolean modify(Creature c,Map<Attribute,Long> attrs){
+		for(Iterator<Entry<Attribute,Long>> set=attrs.entrySet().iterator();set.hasNext();){
+			Entry<Attribute,Long> next=set.next();
+			Attribute a=next.getKey();
+			if(a.getName().equals(stat)){
+				Long l=next.getValue();
+				next.setValue(new Long(l.longValue()+diff));
+				return true;
+			}
+		}return true;
 	}
 
 	public void onBegin() {

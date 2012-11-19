@@ -2,16 +2,19 @@ package pl.edu.agh.megamud.base;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import pl.edu.agh.megamud.GameServer;
+import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.dao.CreatureAttribute;
+import pl.edu.agh.megamud.dao.ItemAttribute;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Profession;
-import pl.edu.agh.megamud.mechanix.MockAtributes;
 
 import com.j256.ormlite.dao.ForeignCollection;
 
@@ -58,16 +61,32 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 		this.exp=dbCreature.getExp();
 		this.expNeeded=dbCreature.getExp_needed();
 		
-		ForeignCollection<CreatureAttribute> creatureAttributes =  dbCreature.getCreatureAttributes();
-
-		if(creatureAttributes==null || creatureAttributes.isEmpty()){
-			MockAtributes.setAttributesToCreature(this);
+		List<Attribute> attrs;
+		try {
+			attrs = Attribute.createDao().queryForAll();
+			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
+				Attribute a=i.next();
+				System.out.println(a);
+				List<CreatureAttribute> found=CreatureAttribute.createDao().queryBuilder().where().eq("attribute_id",a).and().eq("creature_id", this.dbCreature).query();
+				System.out.println("    "+found);
+				
+				if(found.size()>0){
+					CreatureAttribute first=found.get(0);
+					this.attributes.put(a,first.getValue().longValue());
+					System.out.println("============ "+a+" "+first.getValue());
+				}else{
+					this.attributes.put(a,Long.valueOf(0L));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+
 		//TODO get atributes form database and set them to creature !
 	}
 	
 	// @todo integrate with db
-	private Map<String,Long> attributes=new HashMap<String,Long>();
+	private Map<Attribute,Long> attributes=new HashMap<Attribute,Long>();
 	protected List<Modifier> modifiers=new LinkedList<Modifier>();
 	
 	public Creature setName(String name) {
@@ -144,6 +163,7 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	
 	public boolean addDamage(int hpMinus){
 		hp-= hpMinus;
+		this.setHp(hp);
 		if(hp <=0 ){
 			//TODO Death
 //			getLocation().getCreatures
@@ -163,11 +183,40 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	public int getExpNeeded() {
 		return this.expNeeded;
 	}
-	public Map<String, Long> getAttributes() {
+	public Map<Attribute, Long> getAttributes() {
 		return this.attributes;
 	}
-	public void setAttributes(Map<String,Long> attributes) {
-		this.attributes = attributes;
+	public void setAttribute(String x,Long val){
+		for(Iterator<Entry<Attribute,Long>> set=attributes.entrySet().iterator();set.hasNext();){
+			Entry<Attribute,Long> next=set.next();
+			Attribute a=next.getKey();
+			if(a.getName().equals(x)){
+				next.setValue(val);
+				
+				if(this.dbCreature!=null){
+					try{
+						CreatureAttribute ne=new CreatureAttribute();
+						ne.setAttribute(a);
+						ne.setCreature(this.dbCreature);
+						
+						CreatureAttribute.createDao().delete(ne);
+						//CreatureAttribute.createDao().deleteBuilder().where().eq("attribute_id",a).and().eq("creature_id", this.dbCreature).query();
+						
+						ne=new CreatureAttribute();
+						ne.setAttribute(a);
+						ne.setCreature(this.dbCreature);
+						ne.setValue(val.intValue());
+						CreatureAttribute.createDao().create(ne);
+						
+						System.out.println("SET CREATURE "+x+" = "+val);
+					}catch(SQLException e){
+						e.printStackTrace();
+					}
+				}
+				return;
+			}
+		}
+		//@todo save to db
 	}
 	public final Controller getController(){
 		return this.controller;
@@ -181,6 +230,18 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	
 	public Creature(String name){
 		this.name=name;
+		
+		List<Attribute> attrs;
+		try {
+			attrs = Attribute.createDao().queryForAll();
+			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
+				Attribute a=i.next();
+				this.attributes.put(a, 0L);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	/**
@@ -275,20 +336,6 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	}
 	
 	/**
-	 * Use this to give or take HP points.
-	 * @todo dying
-	 * @todo Write this to database
-	 */
-	public void giveHp(int num){
-		int hp=this.getHp();
-		hp+=num;
-		if(hp<=0){
-			//TODO die
-		}
-		this.setHp(hp);
-	}
-	
-	/**
 	 * Adds a temporary attributes modifier.
 	 * @todo Write this to database
 	 */
@@ -313,8 +360,8 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	 * - apply modifiers;
 	 * - return the result.
 	 */	
-	protected Map<String,Long> generateAttributes(){
-		Map<String,Long> cur=new HashMap<String,Long>();
+	protected Map<Attribute,Long> generateAttributes(){
+		Map<Attribute,Long> cur=new HashMap<Attribute,Long>();
 		cur.putAll(getAttributes());
 		
 		for(ListIterator<Modifier> i=modifiers.listIterator();i.hasNext();){

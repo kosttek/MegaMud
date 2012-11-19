@@ -46,6 +46,21 @@ public class ItemHolder extends CommandCollector {
 	 * @param from Who gave this us, or null, if magically destroyed.
 	 */
 	public void onItemDisappear(Item i,ItemHolder to){}
+	
+	/**
+	 * Event executed after this item is equiped.
+	 * @param i Item.
+	 */
+	public void onItemEquip(Item i){
+	}
+	
+	/**
+	 * Event executed after this item is unequiped.
+	 * @param i Item.
+	 */
+	public void onItemUnequip(Item i){
+	}
+	
 	/**
 	 * Its set how equpiment you can use
 	 * @param item of classes you can have items on like Head, Hand or Body.

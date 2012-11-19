@@ -83,8 +83,7 @@ public abstract class AttributeBase {
 	public static void insertIfNotExists(String name) throws SQLException{
 		Attribute attribute = findByName(name);
 		if (attribute == null){
-			attribute = new Attribute();
-			attribute.setName(name);
+			attribute = new Attribute(name);
 			Attribute.createDao().create(attribute);
 		}
 	}

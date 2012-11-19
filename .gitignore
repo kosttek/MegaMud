@@ -4,3 +4,4 @@ bin/
 *~
 *.db
 .db-journal
+.orig

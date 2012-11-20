@@ -198,17 +198,11 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface {
 	public Map<Attribute, Long> getAttributes() {
 		return this.attributes;
 	}
-<<<<<<< HEAD
-
-	public Long getAttributeValue(String name) {
-		for (Attribute attr : getAttributes().keySet()) {
-=======
 	public void initAtribute(Attribute a){
 		attributes.put(a, 0L);
 	}
 	public Long getAttributeValue(String name){
 		for(Attribute attr : getAttributes().keySet()){
->>>>>>> 59bba2b725801fb302470300a8eb84a737d05b70
 			if (attr.getName().equals(name))
 				return getAttributes().get(attr);
 		}

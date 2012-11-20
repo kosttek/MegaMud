@@ -18,11 +18,8 @@ import pl.edu.agh.megamud.mechanix.CommandHit;
 import pl.edu.agh.megamud.mechanix.FightBehaviour;
 import pl.edu.agh.megamud.world.CaveInitializer;
 import pl.edu.agh.megamud.world.Chochlik;
-<<<<<<< HEAD
 import pl.edu.agh.megamud.world.Sentry;
 
-=======
->>>>>>> 59bba2b725801fb302470300a8eb84a737d05b70
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items
  * etc.
@@ -66,14 +63,8 @@ public class DefaultModule extends DatabaseModule {
 		installCommands();
 
 		Weapon sword = new Weapon("sword", "little rusty sword");
-<<<<<<< HEAD
-		sword.giveTo(GameServer.getInstance().getLocation(
-				CaveInitializer.B2.getName()));
-		// sword.initAtribute(Attribute.findByName(Attribute.DAMAGE));
-=======
 		sword.giveTo(GameServer.getInstance().getLocation(CaveInitializer.B2.getName()));
 		sword.initAtribute(Attribute.findByName(Attribute.DAMAGE));
->>>>>>> 59bba2b725801fb302470300a8eb84a737d05b70
 		sword.setAttribute(Attribute.DAMAGE, 3L);
 
 		new CyclicBehaviour(GameServer.getInstance().getLocation(
@@ -89,37 +80,22 @@ public class DefaultModule extends DatabaseModule {
 				it.giveTo(location);
 			}
 		}.init();
-<<<<<<< HEAD
-
-		initCreatures();
-	}
-
-	private void initCreatures() {
-		installNPC(new Chochlik(), new Creature("Chochlik").setLevel(100)
-				.setHp(666),
-=======
 		
 		installNPC(
 				new Chochlik(),
 				new Creature("Chochlik")
 					.setLevel(100)
 					.setHp(666),
->>>>>>> 59bba2b725801fb302470300a8eb84a737d05b70
 				GameServer.getInstance().getLocation(CaveInitializer.B3));
 
 		Creature rat = new Creature("rat").setLevel(1).setHp(34);
 
 		rat.addBehaviour(new FightBehaviour(rat));
-<<<<<<< HEAD
-
-		installNPC(new Sentry(), rat,
-=======
 		rat.initAtribute(Attribute.findByName(Attribute.STRENGTH));
 		rat.setAttribute(Attribute.STRENGTH, 5L);
 		installNPC(
 				new Chochlik(), 
 				rat, 
->>>>>>> 59bba2b725801fb302470300a8eb84a737d05b70
 				GameServer.getInstance().getLocation(CaveInitializer.B2));
 		Location l = rat.getLocation();
 	}

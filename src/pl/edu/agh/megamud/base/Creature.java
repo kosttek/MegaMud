@@ -256,7 +256,12 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 			controller.removeCommand(cmd);
 		}
 		this.controller=null;
-		location.getCreatures().remove(name);
+		
+		if (location == null) return;
+		
+		Map<String, Creature> creatures = location.getCreatures();
+		if (creatures != null) creatures.remove(name);
+		
 		location = null;
 	}
 	

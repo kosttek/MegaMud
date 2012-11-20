@@ -15,6 +15,7 @@ import pl.edu.agh.megamud.dao.CreatureAttribute;
 import pl.edu.agh.megamud.dao.ItemAttribute;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Profession;
+import pl.edu.agh.megamud.mechanix.InitMechanix;
 
 import com.j256.ormlite.dao.ForeignCollection;
 
@@ -65,7 +66,9 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 		try {
 			attrs = Attribute.createDao().queryForAll();
 			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
+				
 				Attribute a=i.next();
+				if(!InitMechanix.isCreatureAttribute(a)) continue;
 				List<CreatureAttribute> found=CreatureAttribute.createDao().queryBuilder().where().eq("attribute_id",a).and().eq("creature_id", this.dbCreature).query();
 				
 				if(found.size()>0){
@@ -77,6 +80,7 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+
 		}
 	}
 	
@@ -223,17 +227,17 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	
 	public Creature(String name){
 		this.name=name;
-		
-		List<Attribute> attrs;
-		try {
-			attrs = Attribute.createDao().queryForAll();
-			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
-				Attribute a=i.next();
-				this.attributes.put(a, 0L);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	//this is why player heave double stats	
+//		List<Attribute> attrs;
+//		try {
+//			attrs = Attribute.createDao().queryForAll();
+//			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
+//				Attribute a=i.next();
+//				this.attributes.put(a, 0L);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 		
 	}
 	

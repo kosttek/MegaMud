@@ -3,11 +3,14 @@ package pl.edu.agh.megamud.mechanix;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.smartcardio.ATR;
+
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.ItemHolder;
 import pl.edu.agh.megamud.base.itemtype.Body;
 import pl.edu.agh.megamud.base.itemtype.Hand;
 import pl.edu.agh.megamud.base.itemtype.Head;
+import pl.edu.agh.megamud.dao.Attribute;
 
 public class InitMechanix {
 	/**
@@ -26,5 +29,14 @@ public class InitMechanix {
 	//TODO
 	static public void attack(Creature attacker, Creature Defender){
 		Defender.addDamage(10);
+	}
+	
+	static public String creatureAttr[] = {Attribute.DEXTERITY,Attribute.STRENGTH};
+	
+	static public boolean isCreatureAttribute(Attribute attr){
+		for(String str : creatureAttr)
+			if(str.equals(attr.getName()))
+				return true;
+		return false;
 	}
 }

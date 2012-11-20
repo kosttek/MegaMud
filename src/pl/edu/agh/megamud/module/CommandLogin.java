@@ -89,7 +89,7 @@ public class CommandLogin extends Command {
 			pc.setLevel(1);
 			pc.setHp(100);
 			pc.setProfession(Profession.DEFAULT);
-			pc.setName(player.getLogin()+"_XXX");
+			pc.setName(player.getLogin()+"");
 			
 			try {
 				PlayerCreature.createDao().create(pc);

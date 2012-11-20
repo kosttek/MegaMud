@@ -35,6 +35,7 @@ public class DefaultModule extends DatabaseModule{
 		AttributeBase.createDao().deleteBuilder().delete();
 		Attribute.insertIfNotExists(Attribute.STRENGTH);
 		Attribute.insertIfNotExists(Attribute.DEXTERITY);
+		Attribute.insertIfNotExists(Attribute.DAMAGE);
 	}
 	
 	private void clearLocations() throws SQLException{

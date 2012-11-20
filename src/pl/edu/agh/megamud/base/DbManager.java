@@ -44,8 +44,8 @@ public class DbManager {
 			TableUtils.createTableIfNotExists(getConnectionSource(), pl.edu.agh.megamud.dao.Location.class);
 			TableUtils.createTableIfNotExists(getConnectionSource(), Portal.class);
 
-			Attribute.insertIfNotExists(Attribute.STRENGTH);
-			Attribute.insertIfNotExists(Attribute.DEXTERITY);
+//			Attribute.insertIfNotExists(Attribute.STRENGTH);
+//			Attribute.insertIfNotExists(Attribute.DEXTERITY);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

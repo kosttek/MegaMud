@@ -1,13 +1,17 @@
 package pl.edu.agh.megamud.world;
 
+import pl.edu.agh.megamud.GameServer;
 import pl.edu.agh.megamud.base.Creature;
+import pl.edu.agh.megamud.base.CyclicBehaviour;
+import pl.edu.agh.megamud.base.Location;
+import pl.edu.agh.megamud.base.SimpleItem;
 import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.mechanix.FightBehaviour;
 
 public class CreatureFactory {
 
 	public static Creature getRat(){
-		Creature rat = new Creature("rat")
+		final Creature rat = new Creature("rat")
 			.setLevel(1)
 			.setHp(34);
 
@@ -15,6 +19,14 @@ public class CreatureFactory {
         rat.setAttribute(Attribute.STRENGTH, 5L);	
 
 		rat.addBehaviour(new FightBehaviour(rat));
+		new CyclicBehaviour(rat, 5000L) {
+			protected void action() {
+				if (rat.getHp() > 0){
+					rat.getController().interpreteCommand("say", "*squeak*");
+				}
+			}
+		}.init();
+		
 		return rat;
 	}
 }

@@ -14,6 +14,7 @@ import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.dao.CreatureAttribute;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Profession;
+import pl.edu.agh.megamud.mechanix.Mechanix;
 
 /**
  * A "creature", object/person that we can interact with.
@@ -61,19 +62,22 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 		List<Attribute> attrs;
 		try {
 			attrs = Attribute.createDao().queryForAll();
-			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
+			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){		
 				Attribute a=i.next();
+				
 				List<CreatureAttribute> found=CreatureAttribute.createDao().queryBuilder().where().eq("attribute_id",a).and().eq("creature_id", this.dbCreature).query();
 				
 				if(found.size()>0){
 					CreatureAttribute first=found.get(0);
 					this.attributes.put(a,first.getValue().longValue());
 				}else{
+					if(!Mechanix.isCreatureAttribute(a)) continue;
 					this.attributes.put(a,Long.valueOf(0L));
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+
 		}
 	}
 	
@@ -181,8 +185,16 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	public int getExpNeeded() {
 		return this.expNeeded;
 	}
+
 	public Map<Attribute, Long> getAttributes() {
 		return this.attributes;
+	}
+	public Long getAttributeValue(String name){
+		for(Attribute attr : getAttributes().keySet()){
+			if (attr.getName().equals(name))
+				return getAttributes().get(attr);
+		}
+		return null;
 	}
 	public void setAttribute(String x,Long val){
 		for(Iterator<Entry<Attribute,Long>> set=attributes.entrySet().iterator();set.hasNext();){
@@ -225,17 +237,17 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	
 	public Creature(String name){
 		this.name=name;
-		
-		List<Attribute> attrs;
-		try {
-			attrs = Attribute.createDao().queryForAll();
-			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
-				Attribute a=i.next();
-				this.attributes.put(a, 0L);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	//this is why player heave double stats	
+//		List<Attribute> attrs;
+//		try {
+//			attrs = Attribute.createDao().queryForAll();
+//			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
+//				Attribute a=i.next();
+//				this.attributes.put(a, 0L);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 		
 	}
 	
@@ -258,7 +270,12 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 			controller.removeCommand(cmd);
 		}
 		this.controller=null;
-		location.getCreatures().remove(name);
+		
+		if (location == null) return;
+		
+		Map<String, Creature> creatures = location.getCreatures();
+		if (creatures != null) creatures.remove(name);
+		
 		location = null;
 	}
 	

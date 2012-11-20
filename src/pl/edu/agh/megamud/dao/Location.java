@@ -29,6 +29,23 @@ public class Location extends LocationBase{
 		return this;
 	}
 	
+	public Location connectTwoWay(Location destination, String exitName, String comeBackName) throws SQLException{
+		Portal outgoing = new Portal(exitName);
+		Portal incoming = new Portal(comeBackName);
+		
+		outgoing.setEntry(this);
+		outgoing.setDestination(destination);
+		
+		incoming.setEntry(destination);
+		incoming.setDestination(this);
+		
+		Dao<Portal, Integer> portalDao  = Portal.createDao();
+		portalDao.create(outgoing);
+		portalDao.create(incoming);
+		
+		return this;		
+	}
+	
 	public Portal getExitByName(String name) throws SQLException{
 		Dao<Portal, Integer> dao = Portal.createDao();
 		PreparedQuery<Portal> preparedQuery = dao.queryBuilder()

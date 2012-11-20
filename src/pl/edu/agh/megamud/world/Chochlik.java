@@ -1,4 +1,4 @@
-package pl.edu.agh.megamud.module;
+package pl.edu.agh.megamud.world;
 
 import pl.edu.agh.megamud.base.Behaviour;
 import pl.edu.agh.megamud.base.Creature;
@@ -10,11 +10,11 @@ import pl.edu.agh.megamud.base.NPCController;
 import pl.edu.agh.megamud.base.SimpleItem;
 import pl.edu.agh.megamud.base.SimpleModifier;
 
-public class SampleBot extends NPCController {
+public class Chochlik extends NPCController {
 	private Item ball;
 	private CyclicBehaviour ballBehaviour;
 	
-	public SampleBot(){
+	public Chochlik(){
 		super();
 	}
 	
@@ -63,7 +63,7 @@ public class SampleBot extends NPCController {
 		
 		ball=new Item("ball","Extreme expensive NIKE-signed foot-ball."){
 			public boolean canBeGivenTo(ItemHolder owner) {
-				return owner==SampleBot.this.getCreature() || owner==SampleBot.this.getCreature().getLocation();
+				return owner==Chochlik.this.getCreature() || owner==Chochlik.this.getCreature().getLocation();
 			}
 			
 		};
@@ -74,9 +74,9 @@ public class SampleBot extends NPCController {
 				Creature owner = (Creature) getOwner();
 				
 				if(owner.getItems().size()==0){
-					SampleBot.this.interpreteCommand("take", "ball");
+					Chochlik.this.interpreteCommand("take", "ball");
 				}else{
-					SampleBot.this.interpreteCommand("drop", "ball");
+					Chochlik.this.interpreteCommand("drop", "ball");
 				}
 			}
 		}.init();

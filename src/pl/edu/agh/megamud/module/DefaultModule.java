@@ -90,10 +90,10 @@ public class DefaultModule extends DatabaseModule {
 					.setHp(666),
 				GameServer.getInstance().getLocation(CaveInitializer.B3));
 		
-		installNPC(
+		installRespawningNPC(
 				new Sentry(), 
 				CreatureFactory.getRat(),
-				GameServer.getInstance().getLocation(CaveInitializer.B2));
+				GameServer.getInstance().getLocation(CaveInitializer.B2));		
 		
 		installNPC(
 				new AggressiveSentry(), 

@@ -18,7 +18,9 @@ import pl.edu.agh.megamud.mechanix.FightBehaviour;
 import pl.edu.agh.megamud.world.AggressiveSentry;
 import pl.edu.agh.megamud.world.CaveInitializer;
 import pl.edu.agh.megamud.world.Chochlik;
+import pl.edu.agh.megamud.world.CommandAskOldman;
 import pl.edu.agh.megamud.world.CreatureFactory;
+import pl.edu.agh.megamud.world.Oldman;
 import pl.edu.agh.megamud.world.Sentry;
 
 /**
@@ -82,6 +84,15 @@ public class DefaultModule extends DatabaseModule {
 				it.giveTo(location);
 			}
 		}.init();
+		Oldman oldman = new Oldman();
+		CommandAskOldman askOldman = new CommandAskOldman();
+		GameServer.getInstance().getStartLocation().addCommand(askOldman);
+		installNPC(
+				oldman,
+				new Creature("Oldman")
+					.setLevel(100)
+					.setHp(1000),
+				GameServer.getInstance().getStartLocation());
 		
 		installNPC(
 				new Chochlik(),

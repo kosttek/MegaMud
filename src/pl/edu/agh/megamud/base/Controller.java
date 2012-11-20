@@ -68,7 +68,7 @@ public abstract class Controller extends CommandCollector {
 	 * @return true, if any actual command was run.
 	 */
 	public boolean interpreteCommand(String cmd, String args) {
-		List<Command> cmd2 = findCommands(cmd);
+		List<Command> cmd2 = findCommands(cmd);	
 		if (cmd2 != null)
 			for (Iterator<Command> i = cmd2.iterator(); i.hasNext();) {
 				Command c = i.next();
@@ -78,7 +78,6 @@ public abstract class Controller extends CommandCollector {
 		write("Unknown command, type help for known commands.");
 		return false;
 	}
-
 	/**
 	 * Use this to send a message to controller.
 	 */

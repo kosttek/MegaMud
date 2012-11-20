@@ -1,20 +1,24 @@
 package pl.edu.agh.megamud.base;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * A location in our world. Location has its description, exits and creatures
  * inside. A location can serve a controller own commands (thus it extends
  * CommandCollector).
  */
-public class Location extends ItemHolder implements BehaviourHolderInterface {
+public class Location extends ItemHolder implements  BehaviourHolderInterface {
 	private BehaviourHolder behaviourHolder = new BehaviourHolder();
 	private Map<String, Location> exits = new HashMap<String, Location>();
 	private Map<String, Creature> creatures = new HashMap<String, Creature>();
 	private String id;
 	private String description;
+//	private Map<String, List<Command>> map = new HashMap<String, List<Command>>();
 	
 	private pl.edu.agh.megamud.dao.Location dbLocation = null;
 
@@ -152,4 +156,46 @@ public class Location extends ItemHolder implements BehaviourHolderInterface {
 	public List<Behaviour> getBehaviourByType(Class<? extends Behaviour> clazz) {
 		return behaviourHolder.getBehaviourByType(clazz);
 	}
+//	public  List<Command> findCommands(String name) {
+//		return map.get(name);
+//	}
+//
+//	/**
+//	 * Remove a command from this collector.
+//	 */
+//	public void removeCommandLocation(Command cmd) {
+//		List<Command> v = map.get(cmd.getName());
+//		if (v == null)
+//			return;
+//		v.remove(cmd);
+//		if (v.size() == 0)
+//			map.remove(cmd.getName());
+//	}
+//
+//	/*
+//	 * Add a command to this collector.
+//	 */
+//	public final void addCommandLocation(Command cmd) {
+//		List<Command> v = map.get(cmd.getName());
+//		if (v == null) {
+//			v = new LinkedList<Command>();
+//			map.put(cmd.getName(), v);
+//		}
+//		v.add(cmd);
+//	}
+//
+//	/**
+//	 * Get a list of all commands supported by this collector.
+//	 */
+//	public final List<Command> getAllCommandsLocation() {
+//		List<Command> l = new LinkedList<Command>();
+//		for (Iterator<Entry<String, List<Command>>> i = map.entrySet()
+//				.iterator(); i.hasNext();) {
+//			Entry<String, List<Command>> e = i.next();
+//			for (Iterator<Command> c = e.getValue().iterator(); c.hasNext();)
+//				l.add(c.next());
+//		}
+//		return l;
+//	}
+//	
 }

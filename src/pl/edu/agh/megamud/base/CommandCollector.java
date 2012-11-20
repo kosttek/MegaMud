@@ -11,7 +11,7 @@ import java.util.Map.Entry;
  * Object capable of collecting and managing commands. Hosted in a map (string
  * => list<commands>) - commands with the same name.
  */
-public class CommandCollector {
+public class CommandCollector  {
 	private Map<String, List<Command>> map = new HashMap<String, List<Command>>();
 
 	/**

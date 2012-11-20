@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project MegaMud">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <property file="build.properties" />
+    
+    <target name="create_run_jar">
+      <copyfile src="run.sh" dest="${out.path}/${mud.dir.name}/run.sh"/>
+      <chmod file="${out.path}/${mud.dir.name}/run.sh" perm="755"/>
+      <mkdir dir="${out.path}/${mud.dir.name}/db"/>
+        <jar destfile="${out.path}/${mud.dir.name}/mud.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="pl.edu.agh.megamud.TelnetServer"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="${project.path}/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="${project.path}/lib/ormlite-core-4.42.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${project.path}/lib/ormlite-jdbc-4.42.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${project.path}/lib/sqlite-jdbc-3.7.2.jar"/>
+	    <!--<zipfileset excludes="META-INF/*.SF" src="/home/kosttek/eclipse/plugins/org.junit_4.10.0.v4_10_0_v20120426-0900/junit.jar"/>-->
+<!--            <zipfileset excludes="META-INF/*.SF" src="/home/kosttek/eclipse/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar"/>-->
+        </jar>
+    </target>
+</project>

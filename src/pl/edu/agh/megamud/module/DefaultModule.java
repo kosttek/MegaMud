@@ -17,6 +17,7 @@ import pl.edu.agh.megamud.dao.base.LocationBase;
 import pl.edu.agh.megamud.dao.base.PortalBase;
 import pl.edu.agh.megamud.mechanix.CommandHit;
 import pl.edu.agh.megamud.mechanix.FightBehaviour;
+import pl.edu.agh.megamud.world.CaveInitializer;
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items etc.
  * @author Tomasz
@@ -40,36 +41,12 @@ public class DefaultModule extends DatabaseModule{
 		LocationBase.createDao().deleteBuilder().delete();
 	}
 	
-	private void prepareLocation(String id,String desc) throws SQLException{
-		pl.edu.agh.megamud.dao.Location loc1=new pl.edu.agh.megamud.dao.Location();
-		loc1.setName(id).setDescription(desc).setModule(this.getId());
-		LocationBase.createDao().create(loc1);
-	}
-	
-	private void preparePortal(String from,String to,String name) throws SQLException{
-		pl.edu.agh.megamud.dao.Location loc1=LocationBase.createDao().queryBuilder().where().eq("name", from).and().eq("module", this.getId()).query().get(0);
-		pl.edu.agh.megamud.dao.Location loc2=LocationBase.createDao().queryBuilder().where().eq("name", to).and().eq("module", this.getId()).query().get(0);
-		
-		Portal p=new Portal();
-		p.setDestination(loc2);
-		p.setEntry(loc1);
-		p.setName(name);
-		PortalBase.createDao().create(p);
-	}
-	
 	protected void init(){
 		try {
 			clearLocations();
 			prepareAttributes();
 			
-			prepareLocation("start","Pokoj glowny");
-			prepareLocation("p2","Pokoj 2");
-			prepareLocation("p3","Pokoj 3");
-			
-			preparePortal("start","p2","Lewo");
-			preparePortal("start","p3","Prawo");
-			preparePortal("p2","start","Prawo");
-			preparePortal("p3","start","Lewo");
+			CaveInitializer.init(this.getId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -77,6 +54,44 @@ public class DefaultModule extends DatabaseModule{
 		super.init();
 		
 		//Commands
+		
+		installCommands();
+
+		Weapon sword = new Weapon("sword", "little rusty sword");
+		sword.giveTo(GameServer.getInstance().getLocation(CaveInitializer.B2.getName()));
+		
+		new CyclicBehaviour(GameServer.getInstance().getLocation(CaveInitializer.B1.getName()),1000L){
+			protected void action() {
+				Location location=(Location)owner;
+				
+				if(location.getItems().containsKey("apple"))
+					return;
+				
+				SimpleItem it=new SimpleItem("apple","Precious, golden apple.");
+				it.giveTo(location);
+			}
+		}.init();
+		
+		installNPC(
+				new Chochlik(),
+				new Creature("Chochlik")
+					.setLevel(100)
+					.setHp(666),
+				GameServer.getInstance().getLocation(CaveInitializer.B3.getName()));
+		
+		Creature rat = new Creature("rat")
+			.setLevel(1)
+			.setHp(34);
+		
+		rat.addBehaviour(new FightBehaviour(rat));
+		
+		installNPC(
+				new Chochlik(), 
+				rat, 
+				GameServer.getInstance().getLocation(CaveInitializer.B2.getName()));
+	}
+
+	private void installCommands() {
 		installCommand(new CommandEquip());
 		installCommand(new CommandHit());
 		installCommand(new CommandUnequip());
@@ -94,26 +109,6 @@ public class DefaultModule extends DatabaseModule{
 		installCommand(new CommandSay());
 		
 		installCommand(new CommandKill());
-		
-		Weapon sword = new Weapon("sword", "little rusty sword");
-		sword.giveTo(GameServer.getInstance().getLocation("p2"));
-		
-		new CyclicBehaviour(GameServer.getInstance().getLocation("p2"),1000L){
-			protected void action() {
-				Location c=(Location)owner;
-				
-				if(c.getItems().containsKey("apple"))
-					return;
-				
-				SimpleItem it=new SimpleItem("apple","Precious, golden apple.");
-				it.giveTo(c);
-			}
-		}.init();
-		
-		installNPC(new SampleBot(),new Creature("Hohlik").setLevel(100).setHp(666),GameServer.getInstance().getStartLocation());
-		Creature rat =new Creature("rat").setLevel(1).setHp(34);
-		rat.addBehaviour(new FightBehaviour(rat));
-		installNPC(new SampleBot(),rat,GameServer.getInstance().getStartLocation());
 	}
 	
 	public void onNewController(Controller c){

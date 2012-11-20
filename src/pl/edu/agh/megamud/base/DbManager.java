@@ -6,6 +6,7 @@ import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.dao.CreatureAttribute;
 import pl.edu.agh.megamud.dao.CreatureItem;
 import pl.edu.agh.megamud.dao.ItemAttribute;
+import pl.edu.agh.megamud.dao.LocationItem;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Portal;
@@ -63,6 +64,8 @@ public class DbManager {
 					pl.edu.agh.megamud.dao.Location.class);
 			TableUtils.createTableIfNotExists(getConnectionSource(),
 					Portal.class);
+			TableUtils.createTableIfNotExists(getConnectionSource(),
+					LocationItem.class);
 
 			// Attribute.insertIfNotExists(Attribute.STRENGTH);
 			// Attribute.insertIfNotExists(Attribute.DEXTERITY);

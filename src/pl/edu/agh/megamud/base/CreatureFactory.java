@@ -1,5 +1,6 @@
 package pl.edu.agh.megamud.base;
 
+import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.mechanix.FightBehaviour;
 
 public class CreatureFactory {

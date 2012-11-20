@@ -17,6 +17,7 @@ import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.dao.base.LocationBase;
 import pl.edu.agh.megamud.mechanix.CommandHit;
 import pl.edu.agh.megamud.mechanix.FightBehaviour;
+import pl.edu.agh.megamud.world.AggressiveSentry;
 import pl.edu.agh.megamud.world.CaveInitializer;
 import pl.edu.agh.megamud.world.Chochlik;
 import pl.edu.agh.megamud.world.Sentry;

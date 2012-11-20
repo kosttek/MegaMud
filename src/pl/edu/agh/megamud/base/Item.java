@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.dao.CreatureItem;
 import pl.edu.agh.megamud.dao.ItemAttribute;
+import pl.edu.agh.megamud.dao.LocationItem;
 import pl.edu.agh.megamud.dao.base.ItemBase;
 
 /**
@@ -20,9 +21,14 @@ import pl.edu.agh.megamud.dao.base.ItemBase;
  */
 public class Item implements BehaviourHolderInterface {
 	/**
-	 * In-database representation of this item.
+	 * In-database representation of this item (if held by creature).
 	 */
 	protected CreatureItem creatureItem = null;
+	
+	/**
+	 * In-database representation of this item (if held by location).
+	 */
+	protected LocationItem locationItem = null;
 
 	/**
 	 * In-game owner of this item.
@@ -80,21 +86,47 @@ public class Item implements BehaviourHolderInterface {
 		}
 	}
 
-	public Item(CreatureItem it) {
-		setCreatureItem(it);
-	}
-
 	public CreatureItem getCreatureItem() {
 		return this.creatureItem;
 	}
 
 	public void setCreatureItem(CreatureItem it) {
+		this.locationItem=null;
 		this.creatureItem = it;
 
 		this.name = it.getItem().getName();
 		this.description = it.getItem().getDescription();
 
 		List<Attribute> attrs;
+		this.attributes.clear();
+		try {
+			attrs = Attribute.createDao().queryForAll();
+			for (Iterator<Attribute> i = attrs.iterator(); i.hasNext();) {
+				Attribute a = i.next();
+				List<ItemAttribute> found = ItemAttribute.createDao()
+						.queryBuilder().where().eq("attribute_id", a).and()
+						.eq("item_id", it).query();
+				if (found.size() > 0) {
+					ItemAttribute first = found.get(0);
+					this.attributes.put(a, first.getValue().longValue());
+				} else {
+					this.attributes.put(a, Long.valueOf(0L));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void setLocationItem(LocationItem it) {
+		this.locationItem=it;
+		this.creatureItem = null;
+
+		this.name = it.getItem().getName();
+		this.description = it.getItem().getDescription();
+
+		List<Attribute> attrs;
+		this.attributes.clear();
 		try {
 			attrs = Attribute.createDao().queryForAll();
 			for (Iterator<Attribute> i = attrs.iterator(); i.hasNext();) {
@@ -151,12 +183,6 @@ public class Item implements BehaviourHolderInterface {
 			oldOwner.onItemDisappear(this, newOwner);
 		}
 
-		if (creatureItem != null) {
-			creatureItem.setCreature(null);
-			// @todo
-			// creatureItem.setLocation(null);
-		}
-
 		this.owner = newOwner;
 
 		if (newOwner != null) {
@@ -164,22 +190,29 @@ public class Item implements BehaviourHolderInterface {
 			newOwner.onItemAppear(this, oldOwner);
 		}
 
+		pl.edu.agh.megamud.dao.Item it;
+		try {
+			it = pl.edu.agh.megamud.dao.Item.createDao().queryBuilder()
+					.where().eq("name", this.name).query().get(0);
+		} catch (Exception e) {
+			it = new pl.edu.agh.megamud.dao.Item();
+			it.setName(this.name);
+			it.setDescription(this.description);
+			try {
+				ItemBase.createDao().create(it);
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
 		if (newOwner instanceof Creature) {
-			if (this.creatureItem == null) {
-				pl.edu.agh.megamud.dao.Item it;
+			if(this.locationItem!=null){
 				try {
-					it = pl.edu.agh.megamud.dao.Item.createDao().queryBuilder()
-							.where().eq("name", this.name).query().get(0);
+					LocationItem.createDao().delete(this.locationItem);
 				} catch (Exception e) {
-					it = new pl.edu.agh.megamud.dao.Item();
-					it.setName(this.name);
-					it.setDescription(this.description);
-					try {
-						ItemBase.createDao().create(it);
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-					}
-				}
+				}	
+			}
+			if (this.creatureItem == null) {
 				try {
 					this.creatureItem = new CreatureItem();
 					this.creatureItem.setItem(it);
@@ -197,18 +230,48 @@ public class Item implements BehaviourHolderInterface {
 				try {
 					CreatureItem.createDao().update(this.creatureItem);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			this.creatureItem
-					.setCreature(((Creature) newOwner).getDbCreature());
+		}else if (newOwner instanceof Location) {
+			if(this.creatureItem!=null){
+				try {
+					CreatureItem.createDao().delete(this.creatureItem);
+				} catch (Exception e) {
+				}	
+			}
+			if (this.locationItem == null) {
+				try {
+					this.locationItem = new LocationItem();
+					this.locationItem.setItem(it);
+					this.locationItem.setLevel(1);
+					this.locationItem.setLocation(((Location) newOwner)
+							.getDbLocation());
+
+					LocationItem.createDao().create(this.locationItem);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} else {
+				this.locationItem.setLocation(((Location) newOwner)
+						.getDbLocation());
+				try {
+					LocationItem.createDao().update(this.locationItem);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		} else if (newOwner == null) {
 			try {
 				CreatureItem.createDao().delete(this.creatureItem);
 			} catch (Exception e) {
 			}
+			try {
+				LocationItem.createDao().delete(this.locationItem);
+			} catch (Exception e) {
+			}
 			this.creatureItem = null;
+			this.locationItem = null;
 		}
 
 		return true;

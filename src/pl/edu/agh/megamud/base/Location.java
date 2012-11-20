@@ -15,7 +15,7 @@ public class Location extends ItemHolder implements BehaviourHolderInterface {
 	private Map<String, Creature> creatures = new HashMap<String, Creature>();
 	private String id;
 	private String description;
-
+	
 	private pl.edu.agh.megamud.dao.Location dbLocation = null;
 
 	public pl.edu.agh.megamud.dao.Location getDbLocation() {

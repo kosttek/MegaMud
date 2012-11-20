@@ -2,8 +2,6 @@ package pl.edu.agh.megamud.module;
 
 import java.sql.SQLException;
 
-import javax.smartcardio.ATR;
-
 import pl.edu.agh.megamud.GameServer;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
@@ -13,12 +11,12 @@ import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.SimpleItem;
 import pl.edu.agh.megamud.base.itemtype.Weapon;
 import pl.edu.agh.megamud.dao.Attribute;
+import pl.edu.agh.megamud.dao.LocationItem;
 import pl.edu.agh.megamud.dao.base.LocationBase;
 import pl.edu.agh.megamud.mechanix.CommandHit;
 import pl.edu.agh.megamud.mechanix.FightBehaviour;
 import pl.edu.agh.megamud.world.CaveInitializer;
 import pl.edu.agh.megamud.world.Chochlik;
-import pl.edu.agh.megamud.world.Sentry;
 
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items
@@ -44,6 +42,7 @@ public class DefaultModule extends DatabaseModule {
 
 	private void clearLocations() throws SQLException {
 		LocationBase.createDao().deleteBuilder().delete();
+		LocationItem.createDao().deleteBuilder().delete();
 	}
 
 	protected void init() {

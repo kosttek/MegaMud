@@ -1,5 +1,6 @@
-package pl.edu.agh.megamud.base;
+package pl.edu.agh.megamud.world;
 
+import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.mechanix.FightBehaviour;
 

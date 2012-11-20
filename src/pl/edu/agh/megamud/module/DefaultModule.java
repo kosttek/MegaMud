@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import pl.edu.agh.megamud.GameServer;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
+import pl.edu.agh.megamud.base.CreatureFactory;
 import pl.edu.agh.megamud.base.CyclicBehaviour;
 import pl.edu.agh.megamud.base.DatabaseModule;
 import pl.edu.agh.megamud.base.Location;
@@ -15,6 +16,7 @@ import pl.edu.agh.megamud.dao.LocationItem;
 import pl.edu.agh.megamud.dao.base.LocationBase;
 import pl.edu.agh.megamud.mechanix.CommandHit;
 import pl.edu.agh.megamud.mechanix.FightBehaviour;
+import pl.edu.agh.megamud.world.AggressiveSentry;
 import pl.edu.agh.megamud.world.CaveInitializer;
 import pl.edu.agh.megamud.world.Chochlik;
 
@@ -86,17 +88,17 @@ public class DefaultModule extends DatabaseModule {
 					.setLevel(100)
 					.setHp(666),
 				GameServer.getInstance().getLocation(CaveInitializer.B3));
-
-		Creature rat = new Creature("rat").setLevel(1).setHp(34);
-
-		rat.addBehaviour(new FightBehaviour(rat));
-		rat.initAtribute(Attribute.findByName(Attribute.STRENGTH));
-		rat.setAttribute(Attribute.STRENGTH, 5L);
+		
 		installNPC(
-				new Chochlik(), 
-				rat, 
+				new Sentry(), 
+				CreatureFactory.getRat(),
 				GameServer.getInstance().getLocation(CaveInitializer.B2));
-		Location l = rat.getLocation();
+		
+		installNPC(
+				new AggressiveSentry(), 
+				CreatureFactory.getRat(),
+				GameServer.getInstance().getLocation(CaveInitializer.D3));
+
 	}
 
 	private void installCommands() {

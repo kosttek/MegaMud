@@ -12,11 +12,13 @@ import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.PlayerController;
+import pl.edu.agh.megamud.dao.Attribute;
+import pl.edu.agh.megamud.dao.CreatureAttribute;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Profession;
 import pl.edu.agh.megamud.mechanix.FightBehaviour;
-import pl.edu.agh.megamud.mechanix.InitMechanix;
+import pl.edu.agh.megamud.mechanix.Mechanix;
 
 public class CommandLogin extends Command {
 	public String getName(){
@@ -80,6 +82,7 @@ public class CommandLogin extends Command {
 		ForeignCollection<PlayerCreature> creatures=player.getPlayerCreatures();
 		Iterator<PlayerCreature> i=creatures.iterator();
 		PlayerCreature pc;
+		CreatureAttribute caStrength, caDexterity;
 		
 		if(!i.hasNext()){
 			pc=new PlayerCreature(player);
@@ -91,9 +94,20 @@ public class CommandLogin extends Command {
 			pc.setProfession(Profession.DEFAULT);
 			pc.setName(player.getLogin()+"");
 			
+			caStrength = new CreatureAttribute();
+			caStrength .setAttribute(Attribute.findByName(Attribute.STRENGTH));
+			caStrength .setValue(10);
+			caStrength .setCreature(pc);
+			
+			caDexterity = new CreatureAttribute();
+			caDexterity .setAttribute(Attribute.findByName(Attribute.DEXTERITY));
+			caDexterity .setValue(10);
+			caDexterity .setCreature(pc);
 			try {
 				PlayerCreature.createDao().create(pc);
 				PlayerCreature.createDao().refresh(pc);
+				CreatureAttribute.createDao().create(caStrength);
+				CreatureAttribute.createDao().create(caDexterity);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -105,7 +119,7 @@ public class CommandLogin extends Command {
 		Creature c=new Creature(pc.getName());
 		c.setDbCreature(pc);
 		
-		InitMechanix.initEquipment(c);
+		Mechanix.initEquipment(c);
 		c.addBehaviour(new FightBehaviour(c));
 		
 		GameServer.getInstance().initCreature(user,c);

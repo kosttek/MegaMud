@@ -10,9 +10,10 @@ import pl.edu.agh.megamud.base.ItemHolder;
 import pl.edu.agh.megamud.base.itemtype.Body;
 import pl.edu.agh.megamud.base.itemtype.Hand;
 import pl.edu.agh.megamud.base.itemtype.Head;
+import pl.edu.agh.megamud.base.itemtype.ItemToWorn;
 import pl.edu.agh.megamud.dao.Attribute;
 
-public class InitMechanix {
+public class Mechanix {
 	/**
 	 * Inited when player logged succesful
 	 * @param itemHolder
@@ -28,7 +29,21 @@ public class InitMechanix {
 	
 	//TODO
 	static public void attack(Creature attacker, Creature Defender){
-		Defender.addDamage(10);
+		Long stregth = attacker.getAttributeValue(Attribute.STRENGTH);
+		if(stregth == null){ System.out.println("null !! panie null!! nie ma sily !!"); return;}
+		
+		int weaponDamage=0 ;
+		if(attacker.getEquipment().containsKey(Hand.class)){
+			ItemToWorn item = attacker.getEquipment().get(Hand.class);
+			if(item != null){
+				Long tempDamageL ;
+				tempDamageL = item.getAttributeValue(Attribute.DAMAGE);
+				weaponDamage = tempDamageL==null? 0 : tempDamageL.intValue();
+			}
+		}	
+		
+		int damage = stregth.intValue() + weaponDamage;
+		Defender.addDamage(damage);
 	}
 	
 	static public String creatureAttr[] = {Attribute.DEXTERITY,Attribute.STRENGTH};

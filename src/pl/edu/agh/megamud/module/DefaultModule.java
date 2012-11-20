@@ -2,6 +2,8 @@ package pl.edu.agh.megamud.module;
 
 import java.sql.SQLException;
 
+import javax.smartcardio.ATR;
+
 import pl.edu.agh.megamud.GameServer;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
@@ -11,6 +13,8 @@ import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.SimpleItem;
 import pl.edu.agh.megamud.base.itemtype.Weapon;
 import pl.edu.agh.megamud.dao.Attribute;
+import pl.edu.agh.megamud.dao.Item;
+import pl.edu.agh.megamud.dao.ItemAttribute;
 import pl.edu.agh.megamud.dao.Portal;
 import pl.edu.agh.megamud.dao.base.AttributeBase;
 import pl.edu.agh.megamud.dao.base.LocationBase;
@@ -32,7 +36,7 @@ public class DefaultModule extends DatabaseModule{
 	}
 	
 	private void prepareAttributes() throws SQLException{
-		AttributeBase.createDao().deleteBuilder().delete();
+//		AttributeBase.createDao().deleteBuilder().delete();
 		Attribute.insertIfNotExists(Attribute.STRENGTH);
 		Attribute.insertIfNotExists(Attribute.DEXTERITY);
 		Attribute.insertIfNotExists(Attribute.DAMAGE);
@@ -60,6 +64,7 @@ public class DefaultModule extends DatabaseModule{
 
 		Weapon sword = new Weapon("sword", "little rusty sword");
 		sword.giveTo(GameServer.getInstance().getLocation(CaveInitializer.B2.getName()));
+		sword.setAttribute(Attribute.DAMAGE, 3L);
 		
 		new CyclicBehaviour(GameServer.getInstance().getLocation(CaveInitializer.C7),1000L){
 			protected void action() {

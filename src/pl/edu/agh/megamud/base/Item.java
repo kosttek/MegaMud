@@ -36,9 +36,14 @@ public class Item implements BehaviourHolderInterface{
 	
 	private BehaviourHolder behaviourHolder = new BehaviourHolder();
 	
-	public Long getAttributeValue(String x){
-		if(attributes.containsKey(x))
-			return attributes.get(x);
+	public Map<Attribute, Long> getAttributes() {
+		return this.attributes;
+	}
+	public Long getAttributeValue(String name){
+		for(Attribute attr : getAttributes().keySet()){
+			if (attr.getName().equals(name))
+				return getAttributes().get(attr);
+		}
 		return null;
 	}
 	

@@ -24,7 +24,7 @@ public class FightBehaviour extends Behaviour {
 
 	@Override
 	protected void action() {
-		if(((Creature)owner).getHp()<=0)
+		if(((Creature)owner).getHp()<=0 || !((Creature)owner).getLocation().getCreatures().containsKey(opponent.getName()))
 			return ;
 		FightBehaviour oppFightBeh = getOpponentFightBehaviour();
 		if(oppFightBeh!= null && !oppFightBeh.isActive() && isOpponentAlive()){
@@ -60,7 +60,7 @@ public class FightBehaviour extends Behaviour {
 	}
 	
 	private void attack(){
-		InitMechanix.attack((Creature)owner, opponent);
+		Mechanix.attack((Creature)owner, opponent);
 	}
 
 	private boolean isOpponentAlive(){

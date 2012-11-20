@@ -49,10 +49,6 @@ public class TelnetServer {
 
 	}
 	
-	static void test(){
-		HashMap<String,Integer> hm = new HashMap<String, Integer>();
-		hm.put(new String("xxx"),new Integer(1));
-		System.out.println(hm.get(new String("xxx")));
-	}
+	
 
 }

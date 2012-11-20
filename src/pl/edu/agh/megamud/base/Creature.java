@@ -15,7 +15,7 @@ import pl.edu.agh.megamud.dao.CreatureAttribute;
 import pl.edu.agh.megamud.dao.ItemAttribute;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Profession;
-import pl.edu.agh.megamud.mechanix.InitMechanix;
+import pl.edu.agh.megamud.mechanix.Mechanix;
 
 import com.j256.ormlite.dao.ForeignCollection;
 
@@ -65,16 +65,16 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 		List<Attribute> attrs;
 		try {
 			attrs = Attribute.createDao().queryForAll();
-			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
-				
+			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){		
 				Attribute a=i.next();
-				if(!InitMechanix.isCreatureAttribute(a)) continue;
+				
 				List<CreatureAttribute> found=CreatureAttribute.createDao().queryBuilder().where().eq("attribute_id",a).and().eq("creature_id", this.dbCreature).query();
 				
 				if(found.size()>0){
 					CreatureAttribute first=found.get(0);
 					this.attributes.put(a,first.getValue().longValue());
 				}else{
+					if(!Mechanix.isCreatureAttribute(a)) continue;
 					this.attributes.put(a,Long.valueOf(0L));
 				}
 			}
@@ -182,8 +182,16 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	public int getExpNeeded() {
 		return this.expNeeded;
 	}
+
 	public Map<Attribute, Long> getAttributes() {
 		return this.attributes;
+	}
+	public Long getAttributeValue(String name){
+		for(Attribute attr : getAttributes().keySet()){
+			if (attr.getName().equals(name))
+				return getAttributes().get(attr);
+		}
+		return null;
 	}
 	public void setAttribute(String x,Long val){
 		for(Iterator<Entry<Attribute,Long>> set=attributes.entrySet().iterator();set.hasNext();){

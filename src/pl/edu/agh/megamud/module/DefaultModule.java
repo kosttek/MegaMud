@@ -94,7 +94,6 @@ public class DefaultModule extends DatabaseModule {
 				new Sentry(), 
 				CreatureFactory.getRat(),
 				GameServer.getInstance().getLocation(CaveInitializer.B2));
-<<<<<<< Updated upstream
 		
 		installNPC(
 				new AggressiveSentry(), 
@@ -120,9 +119,6 @@ public class DefaultModule extends DatabaseModule {
 				new Sentry(), 
 				CreatureFactory.getRat(),
 				GameServer.getInstance().getLocation(CaveInitializer.D1));		
-=======
-	
->>>>>>> Stashed changes
 	}
 
 	private void installCommands() {

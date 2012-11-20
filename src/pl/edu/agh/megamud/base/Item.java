@@ -46,6 +46,9 @@ public class Item implements BehaviourHolderInterface{
 		}
 		return null;
 	}
+	public void initAtribute(Attribute a){
+		attributes.put(a, 0L);
+	}
 	
 	public void setAttribute(String x,Long val){
 		for(Iterator<Entry<Attribute,Long>> set=attributes.entrySet().iterator();set.hasNext();){

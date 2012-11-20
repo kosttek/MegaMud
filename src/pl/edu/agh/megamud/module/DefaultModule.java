@@ -64,6 +64,7 @@ public class DefaultModule extends DatabaseModule{
 
 		Weapon sword = new Weapon("sword", "little rusty sword");
 		sword.giveTo(GameServer.getInstance().getLocation(CaveInitializer.B2.getName()));
+//		sword.initAtribute(Attribute.findByName(Attribute.DAMAGE));
 		sword.setAttribute(Attribute.DAMAGE, 3L);
 		
 		new CyclicBehaviour(GameServer.getInstance().getLocation(CaveInitializer.C7),1000L){
@@ -95,6 +96,7 @@ public class DefaultModule extends DatabaseModule{
 				new Chochlik(), 
 				rat, 
 				GameServer.getInstance().getLocation(CaveInitializer.B2));
+		Location l = rat.getLocation();
 	}
 
 	private void installCommands() {

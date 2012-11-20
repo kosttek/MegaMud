@@ -20,11 +20,11 @@ public abstract class CreatureItemBase {
 	private PlayerCreature creature;
 
 	@DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
-	private Item item;	
+	private Item item;
 
 	@DatabaseField(canBeNull = false, defaultValue = "0")
 	private Integer level;
-	
+
 	public PlayerCreature getCreature() {
 		return creature;
 	}
@@ -53,17 +53,18 @@ public abstract class CreatureItemBase {
 		return id;
 	}
 
-	public CreatureItemBase(){
-		
+	public CreatureItemBase() {
+
 	}
-	
-	public static Dao<CreatureItem, Integer> createDao(){
+
+	public static Dao<CreatureItem, Integer> createDao() {
 		try {
-			return DaoManager.createDao(DbManager.getConnectionSource(), CreatureItem.class);
+			return DaoManager.createDao(DbManager.getConnectionSource(),
+					CreatureItem.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
-	}	
+	}
 }

@@ -15,16 +15,16 @@ public abstract class ModuleNPCBase {
 
 	@DatabaseField(generatedId = true)
 	private Integer id;
-	
+
 	@DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
 	private Module module;
-	
+
 	@DatabaseField(canBeNull = false)
 	private String java_class;
-	
+
 	@DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
 	private Player player;
-	
+
 	public Module getModule() {
 		return module;
 	}
@@ -50,19 +50,19 @@ public abstract class ModuleNPCBase {
 		return this;
 	}
 
-	public ModuleNPCBase(){
-		
+	public ModuleNPCBase() {
+
 	}
-	
-	public static Dao<ModuleNPC, Integer> createDao(){
+
+	public static Dao<ModuleNPC, Integer> createDao() {
 		try {
-			return DaoManager.createDao(DbManager.getConnectionSource(), ModuleNPC.class);
+			return DaoManager.createDao(DbManager.getConnectionSource(),
+					ModuleNPC.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	
+
 }

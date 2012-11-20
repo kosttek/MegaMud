@@ -3,16 +3,19 @@ package pl.edu.agh.megamud.dao.base;
 import java.sql.SQLException;
 
 import pl.edu.agh.megamud.base.DbManager;
-import pl.edu.agh.megamud.dao.*;
+import pl.edu.agh.megamud.dao.Player;
+import pl.edu.agh.megamud.dao.PlayerCreature;
 
-import com.j256.ormlite.dao.*;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 
-public abstract class PlayerBase{
-    @DatabaseField(id = true)
-    private String login;    
-    
+public abstract class PlayerBase {
+	@DatabaseField(id = true)
+	private String login;
+
 	public String getLogin() {
 		return login;
 	}
@@ -32,8 +35,8 @@ public abstract class PlayerBase{
 		this.password_md5 = passwordMd5;
 	}
 
-    @DatabaseField(canBeNull = false, defaultValue = "0")
-    private Integer priviledges;
+	@DatabaseField(canBeNull = false, defaultValue = "0")
+	private Integer priviledges;
 
 	public Integer getPriviledges() {
 		return priviledges;
@@ -41,12 +44,11 @@ public abstract class PlayerBase{
 
 	public void setPriviledges(Integer priviledges) {
 		this.priviledges = priviledges;
-	}	
-	
+	}
+
 	@ForeignCollectionField(eager = true)
 	private ForeignCollection<PlayerCreature> playerCreatures;
-	
-	
+
 	public ForeignCollection<PlayerCreature> getPlayerCreatures() {
 		try {
 			createDao().refresh((Player) this);
@@ -57,17 +59,20 @@ public abstract class PlayerBase{
 		return playerCreatures;
 	}
 
-	public void setPlayerCreatures(ForeignCollection<PlayerCreature> playerCreatures) {
+	public void setPlayerCreatures(
+			ForeignCollection<PlayerCreature> playerCreatures) {
 		this.playerCreatures = playerCreatures;
 	}
 
 	public PlayerBase() {
-    	// all persisted classes must define a no-arg constructor with at least package visibility
-    }
-    
-	public static Dao<Player,String> createDao(){
+		// all persisted classes must define a no-arg constructor with at least
+		// package visibility
+	}
+
+	public static Dao<Player, String> createDao() {
 		try {
-			return DaoManager.createDao(DbManager.getConnectionSource(), Player.class);
+			return DaoManager.createDao(DbManager.getConnectionSource(),
+					Player.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

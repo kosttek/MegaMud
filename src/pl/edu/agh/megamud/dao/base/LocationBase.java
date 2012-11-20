@@ -16,16 +16,16 @@ public abstract class LocationBase {
 
 	@DatabaseField(generatedId = true)
 	private Integer id;
-	
+
 	@DatabaseField(canBeNull = false)
 	private String name;
-	
+
 	@DatabaseField(canBeNull = false)
 	private String description;
-	
+
 	@DatabaseField(canBeNull = false)
 	private String module;
-	
+
 	public String getModule() {
 		return module;
 	}
@@ -36,7 +36,7 @@ public abstract class LocationBase {
 	}
 
 	@ForeignCollectionField(eager = true)
-	private ForeignCollection<Portal> exits;	
+	private ForeignCollection<Portal> exits;
 
 	public String getName() {
 		return name;
@@ -59,7 +59,7 @@ public abstract class LocationBase {
 		this.description = description;
 		return this;
 	}
-	
+
 	public ForeignCollection<Portal> getExits() {
 		return exits;
 	}
@@ -68,19 +68,19 @@ public abstract class LocationBase {
 		this.exits = exits;
 	}
 
-	public LocationBase(){
-		
+	public LocationBase() {
+
 	}
-	
-	public static Dao<Location, Integer> createDao(){
+
+	public static Dao<Location, Integer> createDao() {
 		try {
-			return DaoManager.createDao(DbManager.getConnectionSource(), Location.class);
+			return DaoManager.createDao(DbManager.getConnectionSource(),
+					Location.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	
+
 }

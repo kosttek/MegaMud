@@ -7,10 +7,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import pl.edu.agh.megamud.dao.*;
+import pl.edu.agh.megamud.dao.ItemAttribute;
 
-public class ItemAttributeTest extends TestBase{
-	
+public class ItemAttributeTest extends TestBase {
+
 	@Before
 	public void setUp() throws Exception {
 		prepareDatabase();
@@ -21,29 +21,30 @@ public class ItemAttributeTest extends TestBase{
 	@After
 	public void tearDown() throws Exception {
 		connectionSource.close();
-	}	
-	
+	}
+
 	@Test(expected = SQLException.class)
-	public void should_not_create_without_item() throws SQLException{
+	public void should_not_create_without_item() throws SQLException {
 		ItemAttribute itemAttribute = new ItemAttribute();
 		itemAttribute.setAttribute(predefinedAttribute);
 		itemAttributeDao.create(itemAttribute);
 	}
-	
+
 	@Test(expected = SQLException.class)
-	public void should_not_create_without_attribute() throws SQLException{
+	public void should_not_create_without_attribute() throws SQLException {
 		ItemAttribute itemAttribute = new ItemAttribute();
 		itemAttribute.setItem(predefinedItem);
 		itemAttributeDao.create(itemAttribute);
 	}
-	
+
 	@Test
-	public void should_create() throws SQLException{
+	public void should_create() throws SQLException {
 		ItemAttribute itemAttribute = new ItemAttribute();
 		itemAttribute.setItem(predefinedItem);
 		itemAttribute.setAttribute(predefinedAttribute);
 		itemAttributeDao.create(itemAttribute);
-		
-		Assert.assertTrue(itemAttribute.getId() != null && itemAttribute.getId() != 0);
+
+		Assert.assertTrue(itemAttribute.getId() != null
+				&& itemAttribute.getId() != 0);
 	}
 }

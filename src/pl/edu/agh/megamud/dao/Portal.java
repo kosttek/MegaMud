@@ -5,11 +5,12 @@ import pl.edu.agh.megamud.dao.base.PortalBase;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "portal")
-public class Portal extends PortalBase{
-	
-	public Portal(){}
-	
-	public Portal(String name){
+public class Portal extends PortalBase {
+
+	public Portal() {
+	}
+
+	public Portal(String name) {
 		this.setName(name);
 	}
 }

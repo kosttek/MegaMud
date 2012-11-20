@@ -10,12 +10,13 @@ public class ItemToWorn extends Item {
 		super(it);
 		// TODO Auto-generated constructor stub
 	}
-	
-	public ItemToWorn(String name,String description){
-		super(name,description);
+
+	public ItemToWorn(String name, String description) {
+		super(name, description);
 	}
+
 	@Override
-	public boolean canBeGivenTo(ItemHolder owner){
+	public boolean canBeGivenTo(ItemHolder owner) {
 		return true;
 	}
 }

@@ -1,19 +1,20 @@
 package pl.edu.agh.megamud.module;
 
 import pl.edu.agh.megamud.base.Command;
-import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.Controller;
+import pl.edu.agh.megamud.base.Creature;
 
 public class CommandGoto extends Command {
-	public String getName(){
+	public String getName() {
 		return "goto";
 	}
+
 	public boolean interprete(Controller user, String command) {
-		if(user.getCreature()==null)
+		if (user.getCreature() == null)
 			return false;
-		
+
 		Creature player = user.getCreature();
-		if(!player.moveTo(command))
+		if (!player.moveTo(command))
 			user.write("No such exit!");
 		return true;
 	}

@@ -14,101 +14,103 @@ import pl.edu.agh.megamud.dao.base.LocationBase;
 
 /**
  * A module that grabs possible locations and NPCs from database.
+ * 
  * @author Tomasz
  */
-public abstract class DatabaseModule extends Module{
+public abstract class DatabaseModule extends Module {
 
 	/**
-	 * Initialization:
-	 * - installs all locations from database, that are bound to module getId().
-	 * - the same for NPCs, but using reflection. 
+	 * Initialization: - installs all locations from database, that are bound to
+	 * module getId(). - the same for NPCs, but using reflection.
 	 */
-	protected void init(){
+	protected void init() {
 		List<pl.edu.agh.megamud.dao.Location> locs;
-		
-		try{
-			locs=LocationBase.createDao().queryBuilder().where().eq("module", this.getId()).query();
-		}catch(SQLException e){
+
+		try {
+			locs = LocationBase.createDao().queryBuilder().where()
+					.eq("module", this.getId()).query();
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
 		}
 		/**
-		 * 1. load location IDs and descriptions
-		 *   SELECT location.id, location.desc FROM location WHERE module=getId()
-		 * 2. install them
+		 * 1. load location IDs and descriptions SELECT location.id,
+		 * location.desc FROM location WHERE module=getId() 2. install them
 		 */
-		List<Location> outlocs=new LinkedList<Location>();
-		for(Iterator<pl.edu.agh.megamud.dao.Location> i=locs.iterator();i.hasNext();){
-			pl.edu.agh.megamud.dao.Location loc=i.next();
-			String id=loc.getName();
-			String desc=loc.getDescription();
-			
-			Location l=new Location(id,desc,this);
+		List<Location> outlocs = new LinkedList<Location>();
+		for (Iterator<pl.edu.agh.megamud.dao.Location> i = locs.iterator(); i
+				.hasNext();) {
+			pl.edu.agh.megamud.dao.Location loc = i.next();
+			String id = loc.getName();
+			String desc = loc.getDescription();
+
+			Location l = new Location(id, desc, this);
 			l.setDbLocation(loc);
 			outlocs.add(l);
-			
+
 			installLocation(l);
 		}
 		/**
-		 * 3. load exits (exit name + next location ID) and link to existing locations
-		 *   SELECT exit.to_id, exit.name FROM exit WHERE from_id=getId()
+		 * 3. load exits (exit name + next location ID) and link to existing
+		 * locations SELECT exit.to_id, exit.name FROM exit WHERE
+		 * from_id=getId()
 		 */
-		for(Location from: outlocs){
-			pl.edu.agh.megamud.dao.Location dbloc=from.getDbLocation();
-			for(Iterator<Portal> set = dbloc.getExits().iterator();set.hasNext();){
-				Portal p=set.next();
-				String out=p.getDestination().getName();
-				String name=p.getName();
-				Location end=GameServer.getInstance().getLocation(out);
-				
-				if(end==null)
+		for (Location from : outlocs) {
+			pl.edu.agh.megamud.dao.Location dbloc = from.getDbLocation();
+			for (Iterator<Portal> set = dbloc.getExits().iterator(); set
+					.hasNext();) {
+				Portal p = set.next();
+				String out = p.getDestination().getName();
+				String name = p.getName();
+				Location end = GameServer.getInstance().getLocation(out);
+
+				if (end == null)
 					continue;
-				
+
 				from.addExit(name, end);
 			}
 		}
-		
+
 		/**
-		 * @todo Loading NPCs
-		 * 1. load stored npc data
-		 *   SELECT npc.id, creature.name, creature.class, creature.klazz, etc FROM npcs
-		 *     INNER JOIN npc.creature = creature.id
-		 *     WHERE npc.module = getId()
-		 *   class = in-java class of NPCController
-		 *   klazz = in-game creature's class
-		 *   Creature data is to be stored as any other creature.
-		 * 2. install'em
+		 * @todo Loading NPCs 1. load stored npc data SELECT npc.id,
+		 *       creature.name, creature.class, creature.klazz, etc FROM npcs
+		 *       INNER JOIN npc.creature = creature.id WHERE npc.module =
+		 *       getId() class = in-java class of NPCController klazz = in-game
+		 *       creature's class Creature data is to be stored as any other
+		 *       creature. 2. install'em
 		 */
-		if(true)
-			return;
-		
-		for(;;){
-			String npcId="id";
-			String creatureName="name";
-			String npcController="pl.edu.agh.megamud.Base.NPCController";
-			
-			String creatureLocation="start";
-			
-			try{
-				@SuppressWarnings("unchecked")
-				Class<NPCController> klazz=(Class<NPCController>) Class.forName(npcController);
-				Constructor<NPCController> cons=klazz.getConstructor();
-				NPCController bot=cons.newInstance();
-				
-				Player p=new Player();
-				PlayerCreature pc=new PlayerCreature(p);
-				
-				Creature c=new Creature(creatureName);
-				c.setDbCreature(pc);
-				
-				Location loc=GameServer.getInstance().getLocation(creatureLocation);
-				
-				installNPC(bot,c,loc);
-			}catch(Exception e){
-				e.printStackTrace();
+		if (false){
+	
+			for (;;) {
+				String npcId = "id";
+				String creatureName = "name";
+				String npcController = "pl.edu.agh.megamud.Base.NPCController";
+	
+				String creatureLocation = "start";
+	
+				try {
+					@SuppressWarnings("unchecked")
+					Class<NPCController> klazz = (Class<NPCController>) Class
+							.forName(npcController);
+					Constructor<NPCController> cons = klazz.getConstructor();
+					NPCController bot = cons.newInstance();
+	
+					Player p = new Player();
+					PlayerCreature pc = new PlayerCreature(p);
+	
+					Creature c = new Creature(creatureName);
+					c.setDbCreature(pc);
+	
+					Location loc = GameServer.getInstance().getLocation(
+							creatureLocation);
+	
+					installNPC(bot, c, loc);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				break;
 			}
-			break;
 		}
 	}
-	
+
 }

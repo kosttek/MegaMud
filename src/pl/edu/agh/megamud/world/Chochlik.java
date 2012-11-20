@@ -13,69 +13,74 @@ import pl.edu.agh.megamud.base.SimpleModifier;
 public class Chochlik extends NPCController {
 	private Item ball;
 	private CyclicBehaviour ballBehaviour;
-	
-	public Chochlik(){
+
+	public Chochlik() {
 		super();
 	}
-	
-	public void onEnter(Creature otherCreature){
-		interpreteCommand("say","Welcome, useless "+otherCreature.getName()+". Find me an apple, or die!");
+
+	public void onEnter(Creature otherCreature) {
+		interpreteCommand("say", "Welcome, useless " + otherCreature.getName()
+				+ ". Find me an apple, or die!");
 	}
-	
-	public void onItemTransfer(ItemHolder from,ItemHolder to,Item item){
-		if(to==getCreature() && from!=null && from instanceof Creature){
-			Creature fromc=(Creature)from;
-			
-			if(item.getName().equals("apple")){
-				interpreteCommand("say","Great, I like that. Have this for your quest.");
-				
-				Item prize=new SimpleItem("prize","Hiper-duper prize.");
+
+	public void onItemTransfer(ItemHolder from, ItemHolder to, Item item) {
+		if (to == getCreature() && from != null && from instanceof Creature) {
+			Creature fromc = (Creature) from;
+
+			if (item.getName().equals("apple")) {
+				interpreteCommand("say",
+						"Great, I like that. Have this for your quest.");
+
+				Item prize = new SimpleItem("prize", "Hiper-duper prize.");
 				prize.giveTo(getCreature());
-				
-				interpreteCommand("give","prize "+fromc.getName());
-				
-				long delay=5000L;
-				new Behaviour(prize,delay){
-					public void action(){
-						interpreteCommand("say","Hahahaha, I tricked you. Watch as your dreams perish.");
+
+				interpreteCommand("give", "prize " + fromc.getName());
+
+				long delay = 5000L;
+				new Behaviour(prize, delay) {
+					public void action() {
+						interpreteCommand("say",
+								"Hahahaha, I tricked you. Watch as your dreams perish.");
 					}
 				}.init();
-				new Behaviour(prize,delay){
-					public void action(){
-						Item i=(Item)owner;
+				new Behaviour(prize, delay) {
+					public void action() {
+						Item i = (Item) owner;
 						i.giveTo(null);
 					}
 				}.init();
-				
+
 				fromc.addModifier(new SimpleModifier(fromc, "power", +10, delay));
-			}else{
-				interpreteCommand("say","I don't want this, I want an apple!");
-				interpreteCommand("give","apple "+fromc.getName());
+			} else {
+				interpreteCommand("say", "I don't want this, I want an apple!");
+				interpreteCommand("give", item.getName()+" "+fromc.getName());
 			}
 		}
 	}
-	
-	public void setLocation(Location exit,String exitName){
-		if(ball!=null){
+
+	public void setLocation(Location exit, String exitName) {
+		if (ball != null) {
 			ball.giveTo(null);
 			ballBehaviour.setDone(true);
 		}
-		
-		ball=new Item("ball","Extreme expensive NIKE-signed foot-ball."){
+
+		ball = new Item("ball", "Extreme expensive NIKE-signed foot-ball.") {
 			public boolean canBeGivenTo(ItemHolder owner) {
-				return owner==Chochlik.this.getCreature() || owner==Chochlik.this.getCreature().getLocation();
+				return owner == Chochlik.this.getCreature()
+						|| owner == Chochlik.this.getCreature().getLocation();
 			}
-			
+
 		};
 		ball.giveTo(getCreature());
-		
-		ballBehaviour=(CyclicBehaviour)new CyclicBehaviour(getCreature().getLocation(),2500L){
+
+		ballBehaviour = (CyclicBehaviour) new CyclicBehaviour(getCreature()
+				.getLocation(), 2500L) {
 			public void action() {
 				Creature owner = (Creature) getOwner();
-				
-				if(owner.getItems().size()==0){
+
+				if (owner.getItems().size() == 0) {
 					Chochlik.this.interpreteCommand("take", "ball");
-				}else{
+				} else {
 					Chochlik.this.interpreteCommand("drop", "ball");
 				}
 			}

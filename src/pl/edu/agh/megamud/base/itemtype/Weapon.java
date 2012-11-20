@@ -8,8 +8,8 @@ public class Weapon extends Hand {
 		super(it);
 		// TODO Auto-generated constructor stub
 	}
-	
-	public Weapon(String name,String description){
-		super(name,description);
+
+	public Weapon(String name, String description) {
+		super(name, description);
 	}
 }

@@ -19,7 +19,7 @@ import pl.edu.agh.megamud.mechanix.Mechanix;
 /**
  * A "creature", object/person that we can interact with.
  */
-public class Creature extends ItemHolder implements BehaviourHolderInterface{
+public class Creature extends ItemHolder implements BehaviourHolderInterface {
 	/**
 	 * Its name.
 	 */
@@ -27,52 +27,55 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	/**
 	 * Its brain.
 	 */
-	protected Controller controller=null;
+	protected Controller controller = null;
 	/**
 	 * Its current location. MUST be one.
 	 */
-	protected Location location=null;
-	
+	protected Location location = null;
+
 	/**
 	 * In-database representation.
 	 */
 	protected PlayerCreature dbCreature;
-	
+
 	private BehaviourHolder behaviourHolder = new BehaviourHolder();
-	
-	protected Profession profession=Profession.DEFAULT;
+
+	protected Profession profession = Profession.DEFAULT;
 	private int level;
 	private int hp;
 	private int expNeeded;
 	private int exp;
-	
+
 	public PlayerCreature getDbCreature() {
 		return dbCreature;
 	}
-	
+
 	public void setDbCreature(PlayerCreature dbCreature) {
 		this.dbCreature = dbCreature;
-		
-		this.profession=dbCreature.getProfession();
-		this.level=dbCreature.getLevel();
-		this.hp=dbCreature.getHp();
-		this.exp=dbCreature.getExp();
-		this.expNeeded=dbCreature.getExp_needed();
-		
+
+		this.profession = dbCreature.getProfession();
+		this.level = dbCreature.getLevel();
+		this.hp = dbCreature.getHp();
+		this.exp = dbCreature.getExp();
+		this.expNeeded = dbCreature.getExp_needed();
+
 		List<Attribute> attrs;
 		try {
 			attrs = Attribute.createDao().queryForAll();
-			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){		
-				Attribute a=i.next();
-				
-				List<CreatureAttribute> found=CreatureAttribute.createDao().queryBuilder().where().eq("attribute_id",a).and().eq("creature_id", this.dbCreature).query();
-				
-				if(found.size()>0){
-					CreatureAttribute first=found.get(0);
-					this.attributes.put(a,first.getValue().longValue());
-				}else{
-					if(!Mechanix.isCreatureAttribute(a)) continue;
-					this.attributes.put(a,Long.valueOf(0L));
+			for (Iterator<Attribute> i = attrs.iterator(); i.hasNext();) {
+				Attribute a = i.next();
+
+				List<CreatureAttribute> found = CreatureAttribute.createDao()
+						.queryBuilder().where().eq("attribute_id", a).and()
+						.eq("creature_id", this.dbCreature).query();
+
+				if (found.size() > 0) {
+					CreatureAttribute first = found.get(0);
+					this.attributes.put(a, first.getValue().longValue());
+				} else {
+					if (!Mechanix.isCreatureAttribute(a))
+						continue;
+					this.attributes.put(a, Long.valueOf(0L));
 				}
 			}
 		} catch (SQLException e) {
@@ -80,108 +83,114 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 
 		}
 	}
-	
-	private Map<Attribute,Long> attributes=new HashMap<Attribute,Long>();
-	protected List<Modifier> modifiers=new LinkedList<Modifier>();
-	
+
+	private Map<Attribute, Long> attributes = new HashMap<Attribute, Long>();
+	protected List<Modifier> modifiers = new LinkedList<Modifier>();
+
 	public Creature setName(String name) {
-		this.name=name;
-		if(this.dbCreature!=null){
+		this.name = name;
+		if (this.dbCreature != null) {
 			this.dbCreature.setName(name);
 			this.commit();
 		}
 		return this;
 	}
-	
-	public void commit(){
-		if(this.dbCreature==null)
+
+	public void commit() {
+		if (this.dbCreature == null)
 			return;
-		try{
+		try {
 			PlayerCreature.createDao().update(this.dbCreature);
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+
 	public Creature setHp(int hp) {
-		this.hp=hp;
-		if(this.dbCreature!=null){
+		this.hp = hp;
+		if (this.dbCreature != null) {
 			this.dbCreature.setHp(hp);
 			this.commit();
 		}
 		return this;
 	}
+
 	public Creature setLevel(int level) {
-		this.level=level;
-		if(this.dbCreature!=null){
+		this.level = level;
+		if (this.dbCreature != null) {
 			this.dbCreature.setLevel(level);
 			this.commit();
 		}
 		return this;
 	}
+
 	public Creature setExp(int exp) {
-		this.exp=exp;
-		if(this.dbCreature!=null){
+		this.exp = exp;
+		if (this.dbCreature != null) {
 			this.dbCreature.setHp(exp);
 			this.commit();
 		}
 		return this;
 	}
+
 	public Creature setExpNeeded(int expNeeded) {
-		this.expNeeded=expNeeded;
-		if(this.dbCreature!=null){
+		this.expNeeded = expNeeded;
+		if (this.dbCreature != null) {
 			this.dbCreature.setExp_needed(expNeeded);
 			this.commit();
 		}
 		return this;
 	}
-	
+
 	public Creature setModifiers(List<Modifier> modifiers) {
 		this.modifiers = modifiers;
 		return this;
 	}
+
 	public List<Modifier> getModifiers() {
 		return this.modifiers;
 	}
-	
+
 	public Creature setProfession(Profession profession) {
-		this.profession=profession;
-		if(this.dbCreature!=null){
+		this.profession = profession;
+		if (this.dbCreature != null) {
 			this.dbCreature.setProfession(profession);
 			this.commit();
 		}
 		return this;
 	}
-	
+
 	public int getHp() {
 		return this.hp;
 	}
-	
-	public boolean addDamage(int hpMinus){
-		hp-= hpMinus;
-		if(hp <=0 ){
+
+	public boolean addDamage(int hpMinus) {
+		hp -= hpMinus;
+		if (hp <= 0) {
 			GameServer.getInstance().killCreature(this);
-			if(this.dbCreature!=null){
+			if (this.dbCreature != null) {
 				try {
 					PlayerCreature.createDao().delete(this.dbCreature);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
-			
+
 			return true;
 		}
 		this.setHp(hp);
-		
+
 		return false;
 	}
-	
+
 	public int getLevel() {
 		return this.level;
 	}
-	
+
 	public int getExp() {
 		return this.exp;
 	}
+
 	public int getExpNeeded() {
 		return this.expNeeded;
 	}
@@ -189,35 +198,39 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	public Map<Attribute, Long> getAttributes() {
 		return this.attributes;
 	}
-	public Long getAttributeValue(String name){
-		for(Attribute attr : getAttributes().keySet()){
+
+	public Long getAttributeValue(String name) {
+		for (Attribute attr : getAttributes().keySet()) {
 			if (attr.getName().equals(name))
 				return getAttributes().get(attr);
 		}
 		return null;
 	}
-	public void setAttribute(String x,Long val){
-		for(Iterator<Entry<Attribute,Long>> set=attributes.entrySet().iterator();set.hasNext();){
-			Entry<Attribute,Long> next=set.next();
-			Attribute a=next.getKey();
-			if(a.getName().equals(x)){
+
+	public void setAttribute(String x, Long val) {
+		for (Iterator<Entry<Attribute, Long>> set = attributes.entrySet()
+				.iterator(); set.hasNext();) {
+			Entry<Attribute, Long> next = set.next();
+			Attribute a = next.getKey();
+			if (a.getName().equals(x)) {
 				next.setValue(val);
-				
-				if(this.dbCreature!=null){
-					try{
-						CreatureAttribute ne=new CreatureAttribute();
+
+				if (this.dbCreature != null) {
+					try {
+						CreatureAttribute ne = new CreatureAttribute();
 						ne.setAttribute(a);
 						ne.setCreature(this.dbCreature);
-						
+
 						CreatureAttribute.createDao().delete(ne);
-						//CreatureAttribute.createDao().deleteBuilder().where().eq("attribute_id",a).and().eq("creature_id", this.dbCreature).query();
-						
-						ne=new CreatureAttribute();
+						// CreatureAttribute.createDao().deleteBuilder().where().eq("attribute_id",a).and().eq("creature_id",
+						// this.dbCreature).query();
+
+						ne = new CreatureAttribute();
 						ne.setAttribute(a);
 						ne.setCreature(this.dbCreature);
 						ne.setValue(val.intValue());
 						CreatureAttribute.createDao().create(ne);
-					}catch(SQLException e){
+					} catch (SQLException e) {
 						e.printStackTrace();
 					}
 				}
@@ -225,183 +238,194 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 			}
 		}
 	}
-	public final Controller getController(){
+
+	public final Controller getController() {
 		return this.controller;
 	}
-	public String getName(){
+
+	public String getName() {
 		return this.name;
 	}
-	public Profession getProfession(){
+
+	public Profession getProfession() {
 		return this.profession;
 	}
-	
-	public Creature(String name){
-		this.name=name;
-	//this is why player heave double stats	
-//		List<Attribute> attrs;
-//		try {
-//			attrs = Attribute.createDao().queryForAll();
-//			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
-//				Attribute a=i.next();
-//				this.attributes.put(a, 0L);
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-		
+
+	public Creature(String name) {
+		this.name = name;
+		// this is why player heave double stats
+		// List<Attribute> attrs;
+		// try {
+		// attrs = Attribute.createDao().queryForAll();
+		// for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
+		// Attribute a=i.next();
+		// this.attributes.put(a, 0L);
+		// }
+		// } catch (SQLException e) {
+		// e.printStackTrace();
+		// }
+
 	}
-	
+
 	/**
-	 * Executed upon "login" command or after creating a NPC (manually). Binds a creature to a controller and shares its commands.
+	 * Executed upon "login" command or after creating a NPC (manually). Binds a
+	 * creature to a controller and shares its commands.
 	 */
-	public void connect(Controller controller){
-		this.controller=controller;
+	public void connect(Controller controller) {
+		this.controller = controller;
 		controller.setCreature(this);
-		
-		for(Command cmd:getAllCommands()){
+
+		for (Command cmd : getAllCommands()) {
 			controller.addCommand(cmd);
 		}
 	}
+
 	/**
 	 * Disconnects this creature from the controller.
 	 */
-	public void disconnect(){
-		for(Command cmd:getAllCommands()){
+	public void disconnect() {
+		for (Command cmd : getAllCommands()) {
 			controller.removeCommand(cmd);
 		}
-		this.controller=null;
-		
-		if (location == null) return;
-		
+		this.controller = null;
+
+		if (location == null)
+			return;
+
 		Map<String, Creature> creatures = location.getCreatures();
-		if (creatures != null) creatures.remove(name);
-		
+		if (creatures != null)
+			creatures.remove(name);
+
 		location = null;
 	}
-	
-	public final Location getLocation(){
+
+	public final Location getLocation() {
 		return location;
 	}
-	
+
 	/**
-	 * Moves creature to other location. Optionally provide an exit name for notifications.
+	 * Moves creature to other location. Optionally provide an exit name for
+	 * notifications.
+	 * 
 	 * @todo Write this to database.
 	 */
-	public void setLocation(Location exit,String exitName){
-		if(location!=null){
-			for(Command cmd:location.getAllCommands()){
+	public void setLocation(Location exit, String exitName) {
+		if (location != null) {
+			for (Command cmd : location.getAllCommands()) {
 				removeCommand(cmd);
 				controller.removeCommand(cmd);
 			}
-			
-			location.onRemoveCreature(this,exitName);
+
+			location.onRemoveCreature(this, exitName);
 		}
-		
-		location=exit;
-		
-		if(exit!=null){
-			for(Command cmd:location.getAllCommands()){
+
+		location = exit;
+
+		if (exit != null) {
+			for (Command cmd : location.getAllCommands()) {
 				addCommand(cmd);
 				controller.addCommand(cmd);
 			}
 			location.onAddCreature(this);
 		}
-		
-		if(this.dbCreature!=null){
+
+		if (this.dbCreature != null) {
 		}
 	}
-	
+
 	/**
 	 * Tries to move to a specified exit.
-	 * @return true, if succedeed. 
+	 * 
+	 * @return true, if succedeed.
 	 */
-	public boolean moveTo(String exit){
-		Map<String,Location> exits=location.getExits();
-		if(exits.containsKey(exit)){
-			setLocation(exits.get(exit),exit);
+	public boolean moveTo(String exit) {
+		Map<String, Location> exits = location.getExits();
+		if (exits.containsKey(exit)) {
+			setLocation(exits.get(exit), exit);
 			return true;
 		}
 		return false;
-			
+
 	}
-	
+
 	/**
-	 * Use this to give an experience points to a creature. This can change creature's level (when after change exp>=expNeeded).
+	 * Use this to give an experience points to a creature. This can change
+	 * creature's level (when after change exp>=expNeeded).
+	 * 
 	 * @todo force class change upon some level/block change
 	 * @todo Write this to database
 	 */
-	public void giveExp(int num){
-		int exp=this.getExp();
-		int expn=this.getExpNeeded();
-		int lev=this.getLevel();
-		
-		exp+=num;
-		while(exp>=expn){
-			exp-=expn;
-			expn*=2;
+	public void giveExp(int num) {
+		int exp = this.getExp();
+		int expn = this.getExpNeeded();
+		int lev = this.getLevel();
+
+		exp += num;
+		while (exp >= expn) {
+			exp -= expn;
+			expn *= 2;
 			lev++;
 		}
-		
-		for(Iterator<Entry<Attribute,Long>> set=attributes.entrySet().iterator();set.hasNext();){
-			Entry<Attribute,Long> next=set.next();
-			Long val=next.getValue();
-			next.setValue((long)(val*1.1));
+
+		for (Iterator<Entry<Attribute, Long>> set = attributes.entrySet()
+				.iterator(); set.hasNext();) {
+			Entry<Attribute, Long> next = set.next();
+			Long val = next.getValue();
+			next.setValue((long) (val * 1.1));
 		}
-		
-		
+
 		this.setExp(exp);
 		this.setExpNeeded(expn);
 		this.setLevel(lev);
 	}
-	
+
 	/**
 	 * Adds a temporary attributes modifier.
 	 */
-	public void addModifier(Modifier m){
+	public void addModifier(Modifier m) {
 		this.modifiers.add(m);
 		m.onBegin();
 	}
-	
+
 	/**
 	 * Removes a temporary attributes modifier.
 	 */
-	public void removeModifier(Modifier m){
+	public void removeModifier(Modifier m) {
 		this.modifiers.remove(m);
 		m.onStop();
 	}
-	
+
 	/**
-	 * Generates a temporary (at a moment of generation) attributes of a creature. Map attribute-id -> value.
-	 * Calculation:
-	 * - get base attributes of a creature;
-	 * - apply modifiers;
-	 * - return the result.
-	 */	
-	public Map<Attribute,Long> generateAttributes(){
-		Map<Attribute,Long> cur=new HashMap<Attribute,Long>();
+	 * Generates a temporary (at a moment of generation) attributes of a
+	 * creature. Map attribute-id -> value. Calculation: - get base attributes
+	 * of a creature; - apply modifiers; - return the result.
+	 */
+	public Map<Attribute, Long> generateAttributes() {
+		Map<Attribute, Long> cur = new HashMap<Attribute, Long>();
 		cur.putAll(getAttributes());
-		
-		for(ListIterator<Modifier> i=modifiers.listIterator();i.hasNext();){
-			Modifier m=i.next();
-			if(!m.modify(this, cur)){
+
+		for (ListIterator<Modifier> i = modifiers.listIterator(); i.hasNext();) {
+			Modifier m = i.next();
+			if (!m.modify(this, cur)) {
 				m.onStop();
 				i.remove();
 			}
 		}
 		return cur;
 	}
-	
+
 	/**
 	 * Use this to send a message to a creature.
 	 */
-	public void write(String s){
+	public void write(String s) {
 		controller.write(s);
 	}
-	
-	public void onItemAppear(Item i,ItemHolder from){
+
+	public void onItemAppear(Item i, ItemHolder from) {
 		getController().onItemAppear(i, from);
 	}
-	public void onItemDisappear(Item i,ItemHolder to){
+
+	public void onItemDisappear(Item i, ItemHolder to) {
 		getController().onItemDisappear(i, to);
 	}
 
@@ -411,7 +435,7 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	}
 
 	@Override
-	public void setBehaviourList(List<Behaviour> list) {
+	public void setBehaviourList(List<? extends Behaviour> list) {
 		behaviourHolder.setBehaviourList(list);
 	}
 
@@ -423,13 +447,11 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	@Override
 	public void removeBehaviour(Behaviour behaviour) {
 		behaviourHolder.removeBehaviour(behaviour);
-		
 	}
 
 	@Override
-	public List getBehaviourByType(Class clazz) {
+	public List<Behaviour> getBehaviourByType(Class<? extends Behaviour> clazz) {
 		return behaviourHolder.getBehaviourByType(clazz);
 	}
 
-	
 }

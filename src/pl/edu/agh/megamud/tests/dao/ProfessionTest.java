@@ -1,6 +1,6 @@
 package pl.edu.agh.megamud.tests.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
 
@@ -26,27 +26,27 @@ public class ProfessionTest {
 	private static Dao<PlayerCreature, String> playerCreatureDao;
 	private static Dao<Player, String> playerDao;
 	private static Dao<Profession, Integer> professionDao;
-	
+
 	private static Player predefinedPlayer = null;
 	private static PlayerCreature predefinedPlayerCreature = null;
-	
+
 	@BeforeClass
-	public static void init() throws SQLException{
+	public static void init() throws SQLException {
 		DbManager.setDbPath(databaseUrl);
 		connectionSource = DbManager.getConnectionSource();
 		TableUtils.dropTable(connectionSource, Player.class, true);
 		TableUtils.dropTable(connectionSource, PlayerCreature.class, true);
 		TableUtils.dropTable(connectionSource, Profession.class, true);
-		
+
 		DbManager.init();
 
 		playerCreatureDao = PlayerCreature.createDao();
 		playerDao = Player.createDao();
-		professionDao = Profession.createDao();	
-		
+		professionDao = Profession.createDao();
+
 		connectionSource.close();
 	}
-	
+
 	@Before
 	public void setUp() throws Exception {
 		connectionSource = DbManager.getConnectionSource();
@@ -57,7 +57,7 @@ public class ProfessionTest {
 		predefinedPlayer.setLogin("predefinedPlayer");
 		predefinedPlayer.setPassword("_secret");
 		playerDao.create(predefinedPlayer);
-		
+
 		predefinedPlayerCreature = new PlayerCreature(predefinedPlayer);
 		playerCreatureDao.create(predefinedPlayerCreature);
 	}
@@ -65,23 +65,24 @@ public class ProfessionTest {
 	@After
 	public void tearDown() throws Exception {
 		connectionSource.close();
-	}	
-	
+	}
+
 	@Test
-	public void should_traverse_profession_chain() throws SQLException{
+	public void should_traverse_profession_chain() throws SQLException {
 		Profession ancestor = new Profession();
 		ancestor.setName("ancestor");
 		professionDao.create(ancestor);
-		
+
 		Profession child = new Profession();
 		child.setName("child");
 		child.setParent(ancestor);
 		professionDao.create(child);
-		
+
 		predefinedPlayerCreature.setProfession(child);
 		playerCreatureDao.update(predefinedPlayerCreature);
-		
-		Profession parent = predefinedPlayerCreature.getProfession().getParent();
+
+		Profession parent = predefinedPlayerCreature.getProfession()
+				.getParent();
 		assertEquals(ancestor.getName(), parent.getName());
 	}
 }

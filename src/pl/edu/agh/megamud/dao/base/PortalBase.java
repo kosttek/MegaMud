@@ -14,16 +14,16 @@ public abstract class PortalBase {
 
 	@DatabaseField(generatedId = true)
 	private Integer id;
-	
+
 	@DatabaseField(canBeNull = false)
 	private String name;
 
 	@DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
 	private Location entry;
-	
+
 	@DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
 	private Location destination;
-	
+
 	public String getName() {
 		return name;
 	}
@@ -52,17 +52,18 @@ public abstract class PortalBase {
 		this.destination = destination;
 	}
 
-	public PortalBase(){
-		
+	public PortalBase() {
+
 	}
-	
-	public static Dao<Portal, Integer> createDao(){
+
+	public static Dao<Portal, Integer> createDao() {
 		try {
-			return DaoManager.createDao(DbManager.getConnectionSource(), Portal.class);
+			return DaoManager.createDao(DbManager.getConnectionSource(),
+					Portal.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
-	}	
+	}
 }

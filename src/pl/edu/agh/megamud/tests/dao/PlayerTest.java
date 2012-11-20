@@ -1,6 +1,10 @@
 package pl.edu.agh.megamud.tests.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.sql.SQLException;
 
@@ -21,11 +25,11 @@ public class PlayerTest {
 
 	private static ConnectionSource connectionSource;
 	private static String databaseUrl = "jdbc:sqlite:db/test.db";
-	private static Dao<Player,String> accountDao;
-	
+	private static Dao<Player, String> accountDao;
+
 	private static String predefinedLogin = "predefinedLogin";
 	private static String predefinedPassword = "predefinedPassword";
-	
+
 	@Before
 	public void setUp() throws Exception {
 		DbManager.setDbPath(databaseUrl);
@@ -34,14 +38,14 @@ public class PlayerTest {
 		TableUtils.clearTable(connectionSource, Player.class);
 
 		accountDao = Player.createDao();
-		
+
 		String predefinedLogin = PlayerTest.predefinedLogin;
 		String password = PlayerTest.predefinedPassword;
 		Player predefinedAccount = new Player();
 		predefinedAccount.setLogin(predefinedLogin);
 		predefinedAccount.setPassword(password);
 
-		accountDao.create(predefinedAccount);		
+		accountDao.create(predefinedAccount);
 	}
 
 	@After
@@ -55,7 +59,7 @@ public class PlayerTest {
 			String login = "newLogin";
 			String password = "_secret";
 			Player.registerNewAccount(login, password);
-	
+
 			Player account2 = Player.getByLogin(login);
 			Assert.assertNotNull(account2);
 		} catch (SQLException e) {
@@ -64,43 +68,45 @@ public class PlayerTest {
 		}
 	}
 
-	@Test (expected = SQLException.class)
-	public void should_not_create_nonunique_login() throws SQLException{
+	@Test(expected = SQLException.class)
+	public void should_not_create_nonunique_login() throws SQLException {
 		Player account = new Player();
 		account.setLogin(predefinedLogin);
 		account.setPassword(predefinedPassword);
 
 		accountDao.create(account);
 	}
-	
+
 	@Test
-	public void should_get_account_by_login_and_password(){
-		Player account = Player.getByLoginAndPassword(predefinedLogin, predefinedPassword);
+	public void should_get_account_by_login_and_password() {
+		Player account = Player.getByLoginAndPassword(predefinedLogin,
+				predefinedPassword);
 		assertNotNull(account);
 		assertEquals(predefinedLogin, account.getLogin());
 	}
-	
+
 	@Test
-	public void should_return_null_for_invalid_password(){
-		assertEquals(null, Player.getByLoginAndPassword(predefinedLogin, "invalid_password"));
+	public void should_return_null_for_invalid_password() {
+		assertEquals(null, Player.getByLoginAndPassword(predefinedLogin,
+				"invalid_password"));
 	}
-	
+
 	@Test
-	public void should_find_existing_account(){
+	public void should_find_existing_account() {
 		assertTrue(Player.isRegistered(predefinedLogin));
 	}
-	
+
 	@Test
-	public void should_not_find_not_existing_account(){
+	public void should_not_find_not_existing_account() {
 		assertFalse(Player.isRegistered("fakeAccount"));
 	}
-	
+
 	@Test
-	public void should_set_hashed_password(){
+	public void should_set_hashed_password() {
 		Player account = new Player();
-		account.setPassword(predefinedPassword);		
+		account.setPassword(predefinedPassword);
 		String hash = Player.hashPassword(predefinedPassword);
-		
+
 		assertEquals(hash, account.getPasswordMd5());
 	}
 }

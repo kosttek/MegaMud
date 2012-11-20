@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import pl.edu.agh.megamud.dao.CreatureItem;
 
-public class CreatureItemTest extends TestBase{
-	
+public class CreatureItemTest extends TestBase {
+
 	@Before
 	public void setUp() throws Exception {
 		prepareDatabase();
@@ -22,33 +22,34 @@ public class CreatureItemTest extends TestBase{
 	@After
 	public void tearDown() throws Exception {
 		connectionSource.close();
-	}	
-	
+	}
+
 	@Test(expected = SQLException.class)
-	public void should_not_create_without_item() throws SQLException{
+	public void should_not_create_without_item() throws SQLException {
 		CreatureItem creatureItem = new CreatureItem();
 		creatureItem.setCreature(predefinedPlayerCreature);
 		creatureItemDao.create(creatureItem);
 	}
-	
+
 	@Test
-	public void should_create_without_player_creature() throws SQLException{
+	public void should_create_without_player_creature() throws SQLException {
 		CreatureItem creatureItem = new CreatureItem();
 		creatureItem.setItem(predefinedItem);
 		creatureItemDao.create(creatureItem);
 		creatureItemDao.refresh(creatureItem);
-		
+
 		Assert.assertNotNull(creatureItem.getId());
 		Assert.assertTrue(creatureItem.getId() != 0);
 	}
-	
+
 	@Test
-	public void should_create() throws SQLException{
+	public void should_create() throws SQLException {
 		CreatureItem creatureItem = new CreatureItem();
 		creatureItem.setCreature(predefinedPlayerCreature);
 		creatureItem.setItem(predefinedItem);
 		creatureItemDao.create(creatureItem);
-		
-		Assert.assertTrue(creatureItem.getId() != null && creatureItem.getId() != 0);
+
+		Assert.assertTrue(creatureItem.getId() != null
+				&& creatureItem.getId() != 0);
 	}
 }

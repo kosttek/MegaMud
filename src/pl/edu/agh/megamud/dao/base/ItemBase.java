@@ -3,7 +3,9 @@ package pl.edu.agh.megamud.dao.base;
 import java.sql.SQLException;
 
 import pl.edu.agh.megamud.base.DbManager;
-import pl.edu.agh.megamud.dao.*;
+import pl.edu.agh.megamud.dao.CreatureItem;
+import pl.edu.agh.megamud.dao.Item;
+import pl.edu.agh.megamud.dao.ItemAttribute;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -15,22 +17,22 @@ public abstract class ItemBase {
 
 	@DatabaseField(generatedId = true)
 	private Integer id;
-	
+
 	@DatabaseField(canBeNull = false)
 	private String name;
 
 	@DatabaseField(canBeNull = true)
 	private String description;
-	
+
 	@DatabaseField(canBeNull = false, defaultValue = "0")
 	private Integer max_level;
-	
+
 	@ForeignCollectionField(eager = true)
 	private ForeignCollection<CreatureItem> creatureItems;
 
 	@ForeignCollectionField(eager = true)
 	private ForeignCollection<ItemAttribute> itemAttributes;
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -69,27 +71,29 @@ public abstract class ItemBase {
 
 	public void setCreatureItems(ForeignCollection<CreatureItem> creatureItems) {
 		this.creatureItems = creatureItems;
-	}	
-	
+	}
+
 	public ForeignCollection<ItemAttribute> getItemAttributes() {
 		return itemAttributes;
 	}
 
-	public void setItemAttributes(ForeignCollection<ItemAttribute> itemAttributes) {
+	public void setItemAttributes(
+			ForeignCollection<ItemAttribute> itemAttributes) {
 		this.itemAttributes = itemAttributes;
 	}
 
-	public ItemBase(){
-		
+	public ItemBase() {
+
 	}
-	
-	public static Dao<Item, Integer> createDao(){
+
+	public static Dao<Item, Integer> createDao() {
 		try {
-			return DaoManager.createDao(DbManager.getConnectionSource(), Item.class);
+			return DaoManager.createDao(DbManager.getConnectionSource(),
+					Item.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
-	}	
+	}
 }

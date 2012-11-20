@@ -26,57 +26,57 @@ public class Session implements Runnable {
 	 */
 	private Scanner in;
 	private PrintWriter out;
-	
+
 	public Session(Socket socket) throws IOException {
 		this.socket = socket;
-		user=new PlayerController(this);
-		
+		user = new PlayerController(this);
+
 		InputStream inps = socket.getInputStream();
 		OutputStream outs = socket.getOutputStream();
 
 		in = new Scanner(inps);
 		out = new PrintWriter(outs, true);
 	}
-	
-	/* Running is like:
-	 * - read user's input
-	 * - process it
+
+	/*
+	 * Running is like: - read user's input - process it
 	 */
-	
+
 	public void run() {
 		GameServer.getInstance().initController(user);
-		
+
 		try {
-			
+
 			while (!user.isReadyToDisconnect() && in.hasNextLine()) {
 				String line = in.nextLine();
-				try{
+				try {
 					user.interpreteCommand(line);
-				}catch(Exception e2){
+				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
 			}
-			
-		} finally{
-			try{
+
+		} finally {
+			try {
 				socket.close();
-			}catch(Exception e2){}
-			socket= null;
+			} catch (Exception e2) {
+			}
+			socket = null;
 		}
-		
+
 		GameServer.getInstance().killController(user);
 	}
-	
+
 	/*
 	 * Don't use this, use instead PlayerController.write().
 	 */
-	public void write(String txt){
-		try{
+	public void write(String txt) {
+		try {
 			out.println(txt);
-		}catch(Exception e){
-			//TODO kill connection
+		} catch (Exception e) {
+			// TODO kill connection
 			e.printStackTrace();
 		}
 	}
-	
+
 }

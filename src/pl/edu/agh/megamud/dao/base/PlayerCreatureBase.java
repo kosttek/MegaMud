@@ -21,34 +21,34 @@ public abstract class PlayerCreatureBase {
 
 	@DatabaseField(generatedId = true)
 	private Integer id;
-	
+
 	@DatabaseField(canBeNull = true)
 	private String name;
-	
+
 	@DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
 	private Player player;
-	
+
 	@DatabaseField(canBeNull = false, defaultValue = "100")
 	private Integer hp;
-	
+
 	@DatabaseField(canBeNull = false, defaultValue = "1")
 	private Integer level;
-	
+
 	@DatabaseField(canBeNull = false, defaultValue = "0")
 	private Integer exp;
-	
+
 	@DatabaseField(canBeNull = false, defaultValue = "100")
 	private Integer exp_needed;
-	
+
 	@DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
-	private Profession profession=Profession.DEFAULT;
-	
+	private Profession profession = Profession.DEFAULT;
+
 	@ForeignCollectionField(eager = true)
 	private ForeignCollection<CreatureItem> creatureItems;
-	
+
 	@ForeignCollectionField(eager = true)
-	private ForeignCollection<CreatureAttribute> creatureAttributes;	
-	
+	private ForeignCollection<CreatureAttribute> creatureAttributes;
+
 	public ForeignCollection<CreatureItem> getCreatureItems() {
 		return creatureItems;
 	}
@@ -57,14 +57,14 @@ public abstract class PlayerCreatureBase {
 		this.creatureItems = creatureItems;
 	}
 
-	public PlayerCreatureBase(){
-		
+	public PlayerCreatureBase() {
+
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -112,7 +112,7 @@ public abstract class PlayerCreatureBase {
 	public void setExp_needed(Integer exp_needed) {
 		this.exp_needed = exp_needed;
 	}
-	
+
 	public Profession getProfession() {
 		return profession;
 	}
@@ -130,13 +130,14 @@ public abstract class PlayerCreatureBase {
 		this.creatureAttributes = creatureAttributes;
 	}
 
-	public static Dao<PlayerCreature,String> createDao(){
+	public static Dao<PlayerCreature, String> createDao() {
 		try {
-			return DaoManager.createDao(DbManager.getConnectionSource(), PlayerCreature.class);
+			return DaoManager.createDao(DbManager.getConnectionSource(),
+					PlayerCreature.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
-	}	
+	}
 }

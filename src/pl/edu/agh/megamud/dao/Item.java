@@ -10,13 +10,14 @@ import pl.edu.agh.megamud.dao.base.ItemBase;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "item")
-public class Item extends ItemBase{
-	
-	public Item(String name,String description){
+public class Item extends ItemBase {
+
+	public Item(String name, String description) {
 		super.setName(name);
 		super.setDescription(description);
 	}
-	
-	public Item() {}
-	
+
+	public Item() {
+	}
+
 }

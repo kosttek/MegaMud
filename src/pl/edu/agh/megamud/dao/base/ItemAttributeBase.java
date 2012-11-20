@@ -18,15 +18,15 @@ public abstract class ItemAttributeBase {
 
 	@DatabaseField(canBeNull = false, defaultValue = "0")
 	private Integer level;
-	
+
 	@DatabaseField(canBeNull = false, defaultValue = "0")
 	private Integer value;
-	
+
 	@DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
 	private Attribute attribute;
-	
+
 	@DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
-	private Item item;	
+	private Item item;
 
 	public Integer getLevel() {
 		return level;
@@ -64,17 +64,18 @@ public abstract class ItemAttributeBase {
 		return id;
 	}
 
-	public ItemAttributeBase(){
-		
+	public ItemAttributeBase() {
+
 	}
-	
-	public static Dao<ItemAttribute, Integer> createDao(){
+
+	public static Dao<ItemAttribute, Integer> createDao() {
 		try {
-			return DaoManager.createDao(DbManager.getConnectionSource(), ItemAttribute.class);
+			return DaoManager.createDao(DbManager.getConnectionSource(),
+					ItemAttribute.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
-	}	
+	}
 }

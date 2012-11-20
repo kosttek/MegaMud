@@ -13,10 +13,10 @@ public abstract class ModuleBase {
 
 	@DatabaseField(generatedId = true)
 	private Integer id;
-	
+
 	@DatabaseField(canBeNull = false)
 	private String java_class;
-	
+
 	public String getJava_class() {
 		return java_class;
 	}
@@ -26,19 +26,19 @@ public abstract class ModuleBase {
 		return this;
 	}
 
-	public ModuleBase(){
-		
+	public ModuleBase() {
+
 	}
-	
-	public static Dao<Module, Integer> createDao(){
+
+	public static Dao<Module, Integer> createDao() {
 		try {
-			return DaoManager.createDao(DbManager.getConnectionSource(), Module.class);
+			return DaoManager.createDao(DbManager.getConnectionSource(),
+					Module.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	
+
 }

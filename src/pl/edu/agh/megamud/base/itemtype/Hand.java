@@ -8,8 +8,8 @@ public class Hand extends ItemToWorn {
 		super(it);
 		// TODO Auto-generated constructor stub
 	}
-	
-	public Hand(String name,String description){
-		super(name,description);
+
+	public Hand(String name, String description) {
+		super(name, description);
 	}
 }

@@ -3,8 +3,6 @@ package pl.edu.agh.megamud.mechanix;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.smartcardio.ATR;
-
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.ItemHolder;
 import pl.edu.agh.megamud.base.itemtype.Body;
@@ -16,41 +14,46 @@ import pl.edu.agh.megamud.dao.Attribute;
 public class Mechanix {
 	/**
 	 * Inited when player logged succesful
+	 * 
 	 * @param itemHolder
 	 */
-	static public void initEquipment(ItemHolder itemHolder){
-		List<Class> list  = new ArrayList<Class>();
+	public static void initEquipment(ItemHolder itemHolder) {
+		List<Class<? extends ItemToWorn>> list = new ArrayList<Class<? extends ItemToWorn>>();
 		list.add(Hand.class);
 		list.add(Head.class);
 		list.add(Body.class);
-		
+
 		itemHolder.setEquipmentTypes(list);
 	}
-	
-	//TODO
-	static public void attack(Creature attacker, Creature Defender){
+
+	// TODO
+	public static void attack(Creature attacker, Creature defender) {
 		Long stregth = attacker.getAttributeValue(Attribute.STRENGTH);
-		if(stregth == null){ System.out.println("null !! panie null!! nie ma sily !!"); return;}
-		
-		int weaponDamage=0 ;
-		if(attacker.getEquipment().containsKey(Hand.class)){
+		if (stregth == null) {
+			System.out.println("null !! panie null!! nie ma sily !!");
+			return;
+		}
+
+		int weaponDamage = 0;
+		if (attacker.getEquipment().containsKey(Hand.class)) {
 			ItemToWorn item = attacker.getEquipment().get(Hand.class);
-			if(item != null){
-				Long tempDamageL ;
+			if (item != null) {
+				Long tempDamageL;
 				tempDamageL = item.getAttributeValue(Attribute.DAMAGE);
-				weaponDamage = tempDamageL==null? 0 : tempDamageL.intValue();
+				weaponDamage = tempDamageL == null ? 0 : tempDamageL.intValue();
 			}
-		}	
-		
+		}
+
 		int damage = stregth.intValue() + weaponDamage;
-		Defender.addDamage(damage);
+		defender.addDamage(damage);
 	}
-	
-	static public String creatureAttr[] = {Attribute.DEXTERITY,Attribute.STRENGTH};
-	
-	static public boolean isCreatureAttribute(Attribute attr){
-		for(String str : creatureAttr)
-			if(str.equals(attr.getName()))
+
+	public static String creatureAttr[] = { Attribute.DEXTERITY,
+			Attribute.STRENGTH };
+
+	public static boolean isCreatureAttribute(Attribute attr) {
+		for (String str : creatureAttr)
+			if (str.equals(attr.getName()))
 				return true;
 		return false;
 	}

@@ -13,19 +13,19 @@ public abstract class ProfessionBase {
 
 	@DatabaseField(generatedId = true)
 	private Integer id;
-	
+
 	@DatabaseField(canBeNull = false)
 	private String name;
 
 	@DatabaseField(canBeNull = true)
 	private String description;
-	
+
 	@DatabaseField(canBeNull = true, foreign = true, foreignAutoRefresh = true)
 	private Profession parent;
-	
+
 	@DatabaseField(canBeNull = false, defaultValue = "0")
 	private Integer level;
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -66,17 +66,18 @@ public abstract class ProfessionBase {
 		this.level = level;
 	}
 
-	public ProfessionBase(){
-		
+	public ProfessionBase() {
+
 	}
-	
-	public static Dao<Profession, Integer> createDao(){
+
+	public static Dao<Profession, Integer> createDao() {
 		try {
-			return DaoManager.createDao(DbManager.getConnectionSource(), Profession.class);
+			return DaoManager.createDao(DbManager.getConnectionSource(),
+					Profession.class);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
-	}	
+	}
 }

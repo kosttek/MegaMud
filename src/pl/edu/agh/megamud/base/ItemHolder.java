@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import pl.edu.agh.megamud.base.itemtype.ItemToWorn;
+import pl.edu.agh.megamud.dao.CreatureItem;
 
 /**
  * Abstraction of an object, that can hold items.

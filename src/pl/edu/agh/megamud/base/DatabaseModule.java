@@ -50,7 +50,6 @@ public abstract class DatabaseModule extends Module{
 			installLocation(l);
 		}
 		/**
-		 * @todo
 		 * 3. load exits (exit name + next location ID) and link to existing locations
 		 *   SELECT exit.to_id, exit.name FROM exit WHERE from_id=getId()
 		 */

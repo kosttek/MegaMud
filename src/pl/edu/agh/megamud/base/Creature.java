@@ -12,11 +12,8 @@ import java.util.Map.Entry;
 import pl.edu.agh.megamud.GameServer;
 import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.dao.CreatureAttribute;
-import pl.edu.agh.megamud.dao.ItemAttribute;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Profession;
-
-import com.j256.ormlite.dao.ForeignCollection;
 
 /**
  * A "creature", object/person that we can interact with.
@@ -80,7 +77,6 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 		}
 	}
 	
-	// @todo integrate with db
 	private Map<Attribute,Long> attributes=new HashMap<Attribute,Long>();
 	protected List<Modifier> modifiers=new LinkedList<Modifier>();
 	
@@ -158,13 +154,20 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	
 	public boolean addDamage(int hpMinus){
 		hp-= hpMinus;
-		this.setHp(hp);
 		if(hp <=0 ){
-			//TODO Death
-//			getLocation().getCreatures
 			GameServer.getInstance().killCreature(this);
+			if(this.dbCreature!=null){
+				try {
+					PlayerCreature.createDao().delete(this.dbCreature);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			
 			return true;
 		}
+		this.setHp(hp);
+		
 		return false;
 	}
 	
@@ -209,7 +212,6 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 				return;
 			}
 		}
-		//@todo save to db
 	}
 	public final Controller getController(){
 		return this.controller;
@@ -287,7 +289,9 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 			}
 			location.onAddCreature(this);
 		}
-		//@todo write to db
+		
+		if(this.dbCreature!=null){
+		}
 	}
 	
 	/**
@@ -306,7 +310,7 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	
 	/**
 	 * Use this to give an experience points to a creature. This can change creature's level (when after change exp>=expNeeded).
-	 * @todo change level, change stats, force class change upon some level/block change
+	 * @todo force class change upon some level/block change
 	 * @todo Write this to database
 	 */
 	public void giveExp(int num){
@@ -316,21 +320,25 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 		
 		exp+=num;
 		while(exp>=expn){
-			//TODO sensowne wartoci?
 			exp-=expn;
-			expn*=1.2;
+			expn*=2;
 			lev++;
 		}
+		
+		for(Iterator<Entry<Attribute,Long>> set=attributes.entrySet().iterator();set.hasNext();){
+			Entry<Attribute,Long> next=set.next();
+			Long val=next.getValue();
+			next.setValue((long)(val*1.1));
+		}
+		
 		
 		this.setExp(exp);
 		this.setExpNeeded(expn);
 		this.setLevel(lev);
-		this.commit();
 	}
 	
 	/**
 	 * Adds a temporary attributes modifier.
-	 * @todo Write this to database
 	 */
 	public void addModifier(Modifier m){
 		this.modifiers.add(m);
@@ -339,7 +347,6 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	
 	/**
 	 * Removes a temporary attributes modifier.
-	 * @todo Write this to database
 	 */
 	public void removeModifier(Modifier m){
 		this.modifiers.remove(m);
@@ -353,7 +360,7 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	 * - apply modifiers;
 	 * - return the result.
 	 */	
-	protected Map<Attribute,Long> generateAttributes(){
+	public Map<Attribute,Long> generateAttributes(){
 		Map<Attribute,Long> cur=new HashMap<Attribute,Long>();
 		cur.putAll(getAttributes());
 		
@@ -403,7 +410,7 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface{
 	}
 
 	@Override
-	public List<Behaviour> getBehaviourByType(Class clazz) {
+	public List getBehaviourByType(Class clazz) {
 		return behaviourHolder.getBehaviourByType(clazz);
 	}
 

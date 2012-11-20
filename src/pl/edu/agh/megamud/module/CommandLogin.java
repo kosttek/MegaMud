@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.Iterator;
 
 import com.j256.ormlite.dao.ForeignCollection;
-import com.sun.org.apache.xml.internal.security.Init;
 
 import pl.edu.agh.megamud.GameServer;
 import pl.edu.agh.megamud.base.Command;
@@ -72,7 +71,6 @@ public class CommandLogin extends Command {
 	
 	/**
 	 * @todo A command to choose a creature to play with.
-	 * @todo Grab a creature data from database, its items etc.
 	 */
 	private void handleSucessfulAuthentication(PlayerController user,Player player){
 		user.setDbPlayer(player);
@@ -89,7 +87,7 @@ public class CommandLogin extends Command {
 			pc.setLevel(1);
 			pc.setHp(100);
 			pc.setProfession(Profession.DEFAULT);
-			pc.setName(player.getLogin()+"_XXX");
+			pc.setName(player.getLogin());
 			
 			try {
 				PlayerCreature.createDao().create(pc);

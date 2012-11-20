@@ -2,12 +2,14 @@ package pl.edu.agh.megamud.mechanix;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.ItemHolder;
 import pl.edu.agh.megamud.base.itemtype.Body;
 import pl.edu.agh.megamud.base.itemtype.Hand;
 import pl.edu.agh.megamud.base.itemtype.Head;
+import pl.edu.agh.megamud.dao.Attribute;
 
 public class InitMechanix {
 	/**
@@ -23,8 +25,10 @@ public class InitMechanix {
 		itemHolder.setEquipmentTypes(list);
 	}
 	
-	//TODO
-	static public void attack(Creature attacker, Creature Defender){
-		Defender.addDamage(10);
+	//TODO grab attacker's & defender's stats.
+	public static void attack(Creature attacker, Creature defender){
+		Map<Attribute, Long> attackerAttrs = attacker.generateAttributes();
+		Map<Attribute, Long> defenderAttrs = defender.generateAttributes();
+		defender.addDamage(10);
 	}
 }

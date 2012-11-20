@@ -6,12 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.dao.CreatureItem;
 import pl.edu.agh.megamud.dao.ItemAttribute;
 import pl.edu.agh.megamud.dao.PlayerCreature;
+import pl.edu.agh.megamud.dao.base.ItemBase;
 
 /**
  * Physical, existing item.
@@ -48,8 +48,9 @@ public class Item implements BehaviourHolderInterface{
 			Attribute a=next.getKey();
 			if(a.getName().equals(x)){
 				next.setValue(val);
+				if(this.creatureItem!=null)
 				try{
-					ItemAttribute.createDao().deleteBuilder().where().eq("attribute",a).and().eq("item", this.creatureItem.getItem()).query();
+					ItemAttribute.createDao().deleteBuilder().where().eq("attribute_id",a).and().eq("item_id", this.creatureItem.getItem()).query();
 					
 					ItemAttribute ne=new ItemAttribute();
 					ne.setAttribute(a);
@@ -63,7 +64,6 @@ public class Item implements BehaviourHolderInterface{
 				return;
 			}
 		}
-		//@todo save to db
 	}
 	
 	public Item(CreatureItem it){
@@ -85,7 +85,7 @@ public class Item implements BehaviourHolderInterface{
 			attrs = Attribute.createDao().queryForAll();
 			for(Iterator<Attribute> i=attrs.iterator();i.hasNext();){
 				Attribute a=i.next();
-				List<ItemAttribute> found=ItemAttribute.createDao().queryBuilder().where().eq("attribute",a).and().eq("item", it).query();
+				List<ItemAttribute> found=ItemAttribute.createDao().queryBuilder().where().eq("attribute_id",a).and().eq("item_id", it).query();
 				if(found.size()>0){
 					ItemAttribute first=found.get(0);
 					this.attributes.put(a,first.getValue().longValue());
@@ -144,23 +144,49 @@ public class Item implements BehaviourHolderInterface{
 		if(newOwner!=null){
 			newOwner.addItem(this);
 			newOwner.onItemAppear(this,oldOwner);
-			
-			if(creatureItem!=null){
-				if(newOwner instanceof Location){
-					// @todo No location in dao.
-					//creatureItem.setLocation((Location)newOwner);
-				}else{
-					// @todo Import it
-					PlayerCreature pc=((Creature)newOwner).getDbCreature();
-					if(pc!=null){
-						creatureItem.setCreature(pc);
-					}
-				}
-			}
 		}
 		
-
-		// @todo commit
+		if(newOwner instanceof Creature){
+			if(this.creatureItem==null){
+				pl.edu.agh.megamud.dao.Item it;
+				try {
+					it = pl.edu.agh.megamud.dao.Item.createDao().queryBuilder().where().eq("name", this.name).query().get(0);
+				}catch(Exception e){
+					it=new pl.edu.agh.megamud.dao.Item();
+					it.setName(this.name);
+					it.setDescription(this.description);
+					try {
+						ItemBase.createDao().create(it);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				}
+				try{
+					this.creatureItem=new CreatureItem();
+					this.creatureItem.setItem(it);
+					this.creatureItem.setLevel(1);
+					this.creatureItem.setCreature(((Creature)newOwner).getDbCreature());
+					
+					CreatureItem.createDao().create(this.creatureItem);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}else{
+				this.creatureItem.setCreature(((Creature)newOwner).getDbCreature());
+				try {
+					CreatureItem.createDao().update(this.creatureItem);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			this.creatureItem.setCreature(((Creature)newOwner).getDbCreature());
+		}else if(newOwner==null){
+			try{
+				CreatureItem.createDao().delete(this.creatureItem);
+			}catch(Exception e){}
+			this.creatureItem=null;
+		}
 		
 		return true;
 	}	
@@ -170,7 +196,7 @@ public class Item implements BehaviourHolderInterface{
 	 * @param owner
 	 */
 	public boolean canBeGivenTo(ItemHolder owner){
-		return false; // TODO Add some logic.
+		return true;
 	}
 	@Override
 	public List<Behaviour> getBehaviourList() {

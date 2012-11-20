@@ -53,7 +53,6 @@ public class Session implements Runnable {
 				try{
 					user.interpreteCommand(line);
 				}catch(Exception e2){
-					//TODO notify user
 					e2.printStackTrace();
 				}
 			}

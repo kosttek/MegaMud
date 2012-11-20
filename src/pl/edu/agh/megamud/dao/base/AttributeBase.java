@@ -74,7 +74,6 @@ public abstract class AttributeBase {
 				return null;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;	
@@ -92,7 +91,6 @@ public abstract class AttributeBase {
 		try {
 			return DaoManager.createDao(DbManager.getConnectionSource(), Attribute.class);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

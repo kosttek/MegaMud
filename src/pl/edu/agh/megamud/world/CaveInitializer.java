@@ -55,21 +55,34 @@ public class CaveInitializer {
 	public static void init(String moduleName) throws SQLException{
 		CaveInitializer.moduleName = moduleName;
 		
+		initWesternCorridor();
+	}
+	
+	public static void initWesternCorridor() throws SQLException{
+		A1 = prepareLocation("start",
+				"You find yourself in a huge cave. Air here is suffocating and you can barely see anything. " +
+				"It looks like you woke up here.");
+		B1 = prepareLocation("b1","The stone under your feet is very slippery.");
+		B2 = prepareLocation("b2","It looks like the corridor is rising towards the east.");
+		B3 = prepareLocation("b3","In this small cave there is a small campfire in the middle.");
+		C3 = prepareLocation("c3", "It is so dark here, you think you are blind.");
+		D3 = prepareLocation("d3", "This small cave is where three narrow passages meet.");
+		D2 = prepareLocation("d2", "You have to crawl to keep moving. You are afraid you may get stuck.");
+		D1 = prepareLocation("d1", 
+				"The tunnel turns slightly here. It's small and you have to watch out not to hit yourself on the head.");
+		E1 = prepareLocation("e1", "This part of the cave is relatively big. You can hear water dripping.");
+		F1 = prepareLocation("f1", 
+				"This is a small room, with a hole in the middle. Oddly enough there is a hole in the middle with" +
+				"a sinister glow coming from within. If you decide to descend, you won't be able to return.");
 		
-		
-		A1 = prepareLocation("start","Znajdujesz sie w wielkiej grocie. Wyglada na to, ze sie tu ocknales.");
-
-		B1 = prepareLocation("b1","Ten tunel skalny ma bardzo sliska powierzchnie. Boisz sie, ze upadniesz.");
-		preparePortal("start","b1","poludnie");
-		preparePortal("b1","start","polnoc");
-		
-		B2 = prepareLocation("b2","Idac korytarzem czujesz, ze wznosi sie ku gorze.");
-		
-		preparePortal("b1","b2","wschod");
-		preparePortal("b2","b1","zachod");
-		
-		B3 = prepareLocation("b3","Jestes w malej jaskini. Na srodku pali sie ognisko.");
-		preparePortal("b2","b3","wschod");
-		preparePortal("b3","b2","zachod");		
+		A1.connectTwoWay(B1, "south", "north");
+		B1.connectTwoWay(B2, "east", "west");
+		B2.connectTwoWay(B3, "east", "west");
+		B3.connectTwoWay(C3, "south", "north");
+		C3.connectTwoWay(D3, "south", "north");
+		D3.connectTwoWay(D2, "west", "east");
+		D2.connectTwoWay(D1, "west", "east");
+		D1.connectTwoWay(E1, "south", "north");
+		E1.connectTwoWay(F1, "south", "north");
 	}
 }

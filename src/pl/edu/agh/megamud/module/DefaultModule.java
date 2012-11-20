@@ -13,15 +13,11 @@ import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.SimpleItem;
 import pl.edu.agh.megamud.base.itemtype.Weapon;
 import pl.edu.agh.megamud.dao.Attribute;
-import pl.edu.agh.megamud.dao.Item;
-import pl.edu.agh.megamud.dao.ItemAttribute;
-import pl.edu.agh.megamud.dao.Portal;
-import pl.edu.agh.megamud.dao.base.AttributeBase;
 import pl.edu.agh.megamud.dao.base.LocationBase;
-import pl.edu.agh.megamud.dao.base.PortalBase;
 import pl.edu.agh.megamud.mechanix.CommandHit;
 import pl.edu.agh.megamud.mechanix.FightBehaviour;
 import pl.edu.agh.megamud.world.CaveInitializer;
+import pl.edu.agh.megamud.world.Chochlik;
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items etc.
  * @author Tomasz
@@ -91,7 +87,8 @@ public class DefaultModule extends DatabaseModule{
 			.setHp(34);
 		
 		rat.addBehaviour(new FightBehaviour(rat));
-		
+		rat.initAtribute(Attribute.findByName(Attribute.STRENGTH));
+		rat.setAttribute(Attribute.STRENGTH, 5L);
 		installNPC(
 				new Chochlik(), 
 				rat, 

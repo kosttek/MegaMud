@@ -2,6 +2,8 @@ package pl.edu.agh.megamud.module;
 
 import java.sql.SQLException;
 
+import javax.smartcardio.ATR;
+
 import pl.edu.agh.megamud.GameServer;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Creature;
@@ -11,10 +13,15 @@ import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.SimpleItem;
 import pl.edu.agh.megamud.base.itemtype.Weapon;
 import pl.edu.agh.megamud.dao.Attribute;
+import pl.edu.agh.megamud.dao.Item;
+import pl.edu.agh.megamud.dao.ItemAttribute;
+import pl.edu.agh.megamud.dao.Portal;
+import pl.edu.agh.megamud.dao.base.AttributeBase;
 import pl.edu.agh.megamud.dao.base.LocationBase;
+import pl.edu.agh.megamud.dao.base.PortalBase;
 import pl.edu.agh.megamud.mechanix.CommandHit;
 import pl.edu.agh.megamud.mechanix.FightBehaviour;
-import pl.edu.agh.megamud.world.*;
+import pl.edu.agh.megamud.world.CaveInitializer;
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items etc.
  * @author Tomasz
@@ -57,7 +64,7 @@ public class DefaultModule extends DatabaseModule{
 
 		Weapon sword = new Weapon("sword", "little rusty sword");
 		sword.giveTo(GameServer.getInstance().getLocation(CaveInitializer.B2.getName()));
-//		sword.initAtribute(Attribute.findByName(Attribute.DAMAGE));
+		sword.initAtribute(Attribute.findByName(Attribute.DAMAGE));
 		sword.setAttribute(Attribute.DAMAGE, 3L);
 		
 		new CyclicBehaviour(GameServer.getInstance().getLocation(CaveInitializer.C7),1000L){
@@ -72,10 +79,6 @@ public class DefaultModule extends DatabaseModule{
 			}
 		}.init();
 		
-		initCreatures();
-	}
-
-	private void initCreatures() {
 		installNPC(
 				new Chochlik(),
 				new Creature("Chochlik")
@@ -90,7 +93,7 @@ public class DefaultModule extends DatabaseModule{
 		rat.addBehaviour(new FightBehaviour(rat));
 		
 		installNPC(
-				new Sentry(), 
+				new Chochlik(), 
 				rat, 
 				GameServer.getInstance().getLocation(CaveInitializer.B2));
 		Location l = rat.getLocation();

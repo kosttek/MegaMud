@@ -29,8 +29,9 @@ public class BehaviourHolder implements BehaviourHolderInterface {
 	public List<Behaviour> getBehaviourByType(Class<Behaviour> clazz) {
 		Set<Behaviour> result = new HashSet<Behaviour>();
 		for (Behaviour behaviour : list){
-			if(behaviour.getClass().isAssignableFrom(clazz));
+			if(behaviour.getClass().isAssignableFrom(clazz)){
 				result.add(behaviour);
+			}
 		}
 		return new ArrayList<Behaviour>(result) ;
 	}

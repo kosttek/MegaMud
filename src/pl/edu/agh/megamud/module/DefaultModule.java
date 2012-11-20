@@ -60,7 +60,7 @@ public class DefaultModule extends DatabaseModule{
 		Weapon sword = new Weapon("sword", "little rusty sword");
 		sword.giveTo(GameServer.getInstance().getLocation(CaveInitializer.B2.getName()));
 		
-		new CyclicBehaviour(GameServer.getInstance().getLocation(CaveInitializer.B1.getName()),1000L){
+		new CyclicBehaviour(GameServer.getInstance().getLocation(CaveInitializer.C7),1000L){
 			protected void action() {
 				Location location=(Location)owner;
 				

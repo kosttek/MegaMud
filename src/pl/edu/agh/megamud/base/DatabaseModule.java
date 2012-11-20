@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.megamud.GameServer;
+import pl.edu.agh.megamud.dao.LocationItem;
 import pl.edu.agh.megamud.dao.Player;
 import pl.edu.agh.megamud.dao.PlayerCreature;
 import pl.edu.agh.megamud.dao.Portal;
@@ -68,6 +69,15 @@ public abstract class DatabaseModule extends Module {
 					continue;
 
 				from.addExit(name, end);
+			}
+			
+			try {
+				List<LocationItem> itemz=LocationItem.createDao().queryBuilder().where().eq("location_id",dbloc).query();
+				for(Iterator<LocationItem> i=itemz.iterator();i.hasNext();){
+					LocationItem li=i.next();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 

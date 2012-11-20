@@ -51,7 +51,7 @@ public class FightBehaviour extends Behaviour {
 	private void write(){
 		Controller c = ((Creature)owner).getController();
 		if(c!= null){
-			c.write("Your enemy have "+opponent.getHp());
+			c.write("Your enemy has "+opponent.getHp());
 		}
 		Controller cOpp = opponent.getController();
 		if(c!= null){

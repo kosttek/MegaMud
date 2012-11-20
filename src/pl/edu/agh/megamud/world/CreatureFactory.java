@@ -11,8 +11,8 @@ public class CreatureFactory {
 			.setLevel(1)
 			.setHp(34);
 
-                rat.initAtribute(Attribute.findByName(Attribute.STRENGTH));
-                rat.setAttribute(Attribute.STRENGTH, 5L);	
+        rat.initAtribute(Attribute.findByName(Attribute.STRENGTH));
+        rat.setAttribute(Attribute.STRENGTH, 5L);	
 
 		rat.addBehaviour(new FightBehaviour(rat));
 		return rat;

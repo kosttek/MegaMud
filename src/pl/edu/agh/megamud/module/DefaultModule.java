@@ -100,6 +100,25 @@ public class DefaultModule extends DatabaseModule {
 				CreatureFactory.getRat(),
 				GameServer.getInstance().getLocation(CaveInitializer.D3));
 
+		installNPC(
+				new AggressiveSentry(), 
+				CreatureFactory.getRat(),
+				GameServer.getInstance().getLocation(CaveInitializer.E1));
+	
+		installNPC(
+				new AggressiveSentry(), 
+				CreatureFactory.getRat(),
+				GameServer.getInstance().getLocation(CaveInitializer.D5));
+		
+		installNPC(
+				new Sentry(), 
+				CreatureFactory.getRat(),
+				GameServer.getInstance().getLocation(CaveInitializer.C6));
+		
+		installNPC(
+				new Sentry(), 
+				CreatureFactory.getRat(),
+				GameServer.getInstance().getLocation(CaveInitializer.D1));		
 	}
 
 	private void installCommands() {

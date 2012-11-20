@@ -57,7 +57,7 @@ public class CaveInitializer {
 				"This part of the cave is relatively big. You can hear water dripping.");
 		F1 = prepareLocation(
 				"f1",
-				"This is a small room, with a hole in the middle. Oddly enough there is a hole in the middle with"
+				"This is a small room, with a hole in the middle. Oddly enough there is a hole in the middle with "
 						+ "a sinister glow coming from within. If you decide to descend, you won't be able to return.");
 
 		A1.connectTwoWay(B1, "south", "north");

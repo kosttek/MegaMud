@@ -305,7 +305,6 @@ public class Item implements BehaviourHolderInterface {
 	@Override
 	public void removeBehaviour(Behaviour behaviour) {
 		behaviourHolder.removeBehaviour(behaviour);
-
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import pl.edu.agh.megamud.mechanix.FightBehaviour;
 import pl.edu.agh.megamud.world.AggressiveSentry;
 import pl.edu.agh.megamud.world.CaveInitializer;
 import pl.edu.agh.megamud.world.Chochlik;
+import pl.edu.agh.megamud.world.Sentry;
 
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items

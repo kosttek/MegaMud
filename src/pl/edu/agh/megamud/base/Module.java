@@ -105,6 +105,10 @@ public abstract class Module {
 		GameServer.getInstance().addLocation(loc);
 	}
 	
+	protected final void installNPC(NPCController bot,Creature creature, pl.edu.agh.megamud.dao.Location loc){
+		installNPC(bot, creature, GameServer.getInstance().getLocation(loc));
+	}
+	
 	protected final void installNPC(NPCController bot,Creature creature,Location loc){
 		GameServer.getInstance().initController(bot);
 		GameServer.getInstance().initCreature(bot,creature);

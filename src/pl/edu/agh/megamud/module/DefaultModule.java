@@ -77,7 +77,7 @@ public class DefaultModule extends DatabaseModule{
 				new Creature("Chochlik")
 					.setLevel(100)
 					.setHp(666),
-				GameServer.getInstance().getLocation(CaveInitializer.B3.getName()));
+				GameServer.getInstance().getLocation(CaveInitializer.B3));
 		
 		Creature rat = new Creature("rat")
 			.setLevel(1)
@@ -88,7 +88,7 @@ public class DefaultModule extends DatabaseModule{
 		installNPC(
 				new Chochlik(), 
 				rat, 
-				GameServer.getInstance().getLocation(CaveInitializer.B2.getName()));
+				GameServer.getInstance().getLocation(CaveInitializer.B2));
 	}
 
 	private void installCommands() {

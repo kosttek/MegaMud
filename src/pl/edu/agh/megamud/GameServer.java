@@ -112,6 +112,11 @@ public class GameServer {
 		}
 	}
 	
+	public Location getLocation(pl.edu.agh.megamud.dao.Location location){
+		return this.getLocation(location.getName());
+	}
+
+	
 	private GameServer(){
 	}
 	

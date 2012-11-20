@@ -1,4 +1,4 @@
-package pl.edu.agh.megamud.module;
+package pl.edu.agh.megamud.world;
 
 import pl.edu.agh.megamud.base.Behaviour;
 import pl.edu.agh.megamud.base.Creature;

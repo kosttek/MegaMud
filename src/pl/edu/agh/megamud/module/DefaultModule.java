@@ -178,24 +178,18 @@ public class DefaultModule extends DatabaseModule {
 		installCommand(new CommandDrop());
 
 		installCommand(new CommandSay());
-
-		installCommand(new CommandKill());
 	}
 
 	public void onNewController(Controller c) {
 		findCommands("login").get(0).installTo(c);
 		findCommands("exit").get(0).installTo(c);
 		findCommands("help").get(0).installTo(c);
-
-		findCommands("kill").get(0).installTo(c);
 	}
 
 	public void onKillController(Controller c) {
 		findCommands("login").get(0).uninstallFrom(c);
 		findCommands("exit").get(0).uninstallFrom(c);
 		findCommands("help").get(0).uninstallFrom(c);
-
-		findCommands("kill").get(0).uninstallFrom(c);
 	}
 
 	public void onNewCreature(Creature c) {

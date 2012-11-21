@@ -26,8 +26,17 @@
  ******************************************************************************/
 package pl.edu.agh.megamud.base;
 
+import java.sql.SQLException;
+
+import pl.edu.agh.megamud.GameServer;
 import pl.edu.agh.megamud.Session;
+import pl.edu.agh.megamud.dao.Attribute;
+import pl.edu.agh.megamud.dao.CreatureAttribute;
 import pl.edu.agh.megamud.dao.Player;
+import pl.edu.agh.megamud.dao.PlayerCreature;
+import pl.edu.agh.megamud.dao.Profession;
+import pl.edu.agh.megamud.mechanix.FightBehaviour;
+import pl.edu.agh.megamud.mechanix.Mechanix;
 
 /**
  * User connected to server. PlayerController is aware of possible commands, its
@@ -200,5 +209,48 @@ public class PlayerController extends Controller {
 	
 	public void onLevel(){
 		write("You are now LV"+getCreature().getLevel()+" and now you have "+getCreature().getExp()+"/"+getCreature().getExpNeeded()+"EXP.");
+	}
+	public void onDie() {
+		write("You died but friendly souls will bring you back to life.");
+		
+		PlayerCreature pc;
+		pc = new PlayerCreature(this.getDbPlayer());
+
+		pc.setExp(0);
+		pc.setExp_needed(5);
+		pc.setLevel(1);
+		pc.setHp(100);
+		pc.setProfession(Profession.DEFAULT);
+		pc.setName(this.getDbPlayer().getLogin() + "");
+
+		CreatureAttribute caStrength, caDexterity;
+		caStrength = new CreatureAttribute();
+		caStrength.setAttribute(Attribute.findByName(Attribute.STRENGTH));
+		caStrength.setValue(10);
+		caStrength.setCreature(pc);
+
+		caDexterity = new CreatureAttribute();
+		caDexterity.setAttribute(Attribute.findByName(Attribute.DEXTERITY));
+		caDexterity.setValue(10);
+		caDexterity.setCreature(pc);
+		try {
+			PlayerCreature.createDao().create(pc);
+			PlayerCreature.createDao().refresh(pc);
+			CreatureAttribute.createDao().create(caStrength);
+			CreatureAttribute.createDao().create(caDexterity);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		Location loc = GameServer.getInstance().getStartLocation();
+		Creature c = new Creature(pc.getName());
+		c.setDbCreature(pc);
+
+		Mechanix.initEquipment(c);
+		c.addBehaviour(new FightBehaviour(c));
+
+		GameServer.getInstance().initCreature(this, c);
+
+		c.setLocation(loc, null);
 	}
 }

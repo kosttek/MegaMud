@@ -325,8 +325,9 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface {
 		this.controller.onDie();
 		this.controller = null;
 
-		if (location == null)
+		if (location == null){
 			return;
+		}
 
 		Map<String, Creature> creatures = location.getCreatures();
 		if (creatures != null) {
@@ -398,6 +399,10 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface {
 		int lev = this.getLevel();
 		
 		boolean exped=false;
+		
+		if(this.controller instanceof NPCController){
+			return;
+		}
 
 		exp += num;
 		while (exp >= expn) {
@@ -418,10 +423,14 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface {
 		this.setExpNeeded(expn);
 		this.setLevel(lev);
 		
+		if(this.controller==null){
+			return;
+		}
+		
 		if(exped){
-			controller.onLevel();
+			this.controller.onLevel();
 		}else{
-			controller.onExp(num);
+			this.controller.onExp(num);
 		}
 	}
 

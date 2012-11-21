@@ -36,26 +36,28 @@ import pl.edu.agh.megamud.base.Creature;
 public class FightBehaviour extends Behaviour {
 	private boolean active;
 	private Creature opponent;
-
+	private Creature fighter;
+	
 	public FightBehaviour(BehaviourHolderInterface o) {
 		super(o, 0L);
+		this.fighter=(Creature)o;
 	}
 
 	public FightBehaviour(BehaviourHolderInterface o, long delay) {
 		super(o, delay);
-		active = false;
+		this.fighter=(Creature)o;
+		this.active = false;
 	}
 
 	@Override
 	protected void action() {
-		if (((Creature) owner).getHp() <= 0
-				|| !((Creature) owner).getLocation().getCreatures()
-						.containsKey(opponent.getName()) || !isActive())
+		if (!isActive() || fighter.getHp()<=0 || opponent.getHp() <= 0
+				|| !opponent.getLocation().getCreatures().containsKey(fighter.getName()))
 			return;
 		
 		FightBehaviour oppFightBeh = getOpponentFightBehaviour();
 		if (oppFightBeh != null && !oppFightBeh.isActive() && isOpponentAlive()) {
-			oppFightBeh.setOpponent((Creature) owner);
+			oppFightBeh.setOpponent(fighter);
 			oppFightBeh.init();
 		}
 		
@@ -65,7 +67,7 @@ public class FightBehaviour extends Behaviour {
 		if (isOpponentAlive()) {
 			put();
 		} else {
-			((Creature) owner).giveExp(3);//? 
+			this.fighter.giveExp(3); //?);//?
 			setActive(false);
 			setOpponent(null);
 		}
@@ -94,8 +96,12 @@ public class FightBehaviour extends Behaviour {
 	}
 
 	private boolean isOpponentAlive() {
-		if (opponent.getHp() <= 0)
+		try{
+			if (opponent.getHp() <= 0)
+				return false;
+		}catch(Exception e){
 			return false;
+		}
 		return true;
 	}
 

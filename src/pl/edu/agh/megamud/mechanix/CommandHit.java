@@ -40,15 +40,19 @@ public class CommandHit extends Command {
 	public boolean interprete(Controller user, String command) {
 		if (user.getCreature() == null)
 			return false;
+		
 		FightBehaviour fightBehaviour = (FightBehaviour) user.getCreature()
 				.getBehaviourByType(FightBehaviour.class).get(0);
 		Creature opponent = user.getCreature().getLocation().getCreatures()
 				.get(command);
-		System.out.println("Fight: " + fightBehaviour + " op " + opponent);
+		
 		if (fightBehaviour != null && opponent != null) {
 			fightBehaviour.setOpponent(opponent);
 			fightBehaviour.init();
+			user.write("Now fighting "+command);
 			return true;
+		}else{
+			user.write("Who do you want to fight?");
 		}
 		return false;
 	}

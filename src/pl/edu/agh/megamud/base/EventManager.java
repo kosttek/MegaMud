@@ -84,7 +84,11 @@ public class EventManager extends Thread {
 			} else if (closestBehaviourTime <= System.currentTimeMillis()) {
 				synchronized (map) {
 					Behaviour behaviour = map.get(closestBehaviourTime);
-					behaviour.makeAction();
+					try{
+						behaviour.makeAction();
+					}catch(Exception e){
+						e.printStackTrace();
+					}
 					map.remove(closestBehaviourTime);
 				}
 			} else {

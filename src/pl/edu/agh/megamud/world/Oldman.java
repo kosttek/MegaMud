@@ -7,6 +7,7 @@ import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.NPCController;
 
 public class Oldman extends NPCController {
+	OldmanTalk oldmanTalk = new OldmanTalk();;
 
 	public Oldman() {
 		super();
@@ -21,4 +22,9 @@ public class Oldman extends NPCController {
 
 	public void setLocation(Location exit, String exitName) {
 	}
+	
+	public String ask(String command){
+		return oldmanTalk.ask(command);
+	}
+	
 }

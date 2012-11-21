@@ -88,7 +88,6 @@ public abstract class CreatureItemBase {
 			return DaoManager.createDao(DbManager.getConnectionSource(),
 					CreatureItem.class);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

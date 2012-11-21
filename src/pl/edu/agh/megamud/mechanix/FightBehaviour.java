@@ -65,7 +65,7 @@ public class FightBehaviour extends Behaviour {
 		if (isOpponentAlive()) {
 			put();
 		} else {
-			((Creature) owner).giveExp(3); //TODO 
+			((Creature) owner).giveExp(3);//? 
 			setActive(false);
 			setOpponent(null);
 		}

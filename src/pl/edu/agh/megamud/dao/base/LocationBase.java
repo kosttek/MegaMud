@@ -103,7 +103,6 @@ public abstract class LocationBase {
 			return DaoManager.createDao(DbManager.getConnectionSource(),
 					Location.class);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

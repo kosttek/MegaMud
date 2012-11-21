@@ -7,7 +7,6 @@ public class OldmanFight extends FightBehaviour {
 
 	public OldmanFight(BehaviourHolderInterface o) {
 		super(o);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override

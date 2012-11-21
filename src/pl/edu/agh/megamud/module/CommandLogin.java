@@ -91,7 +91,6 @@ public class CommandLogin extends Command {
 			user.write("New account registered.");
 			handleSucessfulAuthentication(user, account);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			user.write("Internal server error.");
 			e.printStackTrace();
 		}

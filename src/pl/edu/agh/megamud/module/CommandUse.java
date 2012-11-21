@@ -30,7 +30,6 @@ import pl.edu.agh.megamud.base.Command;
 import pl.edu.agh.megamud.base.Controller;
 import pl.edu.agh.megamud.base.Item;
 import pl.edu.agh.megamud.base.itemtype.ItemToUse;
-import pl.edu.agh.megamud.base.itemtype.ItemToWorn;
 
 public class CommandUse extends Command {
 	public static final String commandString = "use";

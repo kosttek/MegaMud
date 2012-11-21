@@ -95,7 +95,6 @@ public abstract class LocationItemBase {
 			return DaoManager.createDao(DbManager.getConnectionSource(),
 					LocationItem.class);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

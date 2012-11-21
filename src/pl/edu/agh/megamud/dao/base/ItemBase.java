@@ -117,7 +117,6 @@ public abstract class ItemBase {
 			return DaoManager.createDao(DbManager.getConnectionSource(),
 					Item.class);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

@@ -79,7 +79,6 @@ public abstract class PlayerBase {
 		try {
 			createDao().refresh((Player) this);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return playerCreatures;
@@ -91,8 +90,6 @@ public abstract class PlayerBase {
 	}
 
 	public PlayerBase() {
-		// all persisted classes must define a no-arg constructor with at least
-		// package visibility
 	}
 
 	public static Dao<Player, String> createDao() {
@@ -100,7 +97,6 @@ public abstract class PlayerBase {
 			return DaoManager.createDao(DbManager.getConnectionSource(),
 					Player.class);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

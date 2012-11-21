@@ -61,7 +61,6 @@ public abstract class ModuleBase {
 			return DaoManager.createDao(DbManager.getConnectionSource(),
 					Module.class);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

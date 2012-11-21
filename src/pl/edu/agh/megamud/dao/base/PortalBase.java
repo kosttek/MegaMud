@@ -87,7 +87,6 @@ public abstract class PortalBase {
 			return DaoManager.createDao(DbManager.getConnectionSource(),
 					Portal.class);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

@@ -161,7 +161,6 @@ public abstract class PlayerCreatureBase {
 			return DaoManager.createDao(DbManager.getConnectionSource(),
 					PlayerCreature.class);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

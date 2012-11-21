@@ -52,7 +52,6 @@ public class Mechanix {
 		itemHolder.setEquipmentTypes(list);
 	}
 
-	// TODO
 	public static void attack(Creature attacker, Creature defender) {
 		Long stregth = attacker.getAttributeValue(Attribute.STRENGTH);
 		if (stregth == null) {

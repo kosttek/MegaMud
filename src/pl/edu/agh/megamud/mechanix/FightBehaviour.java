@@ -36,6 +36,7 @@ public class FightBehaviour extends Behaviour {
 		if (isOpponentAlive()) {
 			put();
 		} else {
+			((Creature) owner).giveExp(3); //TODO 
 			setActive(false);
 			setOpponent(null);
 		}
@@ -44,7 +45,7 @@ public class FightBehaviour extends Behaviour {
 
 	@Override
 	public final Behaviour init() {
-		setDelay(200);
+		setDelay(800);
 		setActive(true);
 		return super.init();
 	}

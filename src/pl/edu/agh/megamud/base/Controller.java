@@ -68,7 +68,7 @@ public abstract class Controller extends CommandCollector {
 	 * @return true, if any actual command was run.
 	 */
 	public boolean interpreteCommand(String cmd, String args) {
-		List<Command> cmd2 = findCommands(cmd);	
+		List<Command> cmd2 = findCommands(cmd);
 		if (cmd2 != null)
 			for (Iterator<Command> i = cmd2.iterator(); i.hasNext();) {
 				Command c = i.next();
@@ -78,6 +78,7 @@ public abstract class Controller extends CommandCollector {
 		write("Unknown command, type help for known commands.");
 		return false;
 	}
+
 	/**
 	 * Use this to send a message to controller.
 	 */
@@ -111,6 +112,12 @@ public abstract class Controller extends CommandCollector {
 	public void onItemDisappear(Item i, ItemHolder to) {
 	}
 
+	public void onItemEquip(Item i) {
+	}
+
+	public void onItemUnequip(Item i) {
+	}
+
 	/**
 	 * Called upon connection. Executed also in NPC controller.
 	 */
@@ -121,5 +128,13 @@ public abstract class Controller extends CommandCollector {
 	 * Called upon disconnection. Executed also in NPC controller.
 	 */
 	public void onDisconnect() {
+	}
+
+	public void onTakeDamage(int hpLost) {
+
+	}
+
+	public void onDie() {
+
 	}
 }

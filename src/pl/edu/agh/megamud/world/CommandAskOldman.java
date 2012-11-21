@@ -9,8 +9,7 @@ public class CommandAskOldman extends Command {
 		if (user.getCreature() == null)
 			return false;
 
-		
-		user.write("you asked about "+ command);
+		user.write("you asked about " + command);
 		return true;
 	}
 

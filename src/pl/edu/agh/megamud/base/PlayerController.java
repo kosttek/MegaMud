@@ -62,8 +62,11 @@ public class PlayerController extends Controller {
 	}
 
 	public void onLeave(Creature otherCreature, String usedExit) {
+		if(usedExit!=null)
 		write("" + otherCreature.getName() + " left the room"
 				+ (usedExit != null ? " (towards " + usedExit + ")" : "") + ".");
+		else
+			write("" + otherCreature.getName() + " died.");
 	}
 
 	public void onSayInLocation(Creature otherCreature, String message) {

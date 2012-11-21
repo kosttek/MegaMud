@@ -66,9 +66,9 @@ public abstract class Behaviour {
 	 * Use this to call an action on a behaviour.
 	 */
 	public void makeAction() {
-		try{
+		try {
 			action();
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

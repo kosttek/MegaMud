@@ -7,18 +7,18 @@ import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.NPCController;
 
 public class AggressiveSentry extends NPCController {
-	
-	public AggressiveSentry(){
+
+	public AggressiveSentry() {
 		super();
 	}
-	
-	public void onEnter(Creature otherCreature){
-		interpreteCommand("hit",otherCreature.getName());
+
+	public void onEnter(Creature otherCreature) {
+		interpreteCommand("hit", otherCreature.getName());
 	}
-	
-	public void onItemTransfer(ItemHolder from,ItemHolder to,Item item){
+
+	public void onItemTransfer(ItemHolder from, ItemHolder to, Item item) {
 	}
-	
-	public void setLocation(Location exit,String exitName){
+
+	public void setLocation(Location exit, String exitName) {
 	}
 }

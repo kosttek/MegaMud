@@ -74,7 +74,7 @@ public class Session implements Runnable {
 		try {
 			out.println(txt);
 		} catch (Exception e) {
-			// TODO kill connection
+			this.user.disconnect();
 			e.printStackTrace();
 		}
 	}

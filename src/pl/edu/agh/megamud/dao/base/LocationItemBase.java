@@ -27,7 +27,8 @@ public abstract class LocationItemBase {
 	}
 
 	/**
-	 * @param location the location to set
+	 * @param location
+	 *            the location to set
 	 */
 	public void setLocation(Location location) {
 		this.location = location;
@@ -39,7 +40,6 @@ public abstract class LocationItemBase {
 	@DatabaseField(canBeNull = false, defaultValue = "0")
 	private Integer level;
 
-	
 	public Item getItem() {
 		return item;
 	}

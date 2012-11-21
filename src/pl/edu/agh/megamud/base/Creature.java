@@ -168,6 +168,7 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface {
 		hp -= hpMinus;
 		if (hp <= 0) {
 			GameServer.getInstance().killCreature(this);
+			
 			if (this.dbCreature != null) {
 				try {
 					PlayerCreature.createDao().delete(this.dbCreature);
@@ -198,11 +199,13 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface {
 	public Map<Attribute, Long> getAttributes() {
 		return this.attributes;
 	}
-	public void initAtribute(Attribute a){
+
+	public void initAtribute(Attribute a) {
 		attributes.put(a, 0L);
 	}
-	public Long getAttributeValue(String name){
-		for(Attribute attr : getAttributes().keySet()){
+
+	public Long getAttributeValue(String name) {
+		for (Attribute attr : getAttributes().keySet()) {
 			if (attr.getName().equals(name))
 				return getAttributes().get(attr);
 		}
@@ -286,17 +289,23 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface {
 	 * Disconnects this creature from the controller.
 	 */
 	public void disconnect() {
+		setLocation(null,null);
+		
 		for (Command cmd : getAllCommands()) {
 			controller.removeCommand(cmd);
 		}
+		
+		this.controller.setCreature(null);
+		this.controller.onDie();
 		this.controller = null;
 
 		if (location == null)
 			return;
 
 		Map<String, Creature> creatures = location.getCreatures();
-		if (creatures != null)
+		if (creatures != null) {
 			creatures.remove(name);
+		}
 
 		location = null;
 	}

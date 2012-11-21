@@ -23,7 +23,6 @@ public class CommandUnequip extends Command {
 				user.getCreature().unequip(eq.get(clazz));
 				return true;
 			}
-
 		}
 		return false;
 	}

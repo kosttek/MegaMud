@@ -11,7 +11,7 @@ import java.util.Map.Entry;
  * Object capable of collecting and managing commands. Hosted in a map (string
  * => list<commands>) - commands with the same name.
  */
-public class CommandCollector  {
+public class CommandCollector {
 	private Map<String, List<Command>> map = new HashMap<String, List<Command>>();
 
 	/**
@@ -26,11 +26,13 @@ public class CommandCollector  {
 	 */
 	public final void removeCommand(Command cmd) {
 		List<Command> v = map.get(cmd.getName());
-		if (v == null)
+		if (v == null) {
 			return;
+		}
 		v.remove(cmd);
-		if (v.size() == 0)
+		if (v.size() == 0) {
 			map.remove(cmd.getName());
+		}
 	}
 
 	/*
@@ -53,8 +55,9 @@ public class CommandCollector  {
 		for (Iterator<Entry<String, List<Command>>> i = map.entrySet()
 				.iterator(); i.hasNext();) {
 			Entry<String, List<Command>> e = i.next();
-			for (Iterator<Command> c = e.getValue().iterator(); c.hasNext();)
+			for (Iterator<Command> c = e.getValue().iterator(); c.hasNext();) {
 				l.add(c.next());
+			}
 		}
 		return l;
 	}

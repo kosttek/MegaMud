@@ -14,7 +14,6 @@ import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.dao.LocationItem;
 import pl.edu.agh.megamud.dao.base.LocationBase;
 import pl.edu.agh.megamud.mechanix.CommandHit;
-import pl.edu.agh.megamud.mechanix.FightBehaviour;
 import pl.edu.agh.megamud.world.AggressiveSentry;
 import pl.edu.agh.megamud.world.CaveInitializer;
 import pl.edu.agh.megamud.world.Chochlik;
@@ -67,7 +66,8 @@ public class DefaultModule extends DatabaseModule {
 		installCommands();
 
 		Weapon sword = new Weapon("sword", "little rusty sword");
-		sword.giveTo(GameServer.getInstance().getLocation(CaveInitializer.B2.getName()));
+		sword.giveTo(GameServer.getInstance().getLocation(
+				CaveInitializer.B2.getName()));
 		sword.initAtribute(Attribute.findByName(Attribute.DAMAGE));
 		sword.setAttribute(Attribute.DAMAGE, 3L);
 
@@ -87,18 +87,11 @@ public class DefaultModule extends DatabaseModule {
 		Oldman oldman = new Oldman();
 		CommandAskOldman askOldman = new CommandAskOldman();
 		GameServer.getInstance().getStartLocation().addCommand(askOldman);
-		installNPC(
-				oldman,
-				new Creature("Oldman")
-					.setLevel(100)
-					.setHp(1000),
+		installNPC(oldman, new Creature("Oldman").setLevel(100).setHp(1000),
 				GameServer.getInstance().getStartLocation());
-		
-		installNPC(
-				new Chochlik(),
-				new Creature("Chochlik")
-					.setLevel(100)
-					.setHp(666),
+
+		installNPC(new Chochlik(), new Creature("Chochlik").setLevel(100)
+				.setHp(666),
 				GameServer.getInstance().getLocation(CaveInitializer.B3));
 		
 		installRespawningNPC(

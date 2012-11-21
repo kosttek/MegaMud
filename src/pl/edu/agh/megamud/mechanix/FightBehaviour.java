@@ -26,13 +26,16 @@ public class FightBehaviour extends Behaviour {
 				|| !((Creature) owner).getLocation().getCreatures()
 						.containsKey(opponent.getName()))
 			return;
+		
 		FightBehaviour oppFightBeh = getOpponentFightBehaviour();
 		if (oppFightBeh != null && !oppFightBeh.isActive() && isOpponentAlive()) {
 			oppFightBeh.setOpponent((Creature) owner);
 			oppFightBeh.init();
 		}
+		
 		attack();
 		write();
+		
 		if (isOpponentAlive()) {
 			put();
 		} else {

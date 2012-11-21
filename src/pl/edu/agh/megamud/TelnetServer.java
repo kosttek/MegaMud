@@ -13,7 +13,7 @@ public class TelnetServer {
 	public static ServerSocket s = null;
 
 	public static Socket incoming = null;
-	
+
 	private static int socketPort = 44449;
 
 	public static void main(String[] args) {
@@ -51,18 +51,18 @@ public class TelnetServer {
 
 	}
 
-	private static void parseArguments(String [] args) {
-		if(args.length==1){
+	private static void parseArguments(String[] args) {
+		if (args.length == 1) {
 			String arg = args[0];
-			
-			try{
-			socketPort = Integer.parseInt(arg);
-			
-			}catch(NumberFormatException e){
+
+			try {
+				socketPort = Integer.parseInt(arg);
+
+			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 
 }

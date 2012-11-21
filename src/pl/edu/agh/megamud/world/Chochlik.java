@@ -12,7 +12,6 @@ import pl.edu.agh.megamud.base.SimpleModifier;
 
 public class Chochlik extends NPCController {
 	private Item ball;
-	private CyclicBehaviour ballBehaviour;
 
 	public Chochlik() {
 		super();
@@ -24,6 +23,18 @@ public class Chochlik extends NPCController {
 	}
 
 	public void onItemTransfer(ItemHolder from, ItemHolder to, Item item) {
+		if(to instanceof Creature && to!=getCreature() && item.getName().equals("ball")){
+			Creature toc=(Creature)to;
+			interpreteCommand("say",
+					"Oh, you treacherous "+toc.getName()+". Give me my ball back!");
+			return;
+		}
+		if(from instanceof Creature && to==getCreature() && item.getName().equals("ball")){
+			interpreteCommand("say",
+					"Thank you, my pleasures are back!");
+			return;
+		}
+		
 		if (to == getCreature() && from != null && from instanceof Creature) {
 			Creature fromc = (Creature) from;
 
@@ -53,30 +64,22 @@ public class Chochlik extends NPCController {
 				fromc.addModifier(new SimpleModifier(fromc, "power", +10, delay));
 			} else {
 				interpreteCommand("say", "I don't want this, I want an apple!");
-				interpreteCommand("give", item.getName()+" "+fromc.getName());
+				interpreteCommand("give",
+						item.getName() + " " + fromc.getName());
 			}
 		}
 	}
 
-	public void setLocation(Location exit, String exitName) {
-		if (ball != null) {
-			ball.giveTo(null);
-			ballBehaviour.setDone(true);
-		}
-
-		ball = new Item("ball", "Extreme expensive NIKE-signed foot-ball.") {
-			public boolean canBeGivenTo(ItemHolder owner) {
-				return owner == Chochlik.this.getCreature()
-						|| owner == Chochlik.this.getCreature().getLocation();
-			}
-
-		};
+	public void onStart(){
+		ball = new SimpleItem("ball", "Extreme expensive NIKE-signed foot-ball.");
 		ball.giveTo(getCreature());
 
-		ballBehaviour = (CyclicBehaviour) new CyclicBehaviour(getCreature()
-				.getLocation(), 2500L) {
+		new CyclicBehaviour(getCreature(), 2500L) {
 			public void action() {
 				Creature owner = (Creature) getOwner();
+				
+				if(owner.getHp()<=0)
+					return;
 
 				if (owner.getItems().size() == 0) {
 					Chochlik.this.interpreteCommand("take", "ball");

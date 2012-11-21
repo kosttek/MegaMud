@@ -116,8 +116,7 @@ public abstract class Module {
 				creature,
 				loc);
 		
-		new CyclicBehaviour(GameServer.getInstance().getLocation(
-				CaveInitializer.B2), 30000L) {
+		new CyclicBehaviour(loc, 30000L) {
 			protected void action() {
 				Location location = (Location) owner;
 
@@ -144,6 +143,7 @@ public abstract class Module {
 		GameServer.getInstance().initCreature(bot, creature);
 
 		creature.setLocation(loc, null);
+		bot.onStart();
 
 		this.installedNpcs.add(bot);
 

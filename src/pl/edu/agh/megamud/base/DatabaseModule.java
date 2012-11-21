@@ -70,11 +70,13 @@ public abstract class DatabaseModule extends Module {
 
 				from.addExit(name, end);
 			}
-			
+
 			try {
-				List<LocationItem> itemz=LocationItem.createDao().queryBuilder().where().eq("location_id",dbloc).query();
-				for(Iterator<LocationItem> i=itemz.iterator();i.hasNext();){
-					LocationItem li=i.next();
+				List<LocationItem> itemz = LocationItem.createDao()
+						.queryBuilder().where().eq("location_id", dbloc)
+						.query();
+				for (Iterator<LocationItem> i = itemz.iterator(); i.hasNext();) {
+					LocationItem li = i.next();
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -89,31 +91,31 @@ public abstract class DatabaseModule extends Module {
 		 *       creature's class Creature data is to be stored as any other
 		 *       creature. 2. install'em
 		 */
-		if (false){
-	
+		if (false) {
+
 			for (;;) {
 				String npcId = "id";
 				String creatureName = "name";
 				String npcController = "pl.edu.agh.megamud.Base.NPCController";
-	
+
 				String creatureLocation = "start";
-	
+
 				try {
 					@SuppressWarnings("unchecked")
 					Class<NPCController> klazz = (Class<NPCController>) Class
 							.forName(npcController);
 					Constructor<NPCController> cons = klazz.getConstructor();
 					NPCController bot = cons.newInstance();
-	
+
 					Player p = new Player();
 					PlayerCreature pc = new PlayerCreature(p);
-	
+
 					Creature c = new Creature(creatureName);
 					c.setDbCreature(pc);
-	
+
 					Location loc = GameServer.getInstance().getLocation(
 							creatureLocation);
-	
+
 					installNPC(bot, c, loc);
 				} catch (Exception e) {
 					e.printStackTrace();

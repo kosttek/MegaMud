@@ -24,7 +24,7 @@ public class Item implements BehaviourHolderInterface {
 	 * In-database representation of this item (if held by creature).
 	 */
 	protected CreatureItem creatureItem = null;
-	
+
 	/**
 	 * In-database representation of this item (if held by location).
 	 */
@@ -91,7 +91,7 @@ public class Item implements BehaviourHolderInterface {
 	}
 
 	public void setCreatureItem(CreatureItem it) {
-		this.locationItem=null;
+		this.locationItem = null;
 		this.creatureItem = it;
 
 		this.name = it.getItem().getName();
@@ -117,9 +117,9 @@ public class Item implements BehaviourHolderInterface {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setLocationItem(LocationItem it) {
-		this.locationItem=it;
+		this.locationItem = it;
 		this.creatureItem = null;
 
 		this.name = it.getItem().getName();
@@ -192,8 +192,8 @@ public class Item implements BehaviourHolderInterface {
 
 		pl.edu.agh.megamud.dao.Item it;
 		try {
-			it = pl.edu.agh.megamud.dao.Item.createDao().queryBuilder()
-					.where().eq("name", this.name).query().get(0);
+			it = pl.edu.agh.megamud.dao.Item.createDao().queryBuilder().where()
+					.eq("name", this.name).query().get(0);
 		} catch (Exception e) {
 			it = new pl.edu.agh.megamud.dao.Item();
 			it.setName(this.name);
@@ -204,13 +204,13 @@ public class Item implements BehaviourHolderInterface {
 				e1.printStackTrace();
 			}
 		}
-		
+
 		if (newOwner instanceof Creature) {
-			if(this.locationItem!=null){
+			if (this.locationItem != null) {
 				try {
 					LocationItem.createDao().delete(this.locationItem);
 				} catch (Exception e) {
-				}	
+				}
 			}
 			if (this.creatureItem == null) {
 				try {
@@ -233,12 +233,12 @@ public class Item implements BehaviourHolderInterface {
 					e.printStackTrace();
 				}
 			}
-		}else if (newOwner instanceof Location) {
-			if(this.creatureItem!=null){
+		} else if (newOwner instanceof Location) {
+			if (this.creatureItem != null) {
 				try {
 					CreatureItem.createDao().delete(this.creatureItem);
 				} catch (Exception e) {
-				}	
+				}
 			}
 			if (this.locationItem == null) {
 				try {

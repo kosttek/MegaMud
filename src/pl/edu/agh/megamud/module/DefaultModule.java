@@ -186,6 +186,11 @@ public class DefaultModule extends DatabaseModule {
 				new Sentry(), 
 				CreatureFactory.GOBLIN,
 				GameServer.getInstance().getLocation(HellInitializer.B4)); 	
+
+		installRespawningNPC(
+				new AggressiveSentry(), 
+				CreatureFactory.PUKOLIMEK,
+				GameServer.getInstance().getLocation(HellInitializer.A3)); 		
 	}
 
 	private void installCommands() {

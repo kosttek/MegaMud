@@ -36,6 +36,7 @@ public class CreatureFactory {
 	public static enum Creatures { RAT, GOBLIN }
 	public static String RAT = "rat";
 	public static String GOBLIN = "goblin";
+	public static String PUKOLIMEK = "pukolimek";
 	
 	public static Creature getRat() {
 		final Creature rat = new Creature(RAT).setLevel(1).setHp(34);
@@ -75,9 +76,31 @@ public class CreatureFactory {
 		return goblin;
 	}	
 	
+	public static Creature getPukolimek(){
+		final Creature pukolimek = new Creature(PUKOLIMEK)
+			.setLevel(1)
+			.setHp(100);
+
+        pukolimek.initAtribute(Attribute.findByName(Attribute.STRENGTH));
+        pukolimek.setAttribute(Attribute.STRENGTH, 20L);	
+
+		pukolimek.addBehaviour(new FightBehaviour(pukolimek));
+		new CyclicBehaviour(pukolimek, 2500L) {
+			protected void action() {
+				if (pukolimek.getHp() > 0){
+					pukolimek.getController().interpreteCommand("say", "BEWARE OF MY ONTOLOGY! DIE!");
+				}
+			}
+		}.init();
+		
+		return pukolimek;
+	}	
+	
 	public static Creature getCreature(String creature){
 		if (creature.equals(GOBLIN)){
 			return CreatureFactory.getGoblin();
+		} else if (creature.equals(PUKOLIMEK)){
+			return CreatureFactory.getPukolimek();
 		} else {
 			return CreatureFactory.getRat();
 		}

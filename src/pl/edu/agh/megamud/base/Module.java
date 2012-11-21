@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.megamud.GameServer;
+import pl.edu.agh.megamud.world.CaveInitializer;
 
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items
@@ -107,6 +108,31 @@ public abstract class Module {
 		GameServer.getInstance().addLocation(loc);
 	}
 
+	protected void installRespawningNPC(final NPCController bot, final Creature creature,
+			final Location loc) {
+
+		installNPC(
+				bot, 
+				creature,
+				loc);
+		
+		new CyclicBehaviour(GameServer.getInstance().getLocation(
+				CaveInitializer.B2), 30000L) {
+			protected void action() {
+				Location location = (Location) owner;
+
+				if (location.getCreatures().containsKey("rat"))
+					return;
+
+				installNPC(
+						bot, 
+						creature,
+						loc);
+			}
+		}.init();
+	}
+	
+	
 	protected final void installNPC(NPCController bot, Creature creature,
 			pl.edu.agh.megamud.dao.Location loc) {
 		installNPC(bot, creature, GameServer.getInstance().getLocation(loc));

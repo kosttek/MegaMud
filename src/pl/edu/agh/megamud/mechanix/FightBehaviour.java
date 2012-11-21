@@ -50,7 +50,7 @@ public class FightBehaviour extends Behaviour {
 	protected void action() {
 		if (((Creature) owner).getHp() <= 0
 				|| !((Creature) owner).getLocation().getCreatures()
-						.containsKey(opponent.getName()))
+						.containsKey(opponent.getName()) || !isActive())
 			return;
 		
 		FightBehaviour oppFightBeh = getOpponentFightBehaviour();
@@ -115,7 +115,7 @@ public class FightBehaviour extends Behaviour {
 		this.opponent = opponent;
 	}
 
-	private FightBehaviour getOpponentFightBehaviour() {
+	public FightBehaviour getOpponentFightBehaviour() {
 		List<Behaviour> list = opponent
 				.getBehaviourByType(FightBehaviour.class);
 		if (list.isEmpty())

@@ -47,6 +47,7 @@ import pl.edu.agh.megamud.world.Chochlik;
 import pl.edu.agh.megamud.world.CommandAskOldman;
 import pl.edu.agh.megamud.world.CreatureFactory;
 import pl.edu.agh.megamud.world.Oldman;
+import pl.edu.agh.megamud.world.OldmanFight;
 import pl.edu.agh.megamud.world.Sentry;
 
 /**
@@ -120,8 +121,10 @@ public class DefaultModule extends DatabaseModule {
 		Oldman oldman = new Oldman();
 		CommandAskOldman askOldman = new CommandAskOldman(oldman);
 		GameServer.getInstance().getStartLocation().addCommand(askOldman);
-		installNPC(oldman, new Creature("Oldman").setLevel(100).setHp(1000),
+		Creature oldCreature = new Creature("Oldman");
+		installNPC(oldman, oldCreature.setLevel(100).setHp(1000),
 				GameServer.getInstance().getStartLocation());
+		oldCreature.addBehaviour(new OldmanFight(oldCreature));
 
 		installNPC(new Chochlik(), new Creature("Chochlik").setLevel(100)
 				.setHp(666),

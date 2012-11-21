@@ -31,6 +31,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import pl.edu.agh.megamud.mechanix.FightBehaviour;
+
 public class BehaviourHolder implements BehaviourHolderInterface {
 	Set<Behaviour> list = new HashSet<Behaviour>();
 
@@ -54,7 +56,7 @@ public class BehaviourHolder implements BehaviourHolderInterface {
 	public List<Behaviour> getBehaviourByType(Class<? extends Behaviour> clazz) {
 		Set<Behaviour> result = new HashSet<Behaviour>();
 		for (Behaviour behaviour : list) {
-			if (behaviour.getClass().isAssignableFrom(clazz)) {
+			if (behaviour.getClass().isAssignableFrom(clazz) || clazz.isInstance(behaviour) ) {
 				result.add(behaviour);
 			}
 		}

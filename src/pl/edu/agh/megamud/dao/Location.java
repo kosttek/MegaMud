@@ -38,24 +38,6 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "location")
 public class Location extends LocationBase {
 
-	public Location connectTo(Location destination, String exitName)
-			throws SQLException {
-		Portal outgoing = new Portal(exitName);
-		Portal incoming = new Portal(exitName);
-
-		outgoing.setEntry(this);
-		outgoing.setDestination(destination);
-
-		incoming.setEntry(destination);
-		incoming.setDestination(this);
-
-		Dao<Portal, Integer> portalDao = Portal.createDao();
-		portalDao.create(outgoing);
-		portalDao.create(incoming);
-
-		return this;
-	}
-
 	public Location connectTwoWay(Location destination, String exitName,
 			String comeBackName) throws SQLException {
 		Portal outgoing = new Portal(exitName);

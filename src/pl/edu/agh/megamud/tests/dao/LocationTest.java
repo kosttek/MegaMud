@@ -137,7 +137,7 @@ public class LocationTest extends TestBase {
 		location2.setModule("default");
 		locationDao.create(location2);
 
-		location1.connectTo(location2, "Door");
+		location1.connectOneWay(location2, "Door");
 
 		location1.refresh();
 		location2.refresh();
@@ -169,7 +169,7 @@ public class LocationTest extends TestBase {
 		location2.setModule("default");
 		locationDao.create(location2);
 
-		location1.connectTo(location2, "door");
+		location1.connectOneWay(location2, "door");
 		location1.refresh();
 
 		Portal p2 = location1.getExitByName("door");
@@ -192,7 +192,7 @@ public class LocationTest extends TestBase {
 		location2.setModule("default");
 		locationDao.create(location2);
 
-		location1.connectTo(location2, "door");
+		location1.connectOneWay(location2, "door");
 		location1.refresh();
 		location2.refresh();
 

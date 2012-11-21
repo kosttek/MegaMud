@@ -59,7 +59,7 @@ public class Export {
 				String destinationName = destination.getName();
 				String sourceName = location.getName();
 				pl.edu.agh.megamud.dao.Location sourceLoc = pl.edu.agh.megamud.dao.Location.getLocationByName(sourceName);
-				pl.edu.agh.megamud.dao.Location destLoc = pl.edu.agh.megamud.dao.Location.getLocationByName(sourceName);
+				pl.edu.agh.megamud.dao.Location destLoc = pl.edu.agh.megamud.dao.Location.getLocationByName(destinationName);
 				sourceLoc.connectOneWay(destLoc, portalName);
 			}
 			

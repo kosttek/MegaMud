@@ -8,18 +8,11 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-/**
- * A collection of classes used to assemble popup mouse menus for the custom
- * edges and vertices developed in this example.
- *
- */
 public class MyMouseMenus {
     
     public static class EdgeMenu extends JPopupMenu {        
-        // private JFrame frame; 
         public EdgeMenu(final JFrame frame) {
             super("Edge Menu");
-            // this.frame = frame;
             this.add(new DeleteEdgeMenuItem<GraphElements.MyEdge>());
             this.addSeparator();
             this.add(new EdgePropItem(frame));           

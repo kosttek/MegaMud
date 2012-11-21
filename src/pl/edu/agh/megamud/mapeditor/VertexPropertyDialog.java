@@ -1,13 +1,8 @@
 package pl.edu.agh.megamud.mapeditor;
 
-/**
- *
- *
- */
 public class VertexPropertyDialog extends javax.swing.JDialog {
     GraphElements.MyVertex vertex;
     
-    /** Creates new form EdgePropertyDialog */
     public VertexPropertyDialog(java.awt.Frame parent, GraphElements.MyVertex vertex) {
         super(parent, true);
         initComponents();

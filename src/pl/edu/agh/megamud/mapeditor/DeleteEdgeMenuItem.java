@@ -5,16 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 
-/**
- * A class to implement the deletion of an edge from within a 
- * PopupVertexEdgeMenuMousePlugin.
- * 
- */
 public class DeleteEdgeMenuItem<E> extends JMenuItem implements EdgeMenuListener<E> {
     private E edge;
     private VisualizationViewer visComp;
     
-    /** Creates a new instance of DeleteEdgeMenuItem */
     public DeleteEdgeMenuItem() {
         super("Delete Edge");
         this.addActionListener(new ActionListener(){
@@ -26,12 +20,6 @@ public class DeleteEdgeMenuItem<E> extends JMenuItem implements EdgeMenuListener
         });
     }
 
-    /**
-     * Implements the EdgeMenuListener interface to update the menu item with info
-     * on the currently chosen edge.
-     * @param edge 
-     * @param visComp 
-     */
     public void setEdgeAndView(E edge, VisualizationViewer visComp) {
         this.edge = edge;
         this.visComp = visComp;

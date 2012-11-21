@@ -1,13 +1,8 @@
 package pl.edu.agh.megamud.mapeditor;
 
-/**
- *
- *
- */
 public class EdgePropertyDialog extends javax.swing.JDialog {
     GraphElements.MyEdge edge;
     
-    /** Creates new form EdgePropertyDialog */
     public EdgePropertyDialog(java.awt.Frame parent, GraphElements.MyEdge edge) {
         super(parent, true);
         initComponents();

@@ -2,13 +2,8 @@ package pl.edu.agh.megamud.mapeditor;
 
 import org.apache.commons.collections15.Factory;
 
-/**
- *
- *
- */
 public class GraphElements {
     
-    /** Creates a new instance of GraphElements */
     public GraphElements() {
     }
     
@@ -61,7 +56,6 @@ public class GraphElements {
         }
     }
     
-    // Single factory for creating Vertices...
     public static class MyVertexFactory implements Factory<MyVertex> {
         private static int nodeCount = 0;
         private static MyVertexFactory instance = new MyVertexFactory();
@@ -80,7 +74,6 @@ public class GraphElements {
         }        
     }
     
-    // Singleton factory for creating Edges...
     public static class MyEdgeFactory implements Factory<MyEdge> {
         private static int linkCount = 0;
 

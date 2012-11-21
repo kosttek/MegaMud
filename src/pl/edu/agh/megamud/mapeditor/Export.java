@@ -11,17 +11,6 @@ import pl.edu.agh.megamud.dao.base.LocationBase;
 import pl.edu.agh.megamud.world.CaveInitializer;
 
 public class Export {
-
-/*	private static Location prepareLocation(String name, String desc)
-			throws SQLException {
-		Location loc1 = new Location();
-
-	//	loc1.setName(name).setDescription(desc).setModule(getId());
-
-		LocationBase.createDao().create(loc1);
-
-		return loc1;
-	}*/
 	
 	public static void saveToDatabase() throws SQLException
 	{
@@ -65,12 +54,4 @@ public class Export {
 			
 		}
 	}
-	
-	
-	/*
-	A1 = prepareLocation(
-			"start",
-			"You find yourself in a huge cave. Air here is suffocating and you can barely see anything. "
-					+ "It looks like you woke up here.");
-	*/
 }

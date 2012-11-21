@@ -89,32 +89,33 @@ public class HellInitializer {
 	public static void initMainCorridor() throws SQLException{
 		G3 = prepareLocation(
 				"iG3",
-				"You start climbing down the hole. It is very dangerous. You start having doubts, but it's impossible " +
-				"climb up.");
+				"You fall into some sort of an underground pond. The impact hurts terribly, and you barely catch breath.");
 		F3 = prepareLocation(
 				"iF3",
-				"You keep descending down the hole. Suddenly you trip and start falling... You fear you may die.");
+				"You realize you are no longer of caves. There are torches on the walls, and there ground is no longer " +
+				"rocky. There is a proper floor made of black marble.");
 		E3 = prepareLocation(
 				"iE3",
-				"You keep falling into the infernal abbyss... You prepare for imminent death.");
+				"Walls in this room are carved with strange reliefs.");
 		E4 = prepareLocation(
 				"iE4",
-				"You keep falling into the infernal abbyss... You prepare for imminent death.");
+				"As you explore this place you start thinking this is some sort of an ancient temple.");
 		D4 = prepareLocation(
 				"iD4",
-				"You keep falling into the infernal abbyss... You prepare for imminent death.");
+				"Corridors are filled with statues of blasphemous monsters. Perhaps this temple is cursed.");
 		C4 = prepareLocation(
 				"iC4",
-				"You keep falling into the infernal abbyss... You prepare for imminent death.");
+				"Your descent through dark and silent corridors continues.");
 		B4 = prepareLocation(
 				"iB4",
-				"You keep falling into the infernal abbyss... You prepare for imminent death.");
+				"The air in this room is extremly hot. You seem to hear chanting in the distance.");
 		B3 = prepareLocation(
 				"iB3",
-				"You keep falling into the infernal abbyss... You prepare for imminent death.");
+				"You arrive at a blasphemous altar. In front of it floats in the air an altar which emanates a " +
+				"sinister aura.");
 		A3 = prepareLocation(
 				"iA3",
-				"You keep falling into the infernal abbyss... You prepare for imminent death.");
+				"You find yourself in horrifying liar of an abominable beast.");
 		
 		iw3.connectOneWay(G3, "down");
 		

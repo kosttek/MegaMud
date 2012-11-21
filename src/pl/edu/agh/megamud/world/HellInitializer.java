@@ -34,8 +34,17 @@ import pl.edu.agh.megamud.dao.base.LocationBase;
 public class HellInitializer {
 
 	static private String moduleName;
-	public static Location hw1, hw2, hw3;
-
+	public static Location iw1, iw2, iw3;
+	public static Location 
+		A3,
+		B3, B4,
+		C4,
+		D1, D4, D5, D6,
+		E1, E2, E3, E4, E6,
+		F3,
+		G3;
+							
+	
 	private static String getId() {
 		return moduleName;
 	}
@@ -55,18 +64,65 @@ public class HellInitializer {
 		HellInitializer.moduleName = moduleName;
 
 		initInfernalWell();
+		initMainCorridor();
 	}
 
 	public static void initInfernalWell() throws SQLException {
-		hw1 = prepareLocation(
+		iw1 = prepareLocation(
 				"infernalWell1",
-				"You find yourself in a huge cave. Air here is suffocating and you can barely see anything. "
-						+ "It looks like you woke up here.");
-		hw2 = prepareLocation("infernalWell1",
-				"The stone under your feet is very slippery.");
-		hw3 = prepareLocation("infernalWell1",
-				"It looks like the corridor is rising towards the east.");
+				"You start climbing down the hole. It is very dangerous. You start having doubts, but it's impossible " +
+				"climb up.");
+		iw2 = prepareLocation(
+				"infernalWell2",
+				"You keep descending down the hole. Suddenly you trip and start falling... You fear you may die.");
+		iw3 = prepareLocation(
+				"infernalWell3",
+				"You keep falling into the infernal abbyss... You prepare for imminent death.");
 
+		CaveInitializer.F1.connectOneWay(iw1, "down");
+		iw1.connectOneWay(iw2, "down");
+		iw2.connectOneWay(iw3, "down");
+	}
+	
+	public static void initMainCorridor() throws SQLException{
+		G3 = prepareLocation(
+				"iG3",
+				"You start climbing down the hole. It is very dangerous. You start having doubts, but it's impossible " +
+				"climb up.");
+		F3 = prepareLocation(
+				"iF3",
+				"You keep descending down the hole. Suddenly you trip and start falling... You fear you may die.");
+		E3 = prepareLocation(
+				"iE3",
+				"You keep falling into the infernal abbyss... You prepare for imminent death.");
+		E4 = prepareLocation(
+				"iE4",
+				"You keep falling into the infernal abbyss... You prepare for imminent death.");
+		D4 = prepareLocation(
+				"iD4",
+				"You keep falling into the infernal abbyss... You prepare for imminent death.");
+		C4 = prepareLocation(
+				"iC4",
+				"You keep falling into the infernal abbyss... You prepare for imminent death.");
+		B4 = prepareLocation(
+				"iB4",
+				"You keep falling into the infernal abbyss... You prepare for imminent death.");
+		B3 = prepareLocation(
+				"iB3",
+				"You keep falling into the infernal abbyss... You prepare for imminent death.");
+		A3 = prepareLocation(
+				"iA3",
+				"You keep falling into the infernal abbyss... You prepare for imminent death.");
 		
+		iw3.connectOneWay(G3, "down");
+		
+		G3.connectTwoWay(F3, "north", "south");
+		F3.connectTwoWay(E3, "north", "south");
+		E3.connectTwoWay(E4, "east", "west");
+		E4.connectTwoWay(D4, "north", "south");
+		D4.connectTwoWay(C4, "north", "south");
+		C4.connectTwoWay(B4, "north", "south");
+		B4.connectTwoWay(B3, "west", "east");
+		B3.connectTwoWay(A3, "portal", "portal");
 	}
 }

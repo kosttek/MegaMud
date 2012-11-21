@@ -74,6 +74,18 @@ public class Location extends LocationBase {
 		return this;
 	}
 
+	public Location connectOneWay(Location destination, String exitName) throws SQLException {
+		Portal outgoing = new Portal(exitName);
+
+		outgoing.setEntry(this);
+		outgoing.setDestination(destination);
+
+		Dao<Portal, Integer> portalDao = Portal.createDao();
+		portalDao.create(outgoing);
+
+		return this;
+	}
+	
 	public Portal getExitByName(String name) throws SQLException {
 		Dao<Portal, Integer> dao = Portal.createDao();
 		PreparedQuery<Portal> preparedQuery = dao.queryBuilder().where()

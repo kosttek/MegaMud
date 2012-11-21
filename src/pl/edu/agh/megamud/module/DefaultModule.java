@@ -85,7 +85,7 @@ public class DefaultModule extends DatabaseModule {
 			}
 		}.init();
 		Oldman oldman = new Oldman();
-		CommandAskOldman askOldman = new CommandAskOldman();
+		CommandAskOldman askOldman = new CommandAskOldman(oldman);
 		GameServer.getInstance().getStartLocation().addCommand(askOldman);
 		installNPC(oldman, new Creature("Oldman").setLevel(100).setHp(1000),
 				GameServer.getInstance().getStartLocation());

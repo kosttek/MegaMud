@@ -38,24 +38,6 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "location")
 public class Location extends LocationBase {
 
-	public Location connectTo(Location destination, String exitName)
-			throws SQLException {
-		Portal outgoing = new Portal(exitName);
-		Portal incoming = new Portal(exitName);
-
-		outgoing.setEntry(this);
-		outgoing.setDestination(destination);
-
-		incoming.setEntry(destination);
-		incoming.setDestination(this);
-
-		Dao<Portal, Integer> portalDao = Portal.createDao();
-		portalDao.create(outgoing);
-		portalDao.create(incoming);
-
-		return this;
-	}
-
 	public Location connectTwoWay(Location destination, String exitName,
 			String comeBackName) throws SQLException {
 		Portal outgoing = new Portal(exitName);
@@ -74,6 +56,36 @@ public class Location extends LocationBase {
 		return this;
 	}
 
+	public Location connectOneWay(Location destination, String exitName) throws SQLException {
+		Portal outgoing = new Portal(exitName);
+
+		outgoing.setEntry(this);
+		outgoing.setDestination(destination);
+
+		Dao<Portal, Integer> portalDao = Portal.createDao();
+		portalDao.create(outgoing);
+
+		return this;
+	}
+	
+	public static Location getLocationByName(String name) {
+		Dao<Location, Integer> dao = createDao();
+		PreparedQuery<Location> preparedQuery;
+		try {
+			preparedQuery = dao.queryBuilder().where().eq("name", name)
+					.prepare();
+			List<Location> accounts = dao.query(preparedQuery);
+			if (accounts.size() == 1) {
+				return accounts.get(0);
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public Portal getExitByName(String name) throws SQLException {
 		Dao<Portal, Integer> dao = Portal.createDao();
 		PreparedQuery<Portal> preparedQuery = dao.queryBuilder().where()

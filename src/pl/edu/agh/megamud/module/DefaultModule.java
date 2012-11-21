@@ -46,6 +46,7 @@ import pl.edu.agh.megamud.world.CaveInitializer;
 import pl.edu.agh.megamud.world.Chochlik;
 import pl.edu.agh.megamud.world.CommandAskOldman;
 import pl.edu.agh.megamud.world.CreatureFactory;
+import pl.edu.agh.megamud.world.HellInitializer;
 import pl.edu.agh.megamud.world.Oldman;
 import pl.edu.agh.megamud.world.OldmanFight;
 import pl.edu.agh.megamud.world.Sentry;
@@ -84,6 +85,7 @@ public class DefaultModule extends DatabaseModule {
 			prepareAttributes();
 
 			CaveInitializer.init(this.getId());
+			HellInitializer.init(this.getId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -159,6 +161,31 @@ public class DefaultModule extends DatabaseModule {
 				new Sentry(), 
 				CreatureFactory.RAT,
 				GameServer.getInstance().getLocation(CaveInitializer.D1));		
+
+		installRespawningNPC(
+				new Sentry(), 
+				CreatureFactory.GOBLIN,
+				GameServer.getInstance().getLocation(HellInitializer.F3));
+		
+		installRespawningNPC(
+				new AggressiveSentry(), 
+				CreatureFactory.GOBLIN,
+				GameServer.getInstance().getLocation(HellInitializer.E1));
+		
+		installRespawningNPC(
+				new AggressiveSentry(), 
+				CreatureFactory.GOBLIN,
+				GameServer.getInstance().getLocation(HellInitializer.D4));		
+
+		installRespawningNPC(
+				new Sentry(), 
+				CreatureFactory.GOBLIN,
+				GameServer.getInstance().getLocation(HellInitializer.E6));	
+
+		installRespawningNPC(
+				new Sentry(), 
+				CreatureFactory.GOBLIN,
+				GameServer.getInstance().getLocation(HellInitializer.B4)); 	
 	}
 
 	private void installCommands() {

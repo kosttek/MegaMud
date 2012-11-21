@@ -154,46 +154,4 @@ public class Location extends ItemHolder implements BehaviourHolderInterface {
 	public List<Behaviour> getBehaviourByType(Class<? extends Behaviour> clazz) {
 		return behaviourHolder.getBehaviourByType(clazz);
 	}
-	// public List<Command> findCommands(String name) {
-	// return map.get(name);
-	// }
-	//
-	// /**
-	// * Remove a command from this collector.
-	// */
-	// public void removeCommandLocation(Command cmd) {
-	// List<Command> v = map.get(cmd.getName());
-	// if (v == null)
-	// return;
-	// v.remove(cmd);
-	// if (v.size() == 0)
-	// map.remove(cmd.getName());
-	// }
-	//
-	// /*
-	// * Add a command to this collector.
-	// */
-	// public final void addCommandLocation(Command cmd) {
-	// List<Command> v = map.get(cmd.getName());
-	// if (v == null) {
-	// v = new LinkedList<Command>();
-	// map.put(cmd.getName(), v);
-	// }
-	// v.add(cmd);
-	// }
-	//
-	// /**
-	// * Get a list of all commands supported by this collector.
-	// */
-	// public final List<Command> getAllCommandsLocation() {
-	// List<Command> l = new LinkedList<Command>();
-	// for (Iterator<Entry<String, List<Command>>> i = map.entrySet()
-	// .iterator(); i.hasNext();) {
-	// Entry<String, List<Command>> e = i.next();
-	// for (Iterator<Command> c = e.getValue().iterator(); c.hasNext();)
-	// l.add(c.next());
-	// }
-	// return l;
-	// }
-	//
 }

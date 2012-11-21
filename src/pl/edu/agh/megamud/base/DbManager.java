@@ -18,6 +18,8 @@ import com.j256.ormlite.table.TableUtils;
 
 public class DbManager {
 	private static String dbPath = "jdbc:sqlite:db/dev.db";
+	
+	private DbManager(){}
 
 	public static String getDbPath() {
 		return dbPath;

@@ -43,7 +43,6 @@ public class FightBehaviour extends Behaviour {
 			setActive(false);
 			setOpponent(null);
 		}
-
 	}
 
 	@Override

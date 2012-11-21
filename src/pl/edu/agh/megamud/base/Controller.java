@@ -42,7 +42,9 @@ public abstract class Controller extends CommandCollector {
 	}
 
 	public void disconnect() {
-		creature.setLocation(null, null);
+		if(creature!=null){
+			creature.setLocation(null, null);
+		}
 	}
 
 	/**
@@ -136,5 +138,12 @@ public abstract class Controller extends CommandCollector {
 
 	public void onDie() {
 
+	}
+	
+	public void onExp(int given){
+		
+	}
+	public void onLevel(){
+		
 	}
 }

@@ -370,14 +370,17 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface {
 		int exp = this.getExp();
 		int expn = this.getExpNeeded();
 		int lev = this.getLevel();
+		
+		boolean exped=false;
 
 		exp += num;
 		while (exp >= expn) {
 			exp -= expn;
 			expn *= 2;
 			lev++;
+			exped=true;
 		}
-
+		
 		for (Iterator<Entry<Attribute, Long>> set = attributes.entrySet()
 				.iterator(); set.hasNext();) {
 			Entry<Attribute, Long> next = set.next();
@@ -388,6 +391,12 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface {
 		this.setExp(exp);
 		this.setExpNeeded(expn);
 		this.setLevel(lev);
+		
+		if(exped){
+			controller.onLevel();
+		}else{
+			controller.onExp(num);
+		}
 	}
 
 	/**

@@ -167,4 +167,12 @@ public class PlayerController extends Controller {
 		else
 			write("Suddenly your " + i.getName() + " disappeared!");
 	}
+	
+	public void onExp(int given){
+		write("You have been given "+given+" EXP, now you have "+getCreature().getExp()+"/"+getCreature().getExpNeeded());
+	}
+	
+	public void onLevel(){
+		write("You are now LV"+getCreature().getLevel()+" and now you have "+getCreature().getExp()+"/"+getCreature().getExpNeeded()+"EXP.");
+	}
 }

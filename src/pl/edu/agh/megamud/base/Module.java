@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.megamud.GameServer;
-import pl.edu.agh.megamud.world.CaveInitializer;
 
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items

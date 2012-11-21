@@ -88,6 +88,7 @@ public class Item implements BehaviourHolderInterface {
 
 	public CreatureItem getCreatureItem() {
 		return this.creatureItem;
+		
 	}
 
 	public void setCreatureItem(CreatureItem it) {

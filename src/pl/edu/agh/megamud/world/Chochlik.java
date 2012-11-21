@@ -5,7 +5,6 @@ import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.CyclicBehaviour;
 import pl.edu.agh.megamud.base.Item;
 import pl.edu.agh.megamud.base.ItemHolder;
-import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.NPCController;
 import pl.edu.agh.megamud.base.SimpleItem;
 import pl.edu.agh.megamud.base.SimpleModifier;

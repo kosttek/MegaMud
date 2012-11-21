@@ -68,6 +68,24 @@ public class Location extends LocationBase {
 		return this;
 	}
 	
+	public static Location getLocationByName(String name) {
+		Dao<Location, Integer> dao = createDao();
+		PreparedQuery<Location> preparedQuery;
+		try {
+			preparedQuery = dao.queryBuilder().where().eq("name", name)
+					.prepare();
+			List<Location> accounts = dao.query(preparedQuery);
+			if (accounts.size() == 1) {
+				return accounts.get(0);
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public Portal getExitByName(String name) throws SQLException {
 		Dao<Portal, Integer> dao = Portal.createDao();
 		PreparedQuery<Portal> preparedQuery = dao.queryBuilder().where()

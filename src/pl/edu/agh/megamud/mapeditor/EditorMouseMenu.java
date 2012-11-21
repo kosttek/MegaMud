@@ -10,6 +10,7 @@ import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -82,7 +83,12 @@ public class EditorMouseMenu {
         frame.setVisible(true);    
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-            	Export.saveToDatabase();
+            	try {
+					Export.saveToDatabase();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             	System.exit(0);
             }});
     }

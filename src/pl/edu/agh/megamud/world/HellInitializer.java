@@ -132,16 +132,13 @@ public class HellInitializer {
 	public static void initWestDeadEnd() throws SQLException{
 		E2 = prepareLocation(
 				"iE2",
-				"You start climbing down the hole. It is very dangerous. You start having doubts, but it's impossible " +
-				"climb up.");		
+				"Your footsteps echo as you walk through this corridor.");		
 		E1 = prepareLocation(
 				"iE1",
-				"You start climbing down the hole. It is very dangerous. You start having doubts, but it's impossible " +
-				"climb up.");
+				"Walls of these walls have stains of dried blood on them.");
 		D1 = prepareLocation(
 				"iD1",
-				"You start climbing down the hole. It is very dangerous. You start having doubts, but it's impossible " +
-				"climb up.");
+				"This looks to be a shrine for some lesser demon. It smells faintly of ritual candles.");
 		
 		E3.connectTwoWay(E2, "west", "east");
 		E2.connectTwoWay(E1, "west", "east");
@@ -151,16 +148,13 @@ public class HellInitializer {
 	public static void initEastDeadEnd() throws SQLException{
 		D5 = prepareLocation(
 				"iD5",
-				"You start climbing down the hole. It is very dangerous. You start having doubts, but it's impossible " +
-				"climb up.");		
+				"There is strange looking fountain. It has a strange, mildly intoxicating smell.");		
 		D6 = prepareLocation(
 				"iD6",
-				"You start climbing down the hole. It is very dangerous. You start having doubts, but it's impossible " +
-				"climb up.");
+				"Inscriptions carved in long forgotten language cover the walls.");
 		E6 = prepareLocation(
 				"iE6",
-				"You start climbing down the hole. It is very dangerous. You start having doubts, but it's impossible " +
-				"climb up.");
+				"In front of you stands a statue of a lesser demon. It looks at you angrily.");
 		
 		D4.connectTwoWay(D5, "east", "west");
 		D5.connectTwoWay(D6, "east", "west");

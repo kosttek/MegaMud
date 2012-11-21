@@ -24,4 +24,24 @@ public class CreatureFactory {
 
 		return rat;
 	}
+	
+	public static Creature getGoblin(){
+		final Creature goblin = new Creature("goblin")
+			.setLevel(1)
+			.setHp(40);
+
+        goblin.initAtribute(Attribute.findByName(Attribute.STRENGTH));
+        goblin.setAttribute(Attribute.STRENGTH, 7L);	
+
+		goblin.addBehaviour(new FightBehaviour(goblin));
+		new CyclicBehaviour(goblin, 5000L) {
+			protected void action() {
+				if (goblin.getHp() > 0){
+					goblin.getController().interpreteCommand("say", "Silence! I kill you!");
+				}
+			}
+		}.init();
+		
+		return goblin;
+	}	
 }

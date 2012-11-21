@@ -9,6 +9,7 @@ import pl.edu.agh.megamud.base.CyclicBehaviour;
 import pl.edu.agh.megamud.base.DatabaseModule;
 import pl.edu.agh.megamud.base.Location;
 import pl.edu.agh.megamud.base.SimpleItem;
+import pl.edu.agh.megamud.base.itemtype.HealItem;
 import pl.edu.agh.megamud.base.itemtype.Weapon;
 import pl.edu.agh.megamud.dao.Attribute;
 import pl.edu.agh.megamud.dao.LocationItem;
@@ -42,6 +43,7 @@ public class DefaultModule extends DatabaseModule {
 		Attribute.insertIfNotExists(Attribute.STRENGTH);
 		Attribute.insertIfNotExists(Attribute.DEXTERITY);
 		Attribute.insertIfNotExists(Attribute.DAMAGE);
+		Attribute.insertIfNotExists(Attribute.HEAL);
 	}
 
 	private void clearLocations() throws SQLException {
@@ -70,6 +72,11 @@ public class DefaultModule extends DatabaseModule {
 				CaveInitializer.B2.getName()));
 		sword.initAtribute(Attribute.findByName(Attribute.DAMAGE));
 		sword.setAttribute(Attribute.DAMAGE, 3L);
+		
+		HealItem potion1 = new HealItem("potion", "small potion");
+		potion1.giveTo(GameServer.getInstance().getLocation(CaveInitializer.B1.getName()));
+		potion1.initAtribute(Attribute.findByName(Attribute.HEAL));
+		potion1.setAttribute(Attribute.HEAL, 30L);
 
 		new CyclicBehaviour(GameServer.getInstance().getLocation(
 				CaveInitializer.C7), 1000L) {
@@ -96,36 +103,37 @@ public class DefaultModule extends DatabaseModule {
 		
 		installRespawningNPC(
 				new Sentry(), 
-				CreatureFactory.getRat(),
+				CreatureFactory.RAT,
 				GameServer.getInstance().getLocation(CaveInitializer.B2));		
 		
-		installNPC(
+		installRespawningNPC(
 				new AggressiveSentry(), 
-				CreatureFactory.getRat(),
+				CreatureFactory.RAT,
 				GameServer.getInstance().getLocation(CaveInitializer.D3));
 
-		installNPC(
+		installRespawningNPC(
 				new AggressiveSentry(), 
-				CreatureFactory.getRat(),
+				CreatureFactory.RAT,
 				GameServer.getInstance().getLocation(CaveInitializer.E1));
 	
-		installNPC(
+		installRespawningNPC(
 				new AggressiveSentry(), 
-				CreatureFactory.getRat(),
+				CreatureFactory.RAT,
 				GameServer.getInstance().getLocation(CaveInitializer.D5));
 		
-		installNPC(
+		installRespawningNPC(
 				new Sentry(), 
-				CreatureFactory.getRat(),
+				CreatureFactory.RAT,
 				GameServer.getInstance().getLocation(CaveInitializer.C6));
 		
-		installNPC(
+		installRespawningNPC(
 				new Sentry(), 
-				CreatureFactory.getRat(),
+				CreatureFactory.RAT,
 				GameServer.getInstance().getLocation(CaveInitializer.D1));		
 	}
 
 	private void installCommands() {
+		installCommand(new CommandUse());
 		installCommand(new CommandEquip());
 		installCommand(new CommandHit());
 		installCommand(new CommandUnequip());
@@ -167,6 +175,7 @@ public class DefaultModule extends DatabaseModule {
 		findCommands("login").get(0).uninstallFrom(d);
 		findCommands("info").get(0).installTo(d);
 		findCommands(CommandEquip.commandString).get(0).installTo(d);
+		findCommands(CommandUse.commandString).get(0).installTo(d);
 		findCommands(CommandUnequip.commandString).get(0).installTo(d);
 		findCommands(CommandHit.commandString).get(0).installTo(d);
 

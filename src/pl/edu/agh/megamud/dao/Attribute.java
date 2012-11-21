@@ -10,6 +10,7 @@ public class Attribute extends AttributeBase {
 	public static final String STRENGTH = "strength";
 	public static final String DEXTERITY = "dexterity";
 	public static final String DAMAGE = "damage";
+	public static final String HEAL = "heal";
 
 	// public static final String [] attrs = {STRENGTH, DEXTERITY};
 

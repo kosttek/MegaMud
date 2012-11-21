@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.megamud.GameServer;
+import pl.edu.agh.megamud.world.CreatureFactory;
 
 /**
  * Abstraction of a in-server module. A module loads locations, NPCs, new items
@@ -130,6 +131,28 @@ public abstract class Module {
 		}.init();
 	}
 	
+	protected void installRespawningNPC(final NPCController bot, final String creature,
+			final Location loc) {
+
+		installNPC(
+				bot, 
+				CreatureFactory.getCreature(creature),
+				loc);
+		
+		new CyclicBehaviour(loc, 30000L) {
+			protected void action() {
+				Location location = (Location) owner;
+
+				if (location.getCreatures().containsKey(creature))
+					return;
+
+				installNPC(
+						bot, 
+						CreatureFactory.getCreature(creature),
+						loc);
+			}
+		}.init();
+	}
 	
 	protected final void installNPC(NPCController bot, Creature creature,
 			pl.edu.agh.megamud.dao.Location loc) {

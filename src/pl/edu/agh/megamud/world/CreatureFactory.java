@@ -7,8 +7,12 @@ import pl.edu.agh.megamud.mechanix.FightBehaviour;
 
 public class CreatureFactory {
 
+	public static enum Creatures { RAT, GOBLIN }
+	public static String RAT = "rat";
+	public static String GOBLIN = "goblin";
+	
 	public static Creature getRat() {
-		final Creature rat = new Creature("rat").setLevel(1).setHp(34);
+		final Creature rat = new Creature(RAT).setLevel(1).setHp(34);
 
 		rat.initAtribute(Attribute.findByName(Attribute.STRENGTH));
 		rat.setAttribute(Attribute.STRENGTH, 5L);
@@ -26,7 +30,7 @@ public class CreatureFactory {
 	}
 	
 	public static Creature getGoblin(){
-		final Creature goblin = new Creature("goblin")
+		final Creature goblin = new Creature(GOBLIN)
 			.setLevel(1)
 			.setHp(40);
 
@@ -44,4 +48,12 @@ public class CreatureFactory {
 		
 		return goblin;
 	}	
+	
+	public static Creature getCreature(String creature){
+		if (creature.equals(GOBLIN)){
+			return CreatureFactory.getGoblin();
+		} else {
+			return CreatureFactory.getRat();
+		}
+	}
 }

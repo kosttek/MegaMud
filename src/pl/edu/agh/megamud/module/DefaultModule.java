@@ -103,7 +103,7 @@ public class DefaultModule extends DatabaseModule {
 		
 		installRespawningNPC(
 				new Sentry(), 
-				CreatureFactory.getRat(),
+				CreatureFactory.RAT,
 				GameServer.getInstance().getLocation(CaveInitializer.B2));		
 		
 		installNPC(

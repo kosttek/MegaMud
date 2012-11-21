@@ -161,6 +161,31 @@ public class DefaultModule extends DatabaseModule {
 				new Sentry(), 
 				CreatureFactory.RAT,
 				GameServer.getInstance().getLocation(CaveInitializer.D1));		
+
+		installRespawningNPC(
+				new Sentry(), 
+				CreatureFactory.GOBLIN,
+				GameServer.getInstance().getLocation(HellInitializer.F3));
+		
+		installRespawningNPC(
+				new AggressiveSentry(), 
+				CreatureFactory.GOBLIN,
+				GameServer.getInstance().getLocation(HellInitializer.E1));
+		
+		installRespawningNPC(
+				new AggressiveSentry(), 
+				CreatureFactory.GOBLIN,
+				GameServer.getInstance().getLocation(HellInitializer.D4));		
+
+		installRespawningNPC(
+				new Sentry(), 
+				CreatureFactory.GOBLIN,
+				GameServer.getInstance().getLocation(HellInitializer.E6));	
+
+		installRespawningNPC(
+				new Sentry(), 
+				CreatureFactory.GOBLIN,
+				GameServer.getInstance().getLocation(HellInitializer.B4)); 	
 	}
 
 	private void installCommands() {

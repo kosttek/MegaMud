@@ -66,7 +66,7 @@ public class HellInitializer {
 		initInfernalWell();
 		initMainCorridor();
 		initWestDeadEnd();
-		
+		initEastDeadEnd();
 	}
 
 	public static void initInfernalWell() throws SQLException {
@@ -145,5 +145,24 @@ public class HellInitializer {
 		E3.connectTwoWay(E2, "west", "east");
 		E2.connectTwoWay(E1, "west", "east");
 		E1.connectTwoWay(D1, "north", "south");
+	}
+	
+	public static void initEastDeadEnd() throws SQLException{
+		D5 = prepareLocation(
+				"iD5",
+				"You start climbing down the hole. It is very dangerous. You start having doubts, but it's impossible " +
+				"climb up.");		
+		D6 = prepareLocation(
+				"iD6",
+				"You start climbing down the hole. It is very dangerous. You start having doubts, but it's impossible " +
+				"climb up.");
+		E6 = prepareLocation(
+				"iE6",
+				"You start climbing down the hole. It is very dangerous. You start having doubts, but it's impossible " +
+				"climb up.");
+		
+		D4.connectTwoWay(D5, "east", "west");
+		D5.connectTwoWay(D6, "east", "west");
+		D6.connectTwoWay(E6, "south", "north");
 	}
 }

@@ -51,6 +51,7 @@ public class FightBehaviour extends Behaviour {
 
 	@Override
 	protected void action() {
+		System.out.println("attack");
 		if (!isActive()){
 			return;
 		}
@@ -60,7 +61,7 @@ public class FightBehaviour extends Behaviour {
 			setOpponent(null);
 			return;
 		}
-		
+		System.out.println("after ifs- opponent:" + opponent);
 		FightBehaviour oppFightBeh = getOpponentFightBehaviour();
 		if (oppFightBeh != null && !oppFightBeh.isActive() && isOpponentAlive()) {
 			oppFightBeh.setOpponent(fighter);

@@ -43,13 +43,12 @@ public class CommandHit extends Command {
 		
 		FightBehaviour fightBehaviour = (FightBehaviour) user.getCreature()
 				.getBehaviourByType(FightBehaviour.class).get(0);
-		Creature opponent = user.getCreature().getLocation().getCreatures()
-				.get(command);
+		Creature opponent = user.getCreature().getLocation().getFirstCreature(command);
 		
 		if (fightBehaviour != null && opponent != null) {
 			fightBehaviour.setOpponent(opponent);
 			fightBehaviour.init();
-			user.write("Now fighting "+command);
+			user.write("Now fighting "+opponent.getName());
 			return true;
 		}else{
 			user.write("Who do you want to fight?");

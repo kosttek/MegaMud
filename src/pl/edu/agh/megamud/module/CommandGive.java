@@ -53,7 +53,7 @@ public class CommandGive extends Command {
 			if (arr.length < 2)
 				user.write("Who do you want to give " + it.getName() + "?");
 			else {
-				Creature other = here.getCreatures().get(arr[1]);
+				Creature other = here.getFirstCreature(arr[1]);
 				if (other == null) {
 					user.write("There is no creature like " + arr[1] + "!");
 				} else {

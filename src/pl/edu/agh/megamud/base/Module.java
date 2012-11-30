@@ -134,47 +134,30 @@ public abstract class Module {
 		GameServer.getInstance().addLocation(loc);
 	}
 
-	protected void installRespawningNPC(final NPCController bot, final Creature creature,
+	protected void installRespawningNPC(final NPCController bot, final String x,
 			final Location loc) {
 
+		Creature c=CreatureFactory.getCreature(x);
 		installNPC(
 				bot, 
-				creature,
+				c,
 				loc);
 		
 		new CyclicBehaviour(loc, 30000L) {
 			protected void action() {
 				Location location = (Location) owner;
-
-				if (location.getCreatures().containsKey("rat"))
-					return;
-
-				installNPC(
-						bot, 
-						creature,
-						loc);
-			}
-		}.init();
-	}
-	
-	protected void installRespawningNPC(final NPCController bot, final String creature,
-			final Location loc) {
-
-		installNPC(
-				bot, 
-				CreatureFactory.getCreature(creature),
-				loc);
-		
-		new CyclicBehaviour(loc, 30000L) {
-			protected void action() {
-				Location location = (Location) owner;
-
-				if (location.getCreatures().containsKey(creature))
-					return;
+				
+				for(Creature c :location.getCreatures()){
+					if(c.getController()==bot && c.getHp()>=0){
+						return;
+					}
+				}
+				
+				Creature c=CreatureFactory.getCreature(x);
 
 				installNPC(
 						bot, 
-						CreatureFactory.getCreature(creature),
+						c,
 						loc);
 			}
 		}.init();

@@ -27,6 +27,7 @@
 package pl.edu.agh.megamud.base;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ import java.util.Map;
 public class Location extends ItemHolder implements BehaviourHolderInterface {
 	private BehaviourHolder behaviourHolder = new BehaviourHolder();
 	private Map<String, Location> exits = new HashMap<String, Location>();
-	private Map<String, Creature> creatures = new HashMap<String, Creature>();
+	private List<Creature> creatures = new LinkedList<Creature>();
 	private String id;
 	private String description;
 	// private Map<String, List<Command>> map = new HashMap<String,
@@ -63,8 +64,15 @@ public class Location extends ItemHolder implements BehaviourHolderInterface {
 		return exits;
 	}
 
-	public final Map<String, Creature> getCreatures() {
+	public final List<Creature> getCreatures() {
 		return creatures;
+	}
+	
+	public final Creature getFirstCreature(String name){
+		for (Creature c : creatures)
+			if(c.getName().equals(name))
+				return c;
+		return null;
 	}
 
 	public String getId() {
@@ -84,9 +92,9 @@ public class Location extends ItemHolder implements BehaviourHolderInterface {
 	 */
 	public void onAddCreature(Creature creature) {
 		creature.controller.write(prepareLook());
-		creatures.put(creature.getName(), creature);
+		creatures.add(creature);
 
-		for (Creature c : creatures.values())
+		for (Creature c : creatures)
 			if (c != creature)
 				c.controller.onEnter(creature);
 	}
@@ -95,8 +103,8 @@ public class Location extends ItemHolder implements BehaviourHolderInterface {
 	 * Executed after a creature left this room. Notifies other creatures.
 	 */
 	public void onRemoveCreature(Creature creature, String usedExit) {
-		creatures.remove(creature.getName());
-		for (Creature c : creatures.values())
+		creatures.remove(creature);
+		for (Creature c : creatures)
 			if (c != creature)
 				c.controller.onLeave(creature, usedExit);
 	}
@@ -105,22 +113,22 @@ public class Location extends ItemHolder implements BehaviourHolderInterface {
 	 * Executed after a creature "says" something.
 	 */
 	public void onCreatureSay(Creature creature, String s) {
-		for (Creature c : creatures.values())
+		for (Creature c : creatures)
 			c.controller.onSayInLocation(creature, s);
 	}
 
 	public void onItemTransfer(ItemHolder oldOwner, ItemHolder newOwner, Item i) {
-		for (Creature c : creatures.values())
+		for (Creature c : creatures)
 			c.controller.onItemTransfer(oldOwner, newOwner, i);
 	}
 
 	public void onItemAppear(Item i, ItemHolder from) {
-		for (Creature c : creatures.values())
+		for (Creature c : creatures)
 			c.controller.onItemTransfer(from, this, i);
 	}
 
 	public void onItemDisappear(Item i, ItemHolder to) {
-		for (Creature c : creatures.values())
+		for (Creature c : creatures)
 			c.controller.onItemTransfer(this, to, i);
 	}
 
@@ -146,7 +154,7 @@ public class Location extends ItemHolder implements BehaviourHolderInterface {
 					+ "\r\n";
 		desc += "\r\n";
 
-		for (Creature creature : creatures.values()) {
+		for (Creature creature : creatures) {
 			desc += "Here is " + creature.getName() + ", a LV"
 					+ creature.getLevel() + " "
 					+ creature.getProfession().getName() + ".\r\n";

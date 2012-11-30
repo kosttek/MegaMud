@@ -136,6 +136,14 @@ public class DefaultModule extends DatabaseModule {
 				new Sentry(), 
 				CreatureFactory.RAT,
 				GameServer.getInstance().getLocation(CaveInitializer.B2));		
+		installRespawningNPC(
+				new Sentry(), 
+				CreatureFactory.RAT,
+				GameServer.getInstance().getLocation(CaveInitializer.B2));
+		installRespawningNPC(
+				new Sentry(), 
+				CreatureFactory.RAT,
+				GameServer.getInstance().getLocation(CaveInitializer.B2));
 		
 		installRespawningNPC(
 				new AggressiveSentry(), 
@@ -161,7 +169,7 @@ public class DefaultModule extends DatabaseModule {
 				new Sentry(), 
 				CreatureFactory.RAT,
 				GameServer.getInstance().getLocation(CaveInitializer.D1));		
-
+		
 		installRespawningNPC(
 				new Sentry(), 
 				CreatureFactory.GOBLIN,

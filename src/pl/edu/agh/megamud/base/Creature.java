@@ -329,11 +329,7 @@ public class Creature extends ItemHolder implements BehaviourHolderInterface {
 			return;
 		}
 
-		Map<String, Creature> creatures = location.getCreatures();
-		if (creatures != null) {
-			creatures.remove(name);
-		}
-
+		location.onRemoveCreature(this, null);
 		location = null;
 	}
 

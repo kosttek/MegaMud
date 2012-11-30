@@ -39,10 +39,10 @@ public class CreatureFactory {
 	public static String PUKOLIMEK = "pukolimek";
 	
 	public static Creature getRat() {
-		final Creature rat = new Creature(RAT).setLevel(1).setHp(34);
+		final Creature rat = new Creature(RAT).setLevel(1).setHp(100);
 
 		rat.initAtribute(Attribute.findByName(Attribute.STRENGTH));
-		rat.setAttribute(Attribute.STRENGTH, 5L);
+		rat.setAttribute(Attribute.STRENGTH, 1L);
 
 		rat.addBehaviour(new FightBehaviour(rat));
 		new CyclicBehaviour(rat, 5000L) {

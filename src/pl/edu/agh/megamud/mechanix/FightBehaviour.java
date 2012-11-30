@@ -51,9 +51,15 @@ public class FightBehaviour extends Behaviour {
 
 	@Override
 	protected void action() {
-		if (!isActive() || fighter.getHp()<=0 || opponent.getHp() <= 0
-				|| !opponent.getLocation().getCreatures().containsKey(fighter.getName()))
+		if (!isActive()){
 			return;
+		}
+		
+		if(fighter.getHp()<=0 || opponent.getHp()<=0){
+			setActive(false);
+			setOpponent(null);
+			return;
+		}
 		
 		FightBehaviour oppFightBeh = getOpponentFightBehaviour();
 		if (oppFightBeh != null && !oppFightBeh.isActive() && isOpponentAlive()) {

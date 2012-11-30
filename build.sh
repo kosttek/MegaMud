@@ -1,2 +1,2 @@
 #!/bin/bash
-ant -f buildMud.xml
+ant -f buildfiles/buildMud.xml

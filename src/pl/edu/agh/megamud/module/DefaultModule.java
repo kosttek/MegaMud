@@ -148,7 +148,7 @@ public class DefaultModule extends DatabaseModule {
 		installRespawningNPC(
 				new AggressiveSentry(), 
 				CreatureFactory.RAT,
-				GameServer.getInstance().getLocation(CaveInitializer.D3));
+				GameServer.getInstance().getLocation(CaveInitializer.B2));
 
 		installRespawningNPC(
 				new AggressiveSentry(), 

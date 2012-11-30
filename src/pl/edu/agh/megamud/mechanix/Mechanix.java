@@ -28,6 +28,7 @@ package pl.edu.agh.megamud.mechanix;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import pl.edu.agh.megamud.base.Creature;
 import pl.edu.agh.megamud.base.ItemHolder;
@@ -54,11 +55,19 @@ public class Mechanix {
 
 	public static void attack(Creature attacker, Creature defender) {
 		Long stregth = attacker.getAttributeValue(Attribute.STRENGTH);
+		Long dexterity = attacker.getAttributeValue(Attribute.DEXTERITY);
 		if (stregth == null) {
 			System.out.println("null !! panie null!! nie ma sily !!");
 			return;
 		}
 
+		if(dexterity == null){
+			dexterity = 10L;
+		}
+		
+		
+		
+		int blockDmg = new Long(block(attacker, defender, dexterity)).intValue();
 		int weaponDamage = 0;
 		if (attacker.getEquipment().containsKey(Hand.class)) {
 			ItemToWorn item = attacker.getEquipment().get(Hand.class);
@@ -66,11 +75,26 @@ public class Mechanix {
 				Long tempDamageL;
 				tempDamageL = item.getAttributeValue(Attribute.DAMAGE);
 				weaponDamage = tempDamageL == null ? 0 : tempDamageL.intValue();
+				
 			}
 		}
 
 		int damage = stregth.intValue() + weaponDamage;
+		damage = damage - blockDmg;
+		if(damage <0)
+			damage = 0;
 		defender.addDamage(damage);
+	}
+	
+	public static Long block(Creature att, Creature def, Long dex){
+		Random rand = new Random();
+		int randInt = rand.nextInt(2);
+		if(randInt == 0){
+			att.write("Your opponent has blocked "+dex+" points of damage!");
+			def.write("You blocked "+dex+" points of damage!");
+			return dex;
+		}
+		return 0L;
 	}
 
 	public static String creatureAttr[] = { Attribute.DEXTERITY,
